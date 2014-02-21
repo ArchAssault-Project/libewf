@@ -427,10 +427,6 @@
 /* Define to 1 if the local version of libuna is used. */
 #define HAVE_LOCAL_LIBUNA 1
 
-/* Define to 1 if libewfs low level read and write functions should be used in
-   the ewf tools. */
-/* #undef HAVE_LOW_LEVEL_FUNCTIONS */
-
 /* Define to 1 if you have the `lseek' function. */
 #define HAVE_LSEEK 1
 
@@ -751,7 +747,7 @@
 #define PACKAGE_NAME "libewf"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libewf 20131210"
+#define PACKAGE_STRING "libewf 20131230"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libewf"
@@ -760,7 +756,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "20131210"
+#define PACKAGE_VERSION "20131230"
 
 /* The size of `off_t', as computed by sizeof. */
 #define SIZEOF_OFF_T 8
@@ -784,7 +780,7 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "20131210"
+#define VERSION "20131230"
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */

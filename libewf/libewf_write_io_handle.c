@@ -356,12 +356,8 @@ int libewf_write_io_handle_initialize_values(
      libewf_segment_table_t *segment_table,
      libcerror_error_t **error )
 {
-	uint8_t *compressed_zero_byte_empty_block = NULL;
-	uint8_t *zero_byte_empty_block            = NULL;
-	static char *function                     = "libewf_write_io_handle_initialize_values";
-	void *reallocation                        = NULL;
-	int64_t required_number_of_segments       = 0;
-	int result                                = 0;
+	static char *function               = "libewf_write_io_handle_initialize_values";
+	int64_t required_number_of_segments = 0;
 
 	if( write_io_handle == NULL )
 	{
@@ -456,7 +452,7 @@ int libewf_write_io_handle_initialize_values(
 			 "%s: EWF file format does not allow for streaming write.",
 			 function );
 
-			goto on_error;
+			return( -1 );
 		}
 	}
 	else
@@ -475,7 +471,7 @@ int libewf_write_io_handle_initialize_values(
 			 function,
 			 segment_table->maximum_segment_size );
 
-			goto on_error;
+			return( -1 );
 		}
 	}
 	if( media_values->media_size > LIBEWF_2_TIB )
@@ -490,144 +486,14 @@ int libewf_write_io_handle_initialize_values(
 			 "%s: EWF file format does not allow for a media size greater than 2 TiB.",
 			 function );
 
-			goto on_error;
+			return( -1 );
 		}
-	}
-	if( write_io_handle->compressed_zero_byte_empty_block == NULL )
-	{
-		zero_byte_empty_block = (uint8_t *) memory_allocate(
-		                                     sizeof( uint8_t ) * (size_t) media_values->chunk_size );
-
-		if( zero_byte_empty_block == NULL )
-		{	
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create zero byte empty block.",
-			 function );
-
-			goto on_error;
-		}
-		if( memory_set(
-		     zero_byte_empty_block,
-		     0,
-		     sizeof( uint8_t ) * (size_t) media_values->chunk_size ) == NULL )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_SET_FAILED,
-			 "%s: unable to clear zero byte empty block.",
-			 function );
-
-			goto on_error;
-		}
-		write_io_handle->compressed_zero_byte_empty_block_size = 512;
-
-		compressed_zero_byte_empty_block = (uint8_t *) memory_allocate(
-				                                sizeof( uint8_t ) * write_io_handle->compressed_zero_byte_empty_block_size );
-
-		if( compressed_zero_byte_empty_block == NULL )
-		{	
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_MEMORY,
-			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-			 "%s: unable to create compressed zero byte empty block.",
-			 function );
-
-			goto on_error;
-		}
-		result = libewf_compress(
-			  compressed_zero_byte_empty_block,
-			  &( write_io_handle->compressed_zero_byte_empty_block_size ),
-			  zero_byte_empty_block,
-			  (size_t) media_values->chunk_size,
-			  io_handle->compression_level,
-			  error );
-
-		/* Check if the compressed buffer was too small
-		 * and a new compressed data size buffer was passed back
-		 */
-		if( ( result == -1 )
-		 && ( write_io_handle->compressed_zero_byte_empty_block_size > 0 ) )
-		{
-#if !defined( HAVE_COMPRESS_BOUND ) && !defined( WINAPI )
-			/* The some version of zlib require a fairly large buffer
-			 * if compressBound() was not used but 2 x 512 then assume
-			 * the chunk size + 16 is sufficient
-			 */
-			write_io_handle->compressed_zero_byte_empty_block_size = media_values->chunk_size + 16;
-#endif
-
-			libcerror_error_free(
-			 error );
-
-			reallocation = memory_reallocate(
-			                compressed_zero_byte_empty_block,
-			                sizeof( uint8_t ) * write_io_handle->compressed_zero_byte_empty_block_size );
-
-			if( reallocation == NULL )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_MEMORY,
-				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-				 "%s: unable to resize compressed zero byte empty block.",
-				 function );
-
-				return( -1 );
-			}
-			compressed_zero_byte_empty_block = (uint8_t *) reallocation;
-
-			result = libewf_compress(
-			          compressed_zero_byte_empty_block,
-			          &( write_io_handle->compressed_zero_byte_empty_block_size ),
-			          zero_byte_empty_block,
-			          (size_t) media_values->chunk_size,
-			          io_handle->compression_level,
-			          error );
-		}
-		if( result != 1 )
-		{
-			libcerror_error_free(
-			 error );
-
-			memory_free(
-			 compressed_zero_byte_empty_block );
-
-			write_io_handle->compressed_zero_byte_empty_block_size = 0;
-		}
-		else
-		{
-			write_io_handle->compressed_zero_byte_empty_block = compressed_zero_byte_empty_block;
-		}
-		compressed_zero_byte_empty_block = NULL;
-
-		memory_free(
-		 zero_byte_empty_block );
-
-		zero_byte_empty_block = NULL;
 	}
 	/* Flag that the write values were initialized
 	 */
 	write_io_handle->values_initialized = 1;
 
 	return( 1 );
-
-on_error:
-	if( compressed_zero_byte_empty_block != NULL )
-	{
-		memory_free(
-		 compressed_zero_byte_empty_block );
-	}
-	if( zero_byte_empty_block != NULL )
-	{
-		memory_free(
-		 zero_byte_empty_block );
-	}
-	return( -1 );
 }
 
 /* Initializes the write IO handle to resume writing
@@ -1373,6 +1239,203 @@ int libewf_write_io_handle_initialize_resume(
 		segment_file->flags |= LIBEWF_SEGMENT_FILE_FLAG_WRITE_OPEN;
 	}
 	return( 1 );
+}
+
+/* Sets the compressed zero byte empty block
+ * Returns 1 if successful or -1 on error
+ */
+int libewf_write_io_handle_set_compressed_zero_byte_empty_block(
+     libewf_write_io_handle_t *write_io_handle,
+     libewf_io_handle_t *io_handle,
+     libewf_media_values_t *media_values,
+     libcerror_error_t **error )
+{
+	uint8_t *compressed_zero_byte_empty_block = NULL;
+	uint8_t *zero_byte_empty_block            = NULL;
+	static char *function                     = "libewf_write_io_handle_set_compressed_zero_byte_empty_block";
+	void *reallocation                        = NULL;
+	int result                                = 0;
+
+	if( write_io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid write IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( write_io_handle->values_initialized != 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
+		 "%s: write values were initialized and cannot be initialized anymore.",
+		 function );
+
+		return( -1 );
+	}
+	if( io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( media_values == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid media values.",
+		 function );
+
+		return( -1 );
+	}
+	if( write_io_handle->compressed_zero_byte_empty_block != NULL )
+	{
+		memory_free(
+		 write_io_handle->compressed_zero_byte_empty_block );
+
+		write_io_handle->compressed_zero_byte_empty_block = NULL;
+	}
+	zero_byte_empty_block = (uint8_t *) memory_allocate(
+	                                     sizeof( uint8_t ) * (size_t) media_values->chunk_size );
+
+	if( zero_byte_empty_block == NULL )
+	{	
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create zero byte empty block.",
+		 function );
+
+		goto on_error;
+	}
+	if( memory_set(
+	     zero_byte_empty_block,
+	     0,
+	     sizeof( uint8_t ) * (size_t) media_values->chunk_size ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to clear zero byte empty block.",
+		 function );
+
+		goto on_error;
+	}
+	write_io_handle->compressed_zero_byte_empty_block_size = 512;
+
+	compressed_zero_byte_empty_block = (uint8_t *) memory_allocate(
+			                                sizeof( uint8_t ) * write_io_handle->compressed_zero_byte_empty_block_size );
+
+	if( compressed_zero_byte_empty_block == NULL )
+	{	
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create compressed zero byte empty block.",
+		 function );
+
+		goto on_error;
+	}
+	result = libewf_compress(
+		  compressed_zero_byte_empty_block,
+		  &( write_io_handle->compressed_zero_byte_empty_block_size ),
+		  zero_byte_empty_block,
+		  (size_t) media_values->chunk_size,
+		  io_handle->compression_level,
+		  error );
+
+	/* Check if the compressed buffer was too small
+	 * and a new compressed data size buffer was passed back
+	 */
+	if( ( result == -1 )
+	 && ( write_io_handle->compressed_zero_byte_empty_block_size > 0 ) )
+	{
+#if !defined( HAVE_COMPRESS_BOUND ) && !defined( WINAPI )
+		/* The some version of zlib require a fairly large buffer
+		 * if compressBound() was not used but 2 x 512 then assume
+		 * the chunk size + 16 is sufficient
+		 */
+		write_io_handle->compressed_zero_byte_empty_block_size = media_values->chunk_size + 16;
+#endif
+
+		libcerror_error_free(
+		 error );
+
+		reallocation = memory_reallocate(
+		                compressed_zero_byte_empty_block,
+		                sizeof( uint8_t ) * write_io_handle->compressed_zero_byte_empty_block_size );
+
+		if( reallocation == NULL )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_MEMORY,
+			 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+			 "%s: unable to resize compressed zero byte empty block.",
+			 function );
+
+			return( -1 );
+		}
+		compressed_zero_byte_empty_block = (uint8_t *) reallocation;
+
+		result = libewf_compress(
+		          compressed_zero_byte_empty_block,
+		          &( write_io_handle->compressed_zero_byte_empty_block_size ),
+		          zero_byte_empty_block,
+		          (size_t) media_values->chunk_size,
+		          io_handle->compression_level,
+		          error );
+	}
+	if( result != 1 )
+	{
+		libcerror_error_free(
+		 error );
+
+		memory_free(
+		 compressed_zero_byte_empty_block );
+
+		write_io_handle->compressed_zero_byte_empty_block_size = 0;
+	}
+	else
+	{
+		write_io_handle->compressed_zero_byte_empty_block = compressed_zero_byte_empty_block;
+	}
+	compressed_zero_byte_empty_block = NULL;
+
+	memory_free(
+	 zero_byte_empty_block );
+
+	zero_byte_empty_block = NULL;
+
+	return( 1 );
+
+on_error:
+	if( compressed_zero_byte_empty_block != NULL )
+	{
+		memory_free(
+		 compressed_zero_byte_empty_block );
+	}
+	if( zero_byte_empty_block != NULL )
+	{
+		memory_free(
+		 zero_byte_empty_block );
+	}
+	return( -1 );
 }
 
 /* Calculates an estimate of the number of chunks that fit within a segment file

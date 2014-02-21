@@ -1,5 +1,5 @@
 Name: libewf
-Version: 20131210
+Version: 20131230
 Release: 1
 Summary: Library to access the Expert Witness Compression Format (EWF)
 Group: System Environment/Libraries
@@ -82,7 +82,7 @@ rm -rf ${RPM_BUILD_ROOT}
 
 %files devel
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING NEWS README README.dll README.macosx ChangeLog
+%doc AUTHORS COPYING NEWS README README.macosx ChangeLog
 %{_libdir}/*.la
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/libewf.pc
@@ -112,6 +112,6 @@ rm -rf ${RPM_BUILD_ROOT}
 %exclude %{_bindir}/ewfdebug
 
 %changelog
-* Tue Dec 10 2013 Joachim Metz <joachim.metz@gmail.com> 20131210-1
+* Mon Dec 30 2013 Joachim Metz <joachim.metz@gmail.com> 20131230-1
 - Auto-generated
 

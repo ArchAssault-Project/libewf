@@ -171,6 +171,12 @@ int libewf_write_io_handle_initialize_resume(
      libewf_segment_table_t *segment_table,
      libcerror_error_t **error );
 
+int libewf_write_io_handle_set_compressed_zero_byte_empty_block(
+     libewf_write_io_handle_t *write_io_handle,
+     libewf_io_handle_t *io_handle,
+     libewf_media_values_t *media_values,
+     libcerror_error_t **error );
+
 int libewf_write_io_handle_calculate_chunks_per_segment_file(
      uint32_t *chunks_per_segment_file,
      size64_t remaining_segment_file_size,

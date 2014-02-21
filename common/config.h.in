@@ -426,10 +426,6 @@
 /* Define to 1 if the local version of libuna is used. */
 #undef HAVE_LOCAL_LIBUNA
 
-/* Define to 1 if libewfs low level read and write functions should be used in
-   the ewf tools. */
-#undef HAVE_LOW_LEVEL_FUNCTIONS
-
 /* Define to 1 if you have the `lseek' function. */
 #undef HAVE_LSEEK
 

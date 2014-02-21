@@ -61,7 +61,6 @@ SPEC_FILES = \
 	libewf.spec.in
 
 EXTRA_DIST = \
-	README.dll \
 	README.macosx \
 	$(DPKG_FILES) \
 	$(GETTEXT_FILES) \

@@ -28,6 +28,10 @@
 #include <libintl.h>
 #endif
 
+#if defined( __cplusplus )
+extern "C" {
+#endif
+
 /* TODO for now do nothing i18n like
 #define	_( string ) \
 	gettext( string )

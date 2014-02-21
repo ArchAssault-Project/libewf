@@ -69,8 +69,9 @@ libewf_la_SOURCES = \
 	libewf_libcstring.h \
 	libewf_libbfio.h \
 	libewf_libfcache.h \
-	libewf_libmfdata.h \
+	libewf_libfdata.h \
 	libewf_libfvalue.h \
+	libewf_libmfdata.h \
 	libewf_libuna.h \
 	libewf_media_values.c libewf_media_values.h \
 	libewf_metadata.c libewf_metadata.h \

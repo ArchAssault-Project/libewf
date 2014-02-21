@@ -28,7 +28,6 @@
 #include <stdlib.h>
 #endif
 
-#include "pyewf.h"
 #include "pyewf_error.h"
 #include "pyewf_file_entry.h"
 #include "pyewf_file_objects_io_pool.h"
@@ -449,10 +448,10 @@ int pyewf_handle_init(
 	     &error ) != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_MemoryError,
 		 "%s: unable to initialize handle.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -518,10 +517,10 @@ void pyewf_handle_free(
 	if( result != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_MemoryError,
 		 "%s: unable to free handle.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -563,10 +562,10 @@ PyObject *pyewf_handle_signal_abort(
 	if( result != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to signal abort.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -594,6 +593,7 @@ PyObject *pyewf_handle_open(
 	PyObject *sequence_object   = NULL;
 	PyObject *string_object     = NULL;
 	static char *function       = "pyewf_handle_open";
+	Py_ssize_t sequence_size    = 0;
 	size_t filename_length      = 0;
 	int access_flags            = 0;
 	int filename_index          = 0;
@@ -679,8 +679,19 @@ PyObject *pyewf_handle_open(
 
 		return( NULL );
 	}
-	number_of_filenames = PySequence_Size(
-	                       sequence_object );
+	sequence_size = PySequence_Size(
+	                 sequence_object );
+
+        if( sequence_size > (Py_ssize_t) INT_MAX )
+	{
+		PyErr_Format(
+		 PyExc_ValueError,
+		 "%s: invalid sequence size value exceeds maximum.",
+		 function );
+
+		goto on_error;
+	}
+	number_of_filenames = (int) sequence_size;
 
 	if( ( number_of_filenames <= 0 )
 	 || ( number_of_filenames > (int) UINT16_MAX ) )
@@ -776,10 +787,10 @@ PyObject *pyewf_handle_open(
 	if( result != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to open handle.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -868,10 +879,10 @@ PyObject *pyewf_handle_open_file_objects(
 	     &error ) != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_MemoryError,
 		 "%s: unable to initialize file IO pool.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -891,10 +902,10 @@ PyObject *pyewf_handle_open_file_objects(
 	if( result != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to open file.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -949,10 +960,10 @@ PyObject *pyewf_handle_close(
 	if( result != 0 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to close handle.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -1036,10 +1047,10 @@ PyObject *pyewf_handle_read_buffer(
 	if( read_count <= -1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to read data.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -1146,10 +1157,10 @@ PyObject *pyewf_handle_read_random(
 	if( read_count <= -1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to read data.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -1233,10 +1244,10 @@ PyObject *pyewf_handle_write_buffer(
 	if( write_count != (ssize_t) buffer_size )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to write data.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -1322,10 +1333,10 @@ PyObject *pyewf_handle_write_random(
 	if( write_count != (ssize_t) buffer_size )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to write data.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -1384,10 +1395,10 @@ PyObject *pyewf_handle_seek_offset(
  	if( offset == -1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to seek offset.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -1436,10 +1447,10 @@ PyObject *pyewf_handle_get_offset(
 	if( result != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to retrieve offset.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );
@@ -1488,10 +1499,10 @@ PyObject *pyewf_handle_get_root_file_entry(
 	if( result != 1 )
 	{
 		pyewf_error_raise(
+		 error,
 		 PyExc_IOError,
 		 "%s: unable to retrieve root file entry.",
-		 function,
-		 error );
+		 function );
 
 		libcerror_error_free(
 		 &error );

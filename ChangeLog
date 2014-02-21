@@ -1,5 +1,15 @@
 TODO
 * sync with experimental version
+* move mfdata to fdata - not possible
+  - chunk_table_list - needs mfdata uses grouping
+  - file_list - not supported by fdata
+
+20131230
+* small updates
+
+20131222
+* moved low-level function support from compile time to run time
+* worked on sync with experimental version
 
 20131210
 * updated dependencies

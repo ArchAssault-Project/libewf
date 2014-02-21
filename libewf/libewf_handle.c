@@ -1957,6 +1957,21 @@ int libewf_handle_open_file_io_pool(
 
 			goto on_error;
 		}
+		if( libewf_write_io_handle_set_compressed_zero_byte_empty_block(
+		     internal_handle->write_io_handle,
+		     internal_handle->io_handle,
+		     internal_handle->media_values,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+			 "%s: unable to set compressed zero byte empty block in write IO handle.",
+			 function );
+
+			goto on_error;
+		}
 	}
 	if( libmfdata_file_list_initialize(
 	     &( internal_handle->segment_files_list ),
@@ -8953,6 +8968,24 @@ int libewf_internal_handle_set_media_values(
 			return( -1 );
 		}
 		internal_handle->media_values->number_of_sectors = number_of_sectors;
+	}
+	if( internal_handle->write_io_handle != NULL )
+	{
+		if( libewf_write_io_handle_set_compressed_zero_byte_empty_block(
+		     internal_handle->write_io_handle,
+		     internal_handle->io_handle,
+		     internal_handle->media_values,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+			 "%s: unable to set compressed zero byte empty block in write IO handle.",
+			 function );
+
+			return( -1 );
+		}
 	}
 	return( 1 );
 }

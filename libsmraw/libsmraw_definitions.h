@@ -35,11 +35,11 @@
 
 #else
 
-#define LIBSMRAW_VERSION				20131210
+#define LIBSMRAW_VERSION				20131230
 
 /* The version string
  */
-#define LIBSMRAW_VERSION_STRING				"20131210"
+#define LIBSMRAW_VERSION_STRING				"20131230"
 
 /* The access flags definitions
  * bit 1	set to 1 for read access
