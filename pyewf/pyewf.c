@@ -2,7 +2,7 @@
  * Python bindings module for libewf (pyewf)
  *
  * Copyright (c) 2008, David Collett <david.collett@gmail.com>
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -28,7 +28,6 @@
 #endif
 
 #include "pyewf.h"
-#include "pyewf_error.h"
 #include "pyewf_file_entries.h"
 #include "pyewf_file_entry.h"
 #include "pyewf_file_object_io_handle.h"
@@ -37,7 +36,6 @@
 #include "pyewf_libcstring.h"
 #include "pyewf_libewf.h"
 #include "pyewf_python.h"
-#include "pyewf_unused.h"
 
 #if !defined( LIBEWF_HAVE_BFIO )
 LIBEWF_EXTERN \
@@ -99,15 +97,11 @@ PyMethodDef pyewf_module_methods[] = {
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pyewf_get_version(
-           PyObject *self PYEWF_ATTRIBUTE_UNUSED,
-           PyObject *arguments PYEWF_ATTRIBUTE_UNUSED )
+           PyObject *self )
 {
 	const char *errors           = NULL;
 	const char *version_string   = NULL;
 	size_t version_string_length = 0;
-
-	PYEWF_UNREFERENCED_PARAMETER( self )
-	PYEWF_UNREFERENCED_PARAMETER( arguments )
 
 	Py_BEGIN_ALLOW_THREADS
 
@@ -132,17 +126,17 @@ PyObject *pyewf_get_version(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pyewf_check_file_signature(
-           PyObject *self PYEWF_ATTRIBUTE_UNUSED,
+           PyObject *self,
            PyObject *arguments,
            PyObject *keywords )
 {
+	char error_string[ PYEWF_ERROR_STRING_SIZE ];
+
 	libcerror_error_t *error    = NULL;
 	static char *function       = "pyewf_check_file_signature";
 	static char *keyword_list[] = { "filename", NULL };
 	const char *filename        = NULL;
 	int result                  = 0;
-
-	PYEWF_UNREFERENCED_PARAMETER( self )
 
 	if( PyArg_ParseTupleAndKeywords(
 	     arguments,
@@ -163,12 +157,24 @@ PyObject *pyewf_check_file_signature(
 
 	if( result == -1 )
 	{
-		pyewf_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to check file signature.",
-		 function );
-
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYEWF_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to check file signature.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to check file signature.\n%s",
+			 function,
+			 error_string );
+		}
 		libcerror_error_free(
 		 &error );
 
@@ -185,18 +191,18 @@ PyObject *pyewf_check_file_signature(
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pyewf_check_file_signature_file_object(
-           PyObject *self PYEWF_ATTRIBUTE_UNUSED,
+           PyObject *self,
            PyObject *arguments,
            PyObject *keywords )
 {
+	char error_string[ PYEWF_ERROR_STRING_SIZE ];
+
 	libcerror_error_t *error         = NULL;
 	libbfio_handle_t *file_io_handle = NULL;
 	PyObject *file_object            = NULL;
 	static char *function            = "pyewf_check_file_signature_file_object";
 	static char *keyword_list[]      = { "file_object", NULL };
 	int result                       = 0;
-
-	PYEWF_UNREFERENCED_PARAMETER( self )
 
 	if( PyArg_ParseTupleAndKeywords(
 	     arguments,
@@ -212,12 +218,24 @@ PyObject *pyewf_check_file_signature_file_object(
 	     file_object,
 	     &error ) != 1 )
 	{
-		pyewf_error_raise(
-		 error,
-		 PyExc_MemoryError,
-		 "%s: unable to initialize file IO handle.",
-		 function );
-
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYEWF_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to initialize file IO handle.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to initialize file IO handle.\n%s",
+			 function,
+			 error_string );
+		}
 		libcerror_error_free(
 		 &error );
 
@@ -233,12 +251,24 @@ PyObject *pyewf_check_file_signature_file_object(
 
 	if( result == -1 )
 	{
-		pyewf_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to check file signature.",
-		 function );
-
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYEWF_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to check file signature.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to check file signature.\n%s",
+			 function,
+			 error_string );
+		}
 		libcerror_error_free(
 		 &error );
 
@@ -248,12 +278,24 @@ PyObject *pyewf_check_file_signature_file_object(
 	     &file_io_handle,
 	     &error ) != 1 )
 	{
-		pyewf_error_raise(
-		 error,
-		 PyExc_MemoryError,
-		 "%s: unable to free file IO handle.",
-		 function );
-
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYEWF_ERROR_STRING_SIZE ) == -1 )
+                {
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to free file IO handle.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to free file IO handle.\n%s",
+			 function,
+			 error_string );
+		}
 		libcerror_error_free(
 		 &error );
 
@@ -279,12 +321,14 @@ on_error:
  * Returns a Python object if successful or NULL on error
  */
 PyObject *pyewf_glob(
-           PyObject *self PYEWF_ATTRIBUTE_UNUSED,
+           PyObject *self,
            PyObject *arguments,
            PyObject *keywords )
 {
+	char error_string[ PYEWF_ERROR_STRING_SIZE ];
+
 	char **filenames            = NULL;
-	libcerror_error_t *error    = NULL;
+	libcerror_error_t *error     = NULL;
 	PyObject *list_object       = NULL;
 	PyObject *string_object     = NULL;
 	static char *function       = "pyewf_glob";
@@ -294,8 +338,6 @@ PyObject *pyewf_glob(
 	size_t filename_length      = 0;
 	int filename_index          = 0;
 	int number_of_filenames     = 0;
-
-	PYEWF_UNREFERENCED_PARAMETER( self )
 
 	if( PyArg_ParseTupleAndKeywords(
 	     arguments,
@@ -317,16 +359,28 @@ PyObject *pyewf_glob(
 	     &number_of_filenames,
 	     &error ) != 1 )
 	{
-		pyewf_error_raise(
-		 error,
-		 PyExc_IOError,
-		 "%s: unable to glob filenames.",
-		 function );
-
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYEWF_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to glob filenames.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_IOError,
+			 "%s: unable to glob filenames.\n%s",
+			 function,
+			 error_string );
+		}
 		libcerror_error_free(
 		 &error );
 
-		goto on_error;
+		return( NULL );
 	}
 	list_object = PyList_New(
 	               (Py_ssize_t) number_of_filenames );
@@ -355,7 +409,15 @@ PyObject *pyewf_glob(
 			 function,
 			 filename_index );
 
-			goto on_error;
+			libewf_glob_free(
+			 filenames,
+			 number_of_filenames,
+			 NULL );
+
+			Py_DecRef(
+			 list_object );
+
+			return( NULL );
 		}
 		if( PyList_SetItem(
 		     list_object,
@@ -368,47 +430,51 @@ PyObject *pyewf_glob(
 			 function,
 			 filename_index );
 
-			goto on_error;
+			libewf_glob_free(
+			 filenames,
+			 number_of_filenames,
+			 NULL );
+
+			Py_DecRef(
+			 string_object );
+			Py_DecRef(
+			 list_object );
+
+			return( NULL );
 		}
-		string_object = NULL;
 	}
 	if( libewf_glob_free(
 	     filenames,
 	     number_of_filenames,
 	     &error ) != 1 )
 	{
-		pyewf_error_raise(
-		 error,
-		 PyExc_MemoryError,
-		 "%s: unable to free globbed filenames.",
-		 function );
-
+		if( libcerror_error_backtrace_sprint(
+		     error,
+		     error_string,
+		     PYEWF_ERROR_STRING_SIZE ) == -1 )
+		{
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to free globbed filenames.",
+			 function );
+		}
+		else
+		{
+			PyErr_Format(
+			 PyExc_MemoryError,
+			 "%s: unable to free globbed filenames.\n%s",
+			 function,
+			 error_string );
+		}
 		libcerror_error_free(
 		 &error );
 
-		goto on_error;
-	}
-	return( list_object );
-
-on_error:
-	if( string_object != NULL )
-	{
-		Py_DecRef(
-		 string_object );
-	}
-	if( list_object != NULL )
-	{
 		Py_DecRef(
 		 list_object );
+
+		return( NULL );
 	}
-	if( filenames != NULL )
-	{
-		libewf_glob_free(
-		 filenames,
-		 number_of_filenames,
-		 NULL );
-	}
-	return( NULL );
+	return( list_object );
 }
 
 /* Declarations for DLL import/export

@@ -2,7 +2,7 @@
 #
 # Expert Witness Compression Format (EWF) library glob testing script
 #
-# Copyright (c) 2006-2012, Joachim Metz <joachim.metz@gmail.com>
+# Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
 #
 # Refer to AUTHORS for acknowledgements.
 #
@@ -513,6 +513,60 @@ then
 fi
 
 if ! test_glob_sequence3 "PREFIX.L01" ".L01" "PREFIX" "MAA";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+# .Ex01
+
+if ! test_glob "PREFIX.Ex01" ".Ex01" "PREFIX.Ex01";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob "PREFIX.Ex01" ".Ex01" "PREFIX.Ex01 PREFIX.Ex02 PREFIX.Ex03 PREFIX.Ex04 PREFIX.Ex05 PREFIX.Ex06 PREFIX.Ex07 PREFIX.Ex08 PREFIX.Ex09";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob "PREFIX.Ex01" ".Ex01" "PREFIX.Ex01 PREFIX.Ex02 PREFIX.Ex03 PREFIX.Ex04 PREFIX.Ex05 PREFIX.Ex06 PREFIX.Ex07 PREFIX.Ex08 PREFIX.Ex09 PREFIX.Ex10 PREFIX.Ex11";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob_sequence4 "PREFIX.Ex01" ".Ex01" "PREFIX" "ExBA";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob_sequence4 "PREFIX.Ex01" ".Ex01" "PREFIX" "EyAA";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+# .Lx01
+
+if ! test_glob "PREFIX.Lx01" ".Lx01" "PREFIX.Lx01";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob "PREFIX.Lx01" ".Lx01" "PREFIX.Lx01 PREFIX.Lx02 PREFIX.Lx03 PREFIX.Lx04 PREFIX.Lx05 PREFIX.Lx06 PREFIX.Lx07 PREFIX.Lx08 PREFIX.Lx09";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob "PREFIX.Lx01" ".Lx01" "PREFIX.Lx01 PREFIX.Lx02 PREFIX.Lx03 PREFIX.Lx04 PREFIX.Lx05 PREFIX.Lx06 PREFIX.Lx07 PREFIX.Lx08 PREFIX.Lx09 PREFIX.Lx10 PREFIX.Lx11";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob_sequence4 "PREFIX.Lx01" ".Lx01" "PREFIX" "LxBA";
+then
+	exit ${EXIT_FAILURE};
+fi
+
+if ! test_glob_sequence4 "PREFIX.Lx01" ".Lx01" "PREFIX" "LyAA";
 then
 	exit ${EXIT_FAILURE};
 fi

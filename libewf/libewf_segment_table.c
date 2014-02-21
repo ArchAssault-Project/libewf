@@ -1,7 +1,7 @@
 /*
  * Segment table functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -23,12 +23,11 @@
 #include <memory.h>
 #include <types.h>
 
-#include "libewf_libcstring.h"
-#include "libewf_libcerror.h"
-#include "libewf_libclocale.h"
-
 #include "libewf_libbfio.h"
 #include "libewf_libcdata.h"
+#include "libewf_libcerror.h"
+#include "libewf_libclocale.h"
+#include "libewf_libcstring.h"
 #include "libewf_libmfdata.h"
 #include "libewf_libuna.h"
 #include "libewf_segment_file.h"

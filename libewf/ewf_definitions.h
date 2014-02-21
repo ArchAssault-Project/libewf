@@ -1,7 +1,7 @@
 /*
  * Definitions for libewf
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -25,40 +25,17 @@
 #include <common.h>
 #include <types.h>
 
-/* The minimum chunk size is 32k (32 * 1024)
- * 64 * 512 (64 sectors)
+/* The minimum chunk size is 32k or ( 64 sectors * 512 )
  */
 #define EWF_MINIMUM_CHUNK_SIZE			32768
 
-/* The possible EWF file formats
+/* The maximum number of table entries for EWF
  */
-#define EWF_FORMAT_UNKNOWN			(uint8_t) 'u'
-#define EWF_FORMAT_D01				(uint8_t) 'd'
-#define EWF_FORMAT_E01				(uint8_t) 'e'
-#define EWF_FORMAT_L01				(uint8_t) 'l'
-#define EWF_FORMAT_S01				(uint8_t) 's'
+#define EWF_MAXIMUM_TABLE_ENTRIES		16375
 
-/* The EWF compression levels
+/* The maximum number of table entries for EWF as of EnCase 6
  */
-#define EWF_COMPRESSION_UNKNOWN 		-2
-#define EWF_COMPRESSION_DEFAULT			-1
-#define EWF_COMPRESSION_NONE			 0
-#define EWF_COMPRESSION_FAST			 1
-#define EWF_COMPRESSION_BEST			 2
-
-/* The EWF offset masks
- */
-#define EWF_OFFSET_COMPRESSED_READ_MASK 	0x7fffffff
-#define EWF_OFFSET_COMPRESSED_WRITE_MASK 	0x80000000
-
-/* EWF the initial maximum number of offsets in a table section
- */
-#define EWF_MAXIMUM_OFFSETS_IN_TABLE		16375
-
-/* EWF maximum number of offsets in a table section
- * as of EnCase 6
- */
-#define EWF_MAXIMUM_OFFSETS_IN_TABLE_ENCASE6	65534
+#define EWF_MAXIMUM_TABLE_ENTRIES_ENCASE6	65534
 
 #endif
 

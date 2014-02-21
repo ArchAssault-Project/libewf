@@ -1,7 +1,7 @@
 /*
  * Handle functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -35,10 +35,6 @@
 #include <errno.h>
 #endif
 
-#if defined( WINAPI )
-#include <winioctl.h>
-#endif
-
 #include "libsmdev_ata.h"
 #include "libsmdev_definitions.h"
 #include "libsmdev_handle.h"
@@ -57,101 +53,7 @@
 #include "libsmdev_track_value.h"
 #include "libsmdev_types.h"
 
-#if defined( WINAPI )
-
-#if !defined( IOCTL_STORAGE_QUERY_PROPERTY )
-#define IOCTL_STORAGE_QUERY_PROPERTY \
-	CTL_CODE( IOCTL_STORAGE_BASE, 0x0500, METHOD_BUFFERED, FILE_ANY_ACCESS )
-
-typedef enum _STORAGE_PROPERTY_ID
-{
-	StorageDeviceProperty = 0,
-	StorageAdapterProperty,
-	StorageDeviceIdProperty,
-	StorageDeviceUniqueIdProperty,
-	StorageDeviceWriteCacheProperty,
-	StorageMiniportProperty,
-	StorageAccessAlignmentProperty,
-	StorageDeviceSeekPenaltyProperty,
-	StorageDeviceTrimProperty,
-	StorageDeviceWriteAggregationProperty
-}
-STORAGE_PROPERTY_ID, *PSTORAGE_PROPERTY_ID;
-
-typedef enum _STORAGE_QUERY_TYPE
-{
-	PropertyStandardQuery = 0,
-	PropertyExistsQuery,
-	PropertyMaskQuery,
-	PropertyQueryMaxDefined
-}
-STORAGE_QUERY_TYPE, *PSTORAGE_QUERY_TYPE;
-
-#if defined( _MSC_VER ) || defined( __BORLANDC__ )
-#define HAVE_WINIOCTL_H_STORAGE_BUS_TYPE
-#endif
-
-#if !defined( HAVE_WINIOCTL_H_STORAGE_BUS_TYPE )
-
-typedef enum _STORAGE_BUS_TYPE
-{
-	BusTypeUnknown		= 0x00,
-	BusTypeScsi		= 0x01,
-	BusTypeAtapi		= 0x02,
-	BusTypeAta		= 0x03,
-	BusType1394		= 0x04,
-	BusTypeSsa		= 0x05,
-	BusTypeFibre		= 0x06,
-	BusTypeUsb		= 0x07,
-	BusTypeRAID		= 0x08,
-	BusTypeiSCSI		= 0x09,
-	BusTypeSas		= 0x0a,
-	BusTypeSata		= 0x0b,
-	BusTypeMaxReserved	= 0x7f
-}
-STORAGE_BUS_TYPE, *PSTORAGE_BUS_TYPE;
-
-#endif /* !defined( HAVE_WINIOCTL_H_STORAGE_BUS_TYPE ) */
-
-typedef struct _STORAGE_PROPERTY_QUERY
-{
-	STORAGE_PROPERTY_ID PropertyId;
-	STORAGE_QUERY_TYPE QueryType;
-	UCHAR AdditionalParameters[ 1 ];
-}
-STORAGE_PROPERTY_QUERY, *PSTORAGE_PROPERTY_QUERY;
-
-typedef struct _STORAGE_DEVICE_DESCRIPTOR
-{
-	ULONG Version;
-	ULONG Size;
-	UCHAR DeviceType;
-	UCHAR DeviceTypeModifier;
-	BOOLEAN RemovableMedia;
-	BOOLEAN CommandQueueing;
-	ULONG VendorIdOffset;
-	ULONG ProductIdOffset;
-	ULONG ProductRevisionOffset;
-	ULONG SerialNumberOffset;
-	STORAGE_BUS_TYPE BusType;
-	ULONG RawPropertiesLength;
-	UCHAR RawDeviceProperties[ 1 ];
-}
-STORAGE_DEVICE_DESCRIPTOR, *PSTORAGE_DEVICE_DESCRIPTOR;
-
-typedef struct _STORAGE_DESCRIPTOR_HEADER
-{
-	ULONG Version;
-	ULONG Size;
-}
-STORAGE_DESCRIPTOR_HEADER, *PSTORAGE_DESCRIPTOR_HEADER;
-
-#endif /* !defined( IOCTL_STORAGE_QUERY_PROPERTY ) */
-
-#endif /* defined( WINAPI ) */
-
-/* Creates a handle
- * Make sure the value handle is referencing, is set to NULL
+/* Initializes the handle
  * Returns 1 if successful or -1 on error
  */
 int libsmdev_handle_initialize(
@@ -305,7 +207,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a handle
+/* Frees the handle
  * Returns 1 if succesful or -1 on error
  */
 int libsmdev_handle_free(
@@ -398,7 +300,6 @@ int libsmdev_handle_free(
 		}
 		if( libcdata_range_list_free(
 		     &( internal_handle->errors_range_list ),
-		     NULL,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -534,7 +435,6 @@ int libsmdev_handle_open(
 	}
 	if( libcdata_range_list_empty(
 	     internal_handle->errors_range_list,
-	     NULL,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
@@ -738,7 +638,6 @@ int libsmdev_handle_open_wide(
 	}
 	if( libcdata_range_list_empty(
 	     internal_handle->errors_range_list,
-	     NULL,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
@@ -945,7 +844,6 @@ int libsmdev_handle_close(
 		}
 		if( libcdata_range_list_empty(
 		     internal_handle->errors_range_list,
-		     NULL,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1310,20 +1208,17 @@ ssize_t libsmdev_handle_read_buffer(
 				 read_error_size );
 			}
 #endif
-			if( libcdata_range_list_insert_range(
+			if( libcdata_range_list_append_range(
 			     internal_handle->errors_range_list,
 			     (uint64_t) current_offset,
 			     (uint64_t) read_error_size,
-			     NULL,
-			     NULL,
-			     NULL,
 			     error ) != 1 )
 			{
 				libcerror_error_set(
 				 error,
 				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 				 LIBCERROR_RUNTIME_ERROR_APPEND_FAILED,
-				 "%s: unable to insert read error to range list.",
+				 "%s: unable to append read error to range list.",
 				 function );
 
 				return( -1 );

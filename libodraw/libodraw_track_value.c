@@ -1,7 +1,7 @@
 /*
  * Track value functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -27,8 +27,8 @@
 #include "libodraw_libcerror.h"
 #include "libodraw_track_value.h"
 
-/* Creates a track value
- * Make sure the value track_value is referencing, is set to NULL
+/* Initialize a track value
+ * Make sure the value is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int libodraw_track_value_initialize(

@@ -1,7 +1,7 @@
 /*
- * EWF hash section
+ * EWF hash sections
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -29,24 +29,70 @@
 extern "C" {
 #endif
 
+/* The version 1 hash section
+ */
 typedef struct ewf_hash ewf_hash_t;
 
 struct ewf_hash
 {
 	/* The MD5 hash of the aquired data
-	 * consists of 16 bytes
+	 * Consists of 16 bytes
 	 */
 	uint8_t md5_hash[ 16 ];
 
 	/* Unknown
+	 * Consists of 16 bytes
 	 */
 	uint8_t unknown1[ 16 ];
 
-	/* The section checksum of all (previous) hash data
-	 * consists of 4 bytes (32 bits)
-	 * starts with offset 76
+	/* The section checksum of all previous data
+	 * Consists of 4 bytes
 	 */
 	uint8_t checksum[ 4 ];
+};
+
+/* The version 2 MD5 hash section
+ */
+typedef struct ewf_md5_hash ewf_md5_hash_t;
+
+struct ewf_md5_hash
+{
+	/* The MD5 hash of the aquired data
+	 * Consists of 16 bytes
+	 */
+	uint8_t md5_hash[ 16 ];
+
+	/* The section checksum of all previous data
+	 * Consists of 4 bytes
+	 */
+	uint8_t checksum[ 4 ];
+
+	/* Padding
+	 * Consists of 12 bytes
+	 */
+	uint8_t padding[ 12 ];
+};
+
+/* The version 2 SHA1 hash section
+ */
+typedef struct ewf_sha1_hash ewf_sha1_hash_t;
+
+struct ewf_sha1_hash
+{
+	/* The SHA1 hash of the aquired data
+	 * Consists of 20 bytes
+	 */
+	uint8_t sha1_hash[ 20 ];
+
+	/* The section checksum of all previous data
+	 * Consists of 4 bytes
+	 */
+	uint8_t checksum[ 4 ];
+
+	/* Padding
+	 * Consists of 8 bytes
+	 */
+	uint8_t padding[ 8 ];
 };
 
 #if defined( __cplusplus )

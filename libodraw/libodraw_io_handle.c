@@ -1,7 +1,7 @@
 /*
  * Input/Output (IO) handle functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -40,8 +40,8 @@
 static uint8_t libodraw_sector_synchronisation_data[ 12 ] = \
 	{ 0x00, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x00 };
 
-/* Creates an IO handle
- * Make sure the value io_handle is referencing, is set to NULL
+/* Initialize an IO handle
+ * Make sure the value io_handle is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int libodraw_io_handle_initialize(
@@ -304,10 +304,9 @@ ssize_t libodraw_io_handle_copy_sector_data_to_buffer(
 				 sector_data[ sector_data_offset + 2 ],
 				 sector_lba );
 
-#if defined( HAVE_DEBUG_OUTPUT ) || defined( HAVE_VERBOSE_OUTPUT )
-				sector_mode = sector_data[ sector_data_offset + 3 ] & 0x03;
-#endif
 #if defined( HAVE_DEBUG_OUTPUT )
+				sector_mode = sector_data[ sector_data_offset + 3 ] & 0x03;
+
 				if( libcnotify_verbose != 0 )
 				{
 					libcnotify_printf(

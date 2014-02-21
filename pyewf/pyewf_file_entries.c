@@ -1,7 +1,7 @@
 /*
  * Python object definition of the file entries sequence and iterator
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -26,6 +26,7 @@
 #include <stdlib.h>
 #endif
 
+#include "pyewf.h"
 #include "pyewf_file_entries.h"
 #include "pyewf_file_entry.h"
 #include "pyewf_libcerror.h"

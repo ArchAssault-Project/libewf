@@ -1,7 +1,7 @@
 /*
  * Chunk data functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -39,6 +39,10 @@ struct libewf_chunk_data
 	 */
 	size_t allocated_data_size;
 
+	/* The unpacked data size
+	 */
+	size_t unpacked_data_size;
+
 	/* The data
 	 */
 	uint8_t *data;
@@ -51,21 +55,34 @@ struct libewf_chunk_data
 	 */
 	uint8_t *compressed_data;
 
+	/* The compressed data offset
+	 */
+	size_t compressed_data_offset;
+
 	/* The compressed data size
 	 */
 	size_t compressed_data_size;
 
-	/* Value to indicate the chunk is compressed
+	/* The padding size
 	 */
-	uint8_t is_compressed;
+	size_t padding_size;
 
-	/* Value to indicate the chunk is packed
+	/* The chunk data range flags
 	 */
-	uint8_t is_packed;
+	uint32_t range_flags;
 
-	/* Value to indicate the chunk is corrupt
+	/* The flags
 	 */
-	uint8_t is_corrupt;
+	uint8_t flags;
+
+/* TODO chunk data rewrite */
+	/* Reference to the checksum buffer
+	 */
+	uint8_t *checksum_buffer;
+
+	/* The chunk IO flags
+	 */
+	int8_t chunk_io_flags;
 };
 
 int libewf_chunk_data_initialize(
@@ -79,17 +96,61 @@ int libewf_chunk_data_free(
 
 int libewf_chunk_data_pack(
      libewf_chunk_data_t *chunk_data,
+     uint32_t chunk_size,
+     uint16_t compression_method,
      int8_t compression_level,
      uint8_t compression_flags,
-     uint8_t ewf_format,
-     size32_t chunk_size,
      const uint8_t *compressed_zero_byte_empty_block,
      size_t compressed_zero_byte_empty_block_size,
+     uint8_t pack_flags,
+     libcerror_error_t **error );
+
+int libewf_chunk_data_pack_buffer(
+     uint8_t *data,
+     size_t data_size,
+     uint8_t *compressed_data,
+     size_t *compressed_data_offset,
+     size_t *compressed_data_size,
+     uint32_t chunk_size,
+     size_t chunk_data_size,
+     size_t *chunk_padding_size,
+     uint16_t compression_method,
+     int8_t compression_level,
+     uint32_t *range_flags,
+     uint32_t *chunk_checksum,
+     int8_t *chunk_io_flags,
+     const uint8_t *compressed_zero_byte_empty_block,
+     size_t compressed_zero_byte_empty_block_size,
+     uint8_t pack_flags,
      libcerror_error_t **error );
 
 int libewf_chunk_data_unpack(
      libewf_chunk_data_t *chunk_data,
-     size_t chunk_size,
+     uint32_t chunk_size,
+     uint16_t compression_method,
+     libcerror_error_t **error );
+
+int libewf_chunk_data_unpack_buffer(
+     uint8_t *data,
+     size_t *data_size,
+     const uint8_t *compressed_data,
+     size_t compressed_data_size,
+     uint32_t chunk_size,
+     uint16_t compression_method,
+     uint32_t range_flags,
+     uint32_t chunk_checksum,
+     int8_t chunk_io_flags,
+     libcerror_error_t **error );
+
+int libewf_chunk_data_check_for_empty_block(
+     const uint8_t *data,
+     size_t data_size,
+     libcerror_error_t **error );
+
+int libewf_chunk_data_check_for_64_bit_pattern_fill(
+     const uint8_t *data,
+     size_t data_size,
+     uint64_t *pattern,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

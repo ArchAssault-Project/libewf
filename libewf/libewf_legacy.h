@@ -1,7 +1,7 @@
 /*
  * Legacy functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include "libewf_libcerror.h"
-
 #include "libewf_extern.h"
+#include "libewf_libcerror.h"
 #include "libewf_types.h"
 
 #if defined( __cplusplus )
@@ -86,6 +85,12 @@ LIBEWF_EXTERN \
 int libewf_handle_get_amount_of_sectors(
      libewf_handle_t *handle,
      uint64_t *amount_of_sectors,
+     libcerror_error_t **error );
+
+LIBEWF_EXTERN \
+int libewf_handle_get_number_of_chunks_written(
+     libewf_handle_t *handle,
+     uint32_t *number_of_chunks,
      libcerror_error_t **error );
 
 LIBEWF_EXTERN \
@@ -290,7 +295,7 @@ ssize_t libewf_raw_read_prepare_buffer(
          size_t *uncompressed_buffer_size,
          int8_t is_compressed,
          uint32_t chunk_checksum,
-         int8_t read_checksum );
+         int8_t chunk_io_flags );
 
 LIBEWF_EXTERN \
 ssize_t libewf_raw_read_buffer(
@@ -299,7 +304,7 @@ ssize_t libewf_raw_read_buffer(
          size_t buffer_size,
          int8_t *is_compressed,
          uint32_t *chunk_checksum,
-         int8_t *read_checksum );
+         int8_t *chunk_io_flags );
 
 LIBEWF_EXTERN \
 ssize_t libewf_read_buffer(
@@ -323,7 +328,7 @@ ssize_t libewf_raw_write_prepare_buffer(
          size_t *compressed_buffer_size,
          int8_t *is_compressed,
          uint32_t *chunk_checksum,
-         int8_t *write_checksum );
+         int8_t *chunk_io_flags );
 
 LIBEWF_EXTERN \
 ssize_t libewf_raw_write_buffer(
@@ -333,7 +338,7 @@ ssize_t libewf_raw_write_buffer(
          size_t data_size,
          int8_t is_compressed,
          uint32_t chunk_checksum,
-         int8_t write_checksum );
+         int8_t chunk_io_flags );
 
 LIBEWF_EXTERN \
 ssize_t libewf_write_buffer(

@@ -1,7 +1,7 @@
 /*
  * Debugging functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -27,17 +27,18 @@
 
 #include "libewf_libcerror.h"
 
-#include "ewf_section.h"
-
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
-int libewf_debug_dump_data(
-     const char *header_string,
-     const uint8_t *data,
-     size_t data_size,
-     libcerror_error_t **error );
+void libewf_debug_print_compression_method(
+      uint16_t compression_method );
+
+void libewf_debug_print_section_type(
+      uint32_t section_type );
+
+void libewf_debug_print_section_data_flags(
+      uint32_t data_flags );
 
 int libewf_debug_byte_stream_print(
      const char *header_string,

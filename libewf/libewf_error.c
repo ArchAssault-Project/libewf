@@ -1,7 +1,7 @@
 /*
  * Error functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -20,13 +20,11 @@
  */
 
 #include <common.h>
+#include <file_stream.h>
 #include <types.h>
 
-#include "libewf_libcerror.h"
-
-#include <stdio.h>
-
 #include "libewf_error.h"
+#include "libewf_libcerror.h"
 
 #if !defined( HAVE_LOCAL_LIBEWF )
 

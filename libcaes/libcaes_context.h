@@ -1,7 +1,7 @@
 /*
- * AES de/encryption context functions
+ * AES context functions
  *
- * Copyright (C) 2011-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (C) 2011-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -37,6 +37,7 @@
 #endif
 
 #include "libcaes_extern.h"
+#include "libcaes_definitions.h"
 #include "libcaes_libcerror.h"
 #include "libcaes_types.h"
 
@@ -49,31 +50,16 @@ typedef struct libcaes_internal_context libcaes_internal_context_t;
 struct libcaes_internal_context
 {
 #if defined( WINAPI ) && ( WINVER >= 0x0600 )
-	/* The crypto provider handle
-	 */
 	HCRYPTPROV crypt_provider;
-
-	/* The crypto key handle
-	 */
         HCRYPTKEY key;
 
 #elif defined( HAVE_LIBCRYPTO ) && defined( HAVE_OPENSSL_AES_H )
-	/* The AES key
-	 */
         AES_KEY key;
 
 #elif defined( HAVE_LIBCRYPTO ) && defined( HAVE_OPENSSL_EVP_H )
-	/* The EVP context
-	 */
 	EVP_CIPHER_CTX evp_context;
-
-	/* The key
-	 */
         uint8_t key[ 32 ];
-
-	/* The key bit size
-	 */
-	size_t key_bit_size;
+	size_t bit_size;
 
 #else
 	/* The number of round keys
@@ -99,14 +85,6 @@ int libcaes_context_initialize(
 LIBCAES_EXTERN \
 int libcaes_context_free(
      libcaes_context_t **context,
-     libcerror_error_t **error );
-
-LIBCAES_EXTERN \
-int libcaes_context_set_key(
-     libcaes_context_t *context,
-     int mode,
-     const uint8_t *key,
-     size_t key_bit_size,
      libcerror_error_t **error );
 
 #ifdef __cplusplus

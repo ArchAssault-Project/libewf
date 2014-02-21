@@ -1,4 +1,4 @@
-.Dd January 19, 2014
+.Dd March 30, 2013
 .Dt ewfacquire
 .Os libewf
 .Sh NAME
@@ -29,7 +29,7 @@
 .Op Fl t Ar target
 .Op Fl T Ar toc_file
 .Op Fl 2 Ar secondary_target
-.Op Fl hqRsuvVwx
+.Op Fl hqRsuvVw
 .Ar source
 .Sh DESCRIPTION
 .Nm ewfacquire
@@ -117,8 +117,6 @@ verbose output to stderr
 print version
 .It Fl w
 zero sectors on read error (mimic EnCase like behavior)
-.It Fl x
-use the chunk data instead of the buffered read and write functions.
 .It Fl 2 Ar secondary_target
 the secondary target file (without extension) to write to
 .El
@@ -267,7 +265,7 @@ These man pages were written by Kees Mastwijk.
 Alterations for distribution have been made by Joachim Metz.
 .Sh COPYRIGHT
 .Pp
-Copyright 2006-2014, Joachim Metz <joachim.metz@gmail.com>.
+Copyright 2006-2013, Joachim Metz <joachim.metz@gmail.com>.
 .Pp
 This is free software; see the source for copying conditions. There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 .Sh SEE ALSO

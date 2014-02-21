@@ -1,7 +1,7 @@
 /*
  * Error functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -98,7 +98,7 @@ void libcerror_error_free(
 #endif
 
 /* Sets an error
- * Creates the error if necessary
+ * Initializes the error if necessary
  * The error domain and code are set only the first time and the error message is appended for back tracing
  */
 void VARARGS(
@@ -188,7 +188,7 @@ void VARARGS(
 #if defined( __BORLANDC__ ) || defined( _MSC_VER )
 	/* Rewrite %s to %S
 	 */
-	string_index = 0;
+	string_index  = 0;
 
 	while( string_index < format_string_length )
 	{
@@ -290,7 +290,7 @@ void VARARGS(
 			message_size += LIBCERROR_MESSAGE_INCREMENT_SIZE;
 		}
 		else if( ( (size_t) print_count >= message_size )
-		      || ( ( internal_error->messages[ message_index ] )[ print_count ] != (libcstring_system_character_t) 0 ) )
+		      || ( ( internal_error->messages[ message_index ] )[ print_count ] != 0 ) )
 		{
 			message_size = (size_t) ( print_count + 1 );
 			print_count  = -1;
@@ -431,14 +431,6 @@ int libcerror_error_sprint(
 	{
 		return( -1 );
 	}
-#if INT_MAX < SSIZE_MAX
-	if( size > (size_t) INT_MAX )
-#else
-	if( size > (size_t) SSIZE_MAX )
-#endif
-	{
-		return( -1 );
-	}
 	message_index = internal_error->number_of_messages - 1;
 
 	if( internal_error->messages[ message_index ] != NULL )
@@ -481,13 +473,13 @@ int libcerror_error_sprint(
 		     internal_error->messages[ message_index ],
 		     internal_error->sizes[ message_index ] ) == NULL )
 		{
-			string[ string_index ] = (libcstring_system_character_t) 0;
+			string[ string_index ] = 0;
 
 			return( -1 );
 		}
 		string_index += internal_error->sizes[ message_index ];
 
-		string[ string_index ] = (libcstring_system_character_t) 0;
+		string[ string_index ] = 0;
 #endif /* defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER ) */
 	}
 	if( string_index > (size_t) INT_MAX )
@@ -579,14 +571,6 @@ int libcerror_error_backtrace_sprint(
 	{
 		return( -1 );
 	}
-#if INT_MAX < SSIZE_MAX
-	if( size > (size_t) INT_MAX )
-#else
-	if( size > (size_t) SSIZE_MAX )
-#endif
-	{
-		return( -1 );
-	}
 	for( message_index = 0;
 	     message_index < internal_error->number_of_messages;
 	     message_index++ )
@@ -626,22 +610,18 @@ int libcerror_error_backtrace_sprint(
 			{
 				return( -1 );
 			}
-			if( string_index > 0 )
-			{
-				string[ string_index++ ] = (libcstring_system_character_t) '\n';
-			}
 			if( libcstring_narrow_string_copy(
 			     &( string[ string_index ] ),
 			     internal_error->messages[ message_index ],
 			     internal_error->sizes[ message_index ] ) == NULL )
 			{
-				string[ string_index ] = (libcstring_system_character_t) 0;
+				string[ string_index ] = 0;
 
 				return( -1 );
 			}
-			string_index += internal_error->sizes[ message_index ] - 1;
+			string_index += internal_error->sizes[ message_index ];
 
-			string[ string_index ] = (libcstring_system_character_t) 0;
+			string[ string_index ] = 0;
 #endif /* defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER ) */
 		}
 	}

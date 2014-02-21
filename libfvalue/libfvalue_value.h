@@ -1,7 +1,7 @@
 /*
  * Value functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -490,15 +490,14 @@ int libfvalue_value_set_identifier(
      uint8_t flags,
      libcerror_error_t **error );
 
-LIBFVALUE_EXTERN \
-int libfvalue_value_has_data(
-     libfvalue_value_t *value,
+int libfvalue_value_initialize_data(
+     libfvalue_internal_value_t *internal_value,
+     size_t data_size,
      libcerror_error_t **error );
 
 LIBFVALUE_EXTERN \
-int libfvalue_value_initialize_data(
+int libfvalue_value_has_data(
      libfvalue_value_t *value,
-     size_t data_size,
      libcerror_error_t **error );
 
 LIBFVALUE_EXTERN \

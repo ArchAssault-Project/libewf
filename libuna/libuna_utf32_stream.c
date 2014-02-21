@@ -1,7 +1,7 @@
 /*
  * UTF-32 stream functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -75,7 +75,7 @@ int libuna_utf32_stream_copy_byte_order_mark(
 
 		return( -1 );
 	}
-	if( ( *utf32_stream_index + 4 ) > utf32_stream_size )
+	if( ( *utf32_stream_index + 3 ) >= utf32_stream_size )
 	{
 		libcerror_error_set(
 		 error,
@@ -715,7 +715,7 @@ int libuna_utf32_stream_copy_from_utf32(
 	 */
 	while( utf32_string_index < utf32_string_size )
 	{
-		if( ( utf32_stream_index + 4 ) > utf32_stream_size )
+		if( ( utf32_stream_index + 4 ) >= utf32_stream_size )
 		{
 			libcerror_error_set(
 			 error,

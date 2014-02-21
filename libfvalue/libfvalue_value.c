@@ -1,7 +1,7 @@
 /*
  * Value functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -24,7 +24,6 @@
 #include <memory.h>
 #include <types.h>
 
-#include "libfvalue_data_handle.h"
 #include "libfvalue_definitions.h"
 #include "libfvalue_libcdata.h"
 #include "libfvalue_libcerror.h"
@@ -33,8 +32,7 @@
 #include "libfvalue_types.h"
 #include "libfvalue_value.h"
 
-/* Creates a value
- * Make sure the value value is referencing, is set to NULL
+/* Initialize a value
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_value_initialize(
@@ -922,6 +920,93 @@ on_error:
 	return( -1 );
 }
 
+/* Initializes the data
+ * Returns 1 if successful or -1 on error
+ */
+int libfvalue_value_initialize_data(
+     libfvalue_internal_value_t *internal_value,
+     size_t data_size,
+     libcerror_error_t **error )
+{
+	uint8_t *data         = NULL;
+	static char *function = "libfvalue_value_initialize_data";
+
+	if( internal_value == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid internal value.",
+		 function );
+
+		return( -1 );
+	}
+	if( internal_value->set_data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
+		 "%s: invalid value - missing set data function.",
+		 function );
+
+		return( -1 );
+	}
+	if( ( data_size == 0 )
+	 || ( data_size > (size_t) SSIZE_MAX ) )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
+		 "%s: invalid data size value out of bounds.",
+		 function );
+
+		return( -1 );
+	}
+	data = (uint8_t *) memory_allocate(
+	                    sizeof( uint8_t ) * data_size );
+
+	if( data == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
+		 "%s: unable to create data.",
+		 function );
+
+		goto on_error;
+	}
+	if( internal_value->set_data(
+	     internal_value->data_handle,
+	     data,
+	     data_size,
+	     LIBFVALUE_ENDIAN_NATIVE,
+	     LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set data in data handle.",
+		 function );
+
+		goto on_error;
+	}
+	return( 1 );
+
+on_error:
+	if( data != NULL )
+	{
+		memory_free(
+		 data );
+	}
+	return( -1 );
+}
+
 /* Determines if the value has data
  * Returns 1 if the value has data, 0 if not or -1 on error
  */
@@ -980,123 +1065,6 @@ int libfvalue_value_has_data(
 		return( 0 );
 	}
 	return( 1 );
-}
-
-/* Initializes the data
- * Returns 1 if successful or -1 on error
- */
-int libfvalue_value_initialize_data(
-     libfvalue_value_t *value,
-     size_t data_size,
-     libcerror_error_t **error )
-{
-	libfvalue_internal_value_t *internal_value = NULL;
-	uint8_t *data                              = NULL;
-	static char *function                      = "libfvalue_value_initialize_data";
-	int result                                 = 0;
-
-	if( value == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid value.",
-		 function );
-
-		return( -1 );
-	}
-	internal_value = (libfvalue_internal_value_t *) value;
-
-	if( internal_value->set_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid value - missing set data function.",
-		 function );
-
-		return( -1 );
-	}
-	if( ( data_size == 0 )
-	 || ( data_size > (size_t) SSIZE_MAX ) )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid data size value out of bounds.",
-		 function );
-
-		return( -1 );
-	}
-	result = libfvalue_value_has_data(
-		  value,
-		  error );
-
-	if( result == -1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to determine if value has data.",
-		 function );
-
-		return( -1 );
-	}
-	else if( result != 0 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
-		 "%s: invalid value data already set.",
-		 function );
-
-		return( -1 );
-	}
-	data = (uint8_t *) memory_allocate(
-	                    sizeof( uint8_t ) * data_size );
-
-	if( data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_MEMORY,
-		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-		 "%s: unable to create data.",
-		 function );
-
-		goto on_error;
-	}
-	if( internal_value->set_data(
-	     internal_value->data_handle,
-	     data,
-	     data_size,
-	     LIBFVALUE_ENDIAN_NATIVE,
-	     LIBFVALUE_VALUE_DATA_FLAG_MANAGED,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set data in data handle.",
-		 function );
-
-		goto on_error;
-	}
-	return( 1 );
-
-on_error:
-	if( data != NULL )
-	{
-		memory_free(
-		 data );
-	}
-	return( -1 );
 }
 
 /* Retrieves the data size
@@ -1319,17 +1287,6 @@ int libfvalue_value_copy_data(
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
 		 "%s: invalid value - missing get data function.",
-		 function );
-
-		return( -1 );
-	}
-	if( data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid data.",
 		 function );
 
 		return( -1 );
@@ -2024,23 +1981,69 @@ int libfvalue_value_append_entry_data(
 
 		return( -1 );
 	}
-	/* Since the data handle can move the memory regions
-	 * empty the value instances array here to prevent them pointing
-	 * at stale data.
-	 */
-	if( libcdata_array_empty(
+	if( libcdata_array_resize(
 	     internal_value->value_instances,
+	     number_of_value_entries + 1,
 	     internal_value->free_instance,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-		 "%s: unable to empty value instances array.",
+		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+		 "%s: unable to resize value instances array.",
 		 function );
 
 		return( -1 );
+	}
+	if( number_of_value_entries == 1 )
+	{
+		if( libcdata_array_get_entry_by_index(
+		     internal_value->value_instances,
+		     0,
+		     &value_instance,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+			 "%s: unable to retrieve entry: 0 from values instances array.",
+			 function );
+
+			return( -1 );
+		}
+		if( value_instance != NULL )
+		{
+			if( libcdata_array_set_entry_by_index(
+			     internal_value->value_instances,
+			     0,
+			     NULL,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+				 "%s: unable to set entry: 0 in values instances array.",
+				 function );
+
+				return( -1 );
+			}
+			if( internal_value->free_instance(
+			     &value_instance,
+			     error ) != 1 )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+				 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+				 "%s: unable to free value instance: 0.",
+				 function );
+
+				return( -1 );
+			}
+		}
 	}
 	if( internal_value->append_value_entry(
 	     internal_value->data_handle,
@@ -2055,21 +2058,6 @@ int libfvalue_value_append_entry_data(
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_APPEND_FAILED,
 		 "%s: unable to append entry to data handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( libcdata_array_resize(
-	     internal_value->value_instances,
-	     number_of_value_entries + 1,
-	     internal_value->free_instance,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to resize value instances array.",
 		 function );
 
 		return( -1 );
@@ -3060,24 +3048,6 @@ int libfvalue_value_copy_from_double(
 
 	if( internal_value->copy_from_floating_point != NULL )
 	{
-		result = libfvalue_value_has_data(
-			  value,
-			  error );
-
-		if( result == -1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine if value has data.",
-			 function );
-
-			return( -1 );
-		}
-		else if( result != 0 )
-		{
-		}
 		if( libfvalue_value_get_value_instance_by_index(
 		     value,
 		     value_entry_index,
@@ -3838,8 +3808,6 @@ int libfvalue_value_copy_from_utf32_string(
 
 		return( -1 );
 	}
-	internal_value = (libfvalue_internal_value_t *) value;
-
 	if( internal_value->initialize_instance == NULL )
 	{
 		libcerror_error_set(

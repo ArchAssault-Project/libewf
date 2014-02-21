@@ -1,8 +1,7 @@
 MSVSCPP_FILES = \
-	dokan_dll/dokan_dll.vcproj \
+	bzip2_dll/bzip2_dll.vcproj \
 	ewfacquire/ewfacquire.vcproj \
 	ewfacquirestream/ewfacquirestream.vcproj \
-	ewfacquirestream-mt/ewfacquirestream-mt.vcproj \
 	ewfexport/ewfexport.vcproj \
 	ewfinfo/ewfinfo.vcproj \
 	ewfmount/ewfmount.vcproj \
@@ -12,7 +11,6 @@ MSVSCPP_FILES = \
 	libbfio/libbfio.vcproj \
 	libcaes/libcaes.vcproj \
 	libcdata/libcdata.vcproj \
-	libcdatetime/libcdatetime.vcproj \
 	libcerror/libcerror.vcproj \
 	libcfile/libcfile.vcproj \
 	libclocale/libclocale.vcproj \
@@ -21,10 +19,8 @@ MSVSCPP_FILES = \
 	libcsplit/libcsplit.vcproj \
 	libcstring/libcstring.vcproj \
 	libcsystem/libcsystem.vcproj \
-	libcthreads/libcthreads.vcproj \
 	libewf_dll/libewf_dll.vcproj \
 	libfcache/libfcache.vcproj \
-	libfdata/libfdata.vcproj \
 	libfvalue/libfvalue.vcproj \
 	libhmac/libhmac.vcproj \
 	libmfdata/libmfdata.vcproj \

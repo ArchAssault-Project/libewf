@@ -1,7 +1,7 @@
 /*
  * Support functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -20,20 +20,17 @@
  */
 
 #include <common.h>
+#include <file_stream.h>
 #include <types.h>
 
-#include "libewf_libcstring.h"
-#include "libewf_libcerror.h"
-#include "libewf_libclocale.h"
-#include "libewf_libcnotify.h"
-
-#include <stdio.h>
-
-#include "libewf_codepage.h"
 #include "libewf_definitions.h"
 #include "libewf_filename.h"
 #include "libewf_error.h"
 #include "libewf_libbfio.h"
+#include "libewf_libcerror.h"
+#include "libewf_libclocale.h"
+#include "libewf_libcnotify.h"
+#include "libewf_libcstring.h"
 #include "libewf_segment_file.h"
 #include "libewf_support.h"
 
@@ -91,19 +88,19 @@ int libewf_get_codepage(
 {
 	static char *function = "libewf_get_codepage";
 
-	if( codepage == NULL )
+	if( libclocale_codepage_get(
+	     codepage,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid codepage.",
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
+		 "%s: unable to retrieve codepage.",
 		 function );
 
 		return( -1 );
 	}
-	*codepage = libclocale_codepage;
-
 	return( 1 );
 }
 
@@ -117,48 +114,19 @@ int libewf_set_codepage(
 {
 	static char *function = "libewf_set_codepage";
 
-	if( ( codepage != LIBEWF_CODEPAGE_ASCII )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_1 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_2 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_3 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_4 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_5 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_6 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_7 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_8 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_9 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_10 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_11 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_13 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_14 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_15 )
-	 && ( codepage != LIBEWF_CODEPAGE_ISO_8859_16 )
-	 && ( codepage != LIBEWF_CODEPAGE_KOI8_R )
-	 && ( codepage != LIBEWF_CODEPAGE_KOI8_U )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_874 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_932 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_936 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1250 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1251 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1252 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1253 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1254 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1256 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1257 )
-	 && ( codepage != LIBEWF_CODEPAGE_WINDOWS_1258 )
-	 && ( codepage != 0 ) )
+	if( libclocale_codepage_set(
+	     codepage,
+	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported codepage.",
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set codepage.",
 		 function );
 
 		return( -1 );
 	}
-	libclocale_codepage = codepage;
-
 	return( 1 );
 }
 
@@ -493,21 +461,35 @@ int libewf_check_file_signature_file_io_handle(
 	/* The number of EWF segment files will be the largest
 	 */
 	if( memory_compare(
-	     evf_file_signature,
+	     ewf1_evf_file_signature,
 	     signature,
 	     8 ) == 0 )
 	{
 		return( 1 );
 	}
 	else if( memory_compare(
-	          lvf_file_signature,
+	          ewf1_lvf_file_signature,
 	          signature,
 	          8 ) == 0 )
 	{
 		return( 1 );
 	}
 	else if( memory_compare(
-	          dvf_file_signature,
+	          ewf2_evf_file_signature,
+	          signature,
+	          8 ) == 0 )
+	{
+		return( 1 );
+	}
+	else if( memory_compare(
+	          ewf2_lef_file_signature,
+	          signature,
+	          8 ) == 0 )
+	{
+		return( 1 );
+	}
+	else if( memory_compare(
+	          ewf1_dvf_file_signature,
 	          signature,
 	          8 ) == 0 )
 	{
@@ -533,11 +515,12 @@ int libewf_glob(
 	char *segment_filename           = NULL;
 	void *reallocation               = NULL;
 	static char *function            = "libewf_glob";
-	size_t additional_length         = 4;
+	size_t additional_length         = 0;
+	size_t segment_extention_length  = 0;
+	size_t segment_filename_index    = 0;
 	size_t segment_filename_length   = 0;
-	int result                       = 0;
 	uint8_t segment_file_type        = 0;
-	uint8_t ewf_format               = 0;
+	int result                       = 0;
 
 	if( filename == NULL )
 	{
@@ -572,8 +555,12 @@ int libewf_glob(
 	 && ( format != LIBEWF_FORMAT_LINEN5 )
 	 && ( format != LIBEWF_FORMAT_LINEN6 )
 	 && ( format != LIBEWF_FORMAT_SMART )
-	 && ( format != LIBEWF_FORMAT_FTK )
-	 && ( format != LIBEWF_FORMAT_LVF )
+	 && ( format != LIBEWF_FORMAT_FTK_IMAGER )
+	 && ( format != LIBEWF_FORMAT_LOGICAL_ENCASE5 )
+	 && ( format != LIBEWF_FORMAT_LOGICAL_ENCASE6 )
+	 && ( format != LIBEWF_FORMAT_LOGICAL_ENCASE7 )
+	 && ( format != LIBEWF_FORMAT_V2_ENCASE7 )
+	 && ( format != LIBEWF_FORMAT_V2_LOGICAL_ENCASE7 )
 	 && ( format != LIBEWF_FORMAT_EWF )
 	 && ( format != LIBEWF_FORMAT_EWFX ) )
 	{
@@ -610,7 +597,77 @@ int libewf_glob(
 	}
 	if( format == LIBEWF_FORMAT_UNKNOWN )
 	{
-		if( filename[ filename_length - 4 ] != (char) '.' )
+		if( ( filename_length > 4 )
+		 && ( filename[ filename_length - 4 ] == '.' ) )
+		{
+			if( filename[ filename_length - 3 ] == 'E' )
+			{
+				format = LIBEWF_FORMAT_ENCASE5;
+			}
+			else if( filename[ filename_length - 3 ] == 'e' )
+			{
+				format = LIBEWF_FORMAT_EWF;
+			}
+			else if( filename[ filename_length - 3 ] == 'L' )
+			{
+				format = LIBEWF_FORMAT_LOGICAL_ENCASE5;
+			}
+			else if( filename[ filename_length - 3 ] == 's' )
+			{
+				format = LIBEWF_FORMAT_SMART;
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+				 "%s: invalid filename - unsupported extension: %s.",
+				 function,
+				 &( filename[ filename_length - 4 ] ) );
+
+				return( -1 );
+			}
+			segment_extention_length = 4;
+		}
+		else if( ( filename_length > 5 )
+		      && ( filename[ filename_length - 5 ] == '.' ) )
+		{
+			if( filename[ filename_length - 4 ] == 'E' )
+			{
+				format = LIBEWF_FORMAT_V2_ENCASE7;
+			}
+			else if( filename[ filename_length - 4 ] == 'L' )
+			{
+				format = LIBEWF_FORMAT_V2_LOGICAL_ENCASE7;
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+				 "%s: invalid filename - unsupported extension: %s.",
+				 function,
+				 &( filename[ filename_length - 5 ] ) );
+
+				return( -1 );
+			}
+			if( filename[ filename_length - 3 ] != 'x' )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+				 "%s: invalid filename - unsupported extension: %s.",
+				 function,
+				 &( filename[ filename_length - 5 ] ) );
+
+				return( -1 );
+			}
+			segment_extention_length = 5;
+		}
+		else
 		{
 			libcerror_error_set(
 			 error,
@@ -621,51 +678,35 @@ int libewf_glob(
 
 			return( -1 );
 		}
-		additional_length = 0;
-
-		if( filename[ filename_length - 3 ] == (char) 'E' )
-		{
-			format = LIBEWF_FORMAT_ENCASE5;
-		}
-		else if( filename[ filename_length - 3 ] == (char) 'e' )
-		{
-			format = LIBEWF_FORMAT_EWF;
-		}
-		else if( filename[ filename_length - 3 ] == (char) 'L' )
-		{
-			format = LIBEWF_FORMAT_LVF;
-		}
-		else if( filename[ filename_length - 3 ] == (char) 's' )
-		{
-			format = LIBEWF_FORMAT_SMART;
-		}
-		else
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-			 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-			 "%s: invalid filename - unsupported extension: %s.",
-			 function,
-			 &( filename[ filename_length - 4 ] ) );
-
-			return( -1 );
-		}
-	}
-	if( format == LIBEWF_FORMAT_LVF )
-	{
-		segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_LWF;
-		ewf_format        = EWF_FORMAT_L01;
-	}
-	else if( format == LIBEWF_FORMAT_SMART )
-	{
-		segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF;
-		ewf_format        = EWF_FORMAT_S01;
 	}
 	else
 	{
-		segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF;
-		ewf_format        = EWF_FORMAT_E01;
+		additional_length = 4;
+	}
+	if( segment_file_type == 0 )
+	{
+		if( ( format == LIBEWF_FORMAT_LOGICAL_ENCASE5 )
+		 || ( format == LIBEWF_FORMAT_LOGICAL_ENCASE6 )
+		 || ( format == LIBEWF_FORMAT_LOGICAL_ENCASE7 ) )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF1_LOGICAL;
+		}
+		else if( format == LIBEWF_FORMAT_SMART )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF1_SMART;
+		}
+		else if( format == LIBEWF_FORMAT_V2_ENCASE7 )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF2;
+		}
+		else if( format == LIBEWF_FORMAT_V2_LOGICAL_ENCASE7 )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF2_LOGICAL;
+		}
+		else
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF1;
+		}
 	}
 	if( libbfio_file_initialize(
 	     &file_io_handle,
@@ -686,8 +727,8 @@ int libewf_glob(
 	{
 		segment_filename_length = filename_length + additional_length;
 
-		segment_filename = (char * ) memory_allocate(
-			                      sizeof( char ) * ( segment_filename_length + 1 ) );
+		segment_filename = (char *) memory_allocate(
+			                     sizeof( char ) * ( segment_filename_length + 1 ) );
 
 		if( segment_filename == NULL )
 		{
@@ -714,17 +755,24 @@ int libewf_glob(
 
 			goto on_error;
 		}
-		if( additional_length > 0 )
+		if( additional_length == 0 )
 		{
-			segment_filename[ filename_length ] = (char) '.';
+			segment_filename_index = segment_filename_length - segment_extention_length;
 		}
+		else
+		{
+			segment_filename_index = filename_length;
+		}
+		segment_filename[ segment_filename_index++ ] = '.';
+
 		if( libewf_filename_set_extension(
-		     &( segment_filename[ segment_filename_length - 3 ] ),
-		     (uint16_t) ( *number_of_filenames + 1 ),
-		     UINT16_MAX,
+		     segment_filename,
+		     segment_filename_length + 1,
+		     &segment_filename_index,
+		     (uint32_t) ( *number_of_filenames + 1 ),
+		     (uint32_t) UINT16_MAX,
 		     segment_file_type,
 		     format,
-		     ewf_format,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -736,7 +784,7 @@ int libewf_glob(
 
 			goto on_error;
 		}
-		segment_filename[ segment_filename_length ] = 0;
+		/* The libewf_filename_set_extension also adds the end-of-string character */
 
 		if( libbfio_file_set_name(
 		     file_io_handle,
@@ -891,11 +939,12 @@ int libewf_glob_wide(
 	wchar_t *segment_filename        = NULL;
 	void *reallocation               = NULL;
 	static char *function            = "libewf_glob_wide";
-	size_t additional_length         = 4;
+	size_t additional_length         = 0;
+	size_t segment_extention_length  = 0;
+	size_t segment_filename_index    = 0;
 	size_t segment_filename_length   = 0;
 	int result                       = 0;
 	uint8_t segment_file_type        = 0;
-	uint8_t ewf_format               = 0;
 
 	if( filename == NULL )
 	{
@@ -930,8 +979,12 @@ int libewf_glob_wide(
 	 && ( format != LIBEWF_FORMAT_LINEN5 )
 	 && ( format != LIBEWF_FORMAT_LINEN6 )
 	 && ( format != LIBEWF_FORMAT_SMART )
-	 && ( format != LIBEWF_FORMAT_FTK )
-	 && ( format != LIBEWF_FORMAT_LVF )
+	 && ( format != LIBEWF_FORMAT_FTK_IMAGER )
+	 && ( format != LIBEWF_FORMAT_LOGICAL_ENCASE5 )
+	 && ( format != LIBEWF_FORMAT_LOGICAL_ENCASE6 )
+	 && ( format != LIBEWF_FORMAT_LOGICAL_ENCASE7 )
+	 && ( format != LIBEWF_FORMAT_V2_ENCASE7 )
+	 && ( format != LIBEWF_FORMAT_V2_LOGICAL_ENCASE7 )
 	 && ( format != LIBEWF_FORMAT_EWF )
 	 && ( format != LIBEWF_FORMAT_EWFX ) )
 	{
@@ -968,7 +1021,77 @@ int libewf_glob_wide(
 	}
 	if( format == LIBEWF_FORMAT_UNKNOWN )
 	{
-		if( filename[ filename_length - 4 ] != (wchar_t) '.' )
+		if( ( filename_length > 4 )
+		 && ( filename[ filename_length - 4 ] == (wchar_t) '.' ) )
+		{
+			if( filename[ filename_length - 3 ] == (wchar_t) 'E' )
+			{
+				format = LIBEWF_FORMAT_ENCASE5;
+			}
+			else if( filename[ filename_length - 3 ] == (wchar_t) 'e' )
+			{
+				format = LIBEWF_FORMAT_EWF;
+			}
+			else if( filename[ filename_length - 3 ] == (wchar_t) 'L' )
+			{
+				format = LIBEWF_FORMAT_LOGICAL_ENCASE5;
+			}
+			else if( filename[ filename_length - 3 ] == (wchar_t) 's' )
+			{
+				format = LIBEWF_FORMAT_SMART;
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+				 "%s: invalid filename - unsupported extension: %ls.",
+				 function,
+				 &( filename[ filename_length - 4 ] ) );
+
+				return( -1 );
+			}
+			segment_extention_length = 4;
+		}
+		else if( ( filename_length > 5 )
+		      && ( filename[ filename_length - 5 ] == (wchar_t) '.' ) )
+		{
+			if( filename[ filename_length - 4 ] == (wchar_t) 'E' )
+			{
+				format = LIBEWF_FORMAT_V2_ENCASE7;
+			}
+			else if( filename[ filename_length - 4 ] == (wchar_t) 'L' )
+			{
+				format = LIBEWF_FORMAT_V2_LOGICAL_ENCASE7;
+			}
+			else
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+				 "%s: invalid filename - unsupported extension: %ls.",
+				 function,
+				 &( filename[ filename_length - 5 ] ) );
+
+				return( -1 );
+			}
+			if( filename[ filename_length - 3 ] != (wchar_t) 'x' )
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+				 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
+				 "%s: invalid filename - unsupported extension: %ls.",
+				 function,
+				 &( filename[ filename_length - 5 ] ) );
+
+				return( -1 );
+			}
+			segment_extention_length = 5;
+		}
+		else
 		{
 			libcerror_error_set(
 			 error,
@@ -979,51 +1102,35 @@ int libewf_glob_wide(
 
 			return( -1 );
 		}
-		additional_length = 0;
-
-		if( filename[ filename_length - 3 ] == (wchar_t) 'E' )
-		{
-			format = LIBEWF_FORMAT_ENCASE5;
-		}
-		else if( filename[ filename_length - 3 ] == (wchar_t) 'e' )
-		{
-			format = LIBEWF_FORMAT_EWF;
-		}
-		else if( filename[ filename_length - 3 ] == (wchar_t) 'L' )
-		{
-			format = LIBEWF_FORMAT_LVF;
-		}
-		else if( filename[ filename_length - 3 ] == (wchar_t) 's' )
-		{
-			format = LIBEWF_FORMAT_SMART;
-		}
-		else
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-			 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-			 "%s: invalid filename - unsupported extension: %s.",
-			 function,
-			 &( filename[ filename_length - 4 ] ) );
-
-			return( -1 );
-		}
-	}
-	if( format == LIBEWF_FORMAT_LVF )
-	{
-		segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_LWF;
-		ewf_format        = EWF_FORMAT_L01;
-	}
-	else if( format == LIBEWF_FORMAT_SMART )
-	{
-		segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF;
-		ewf_format        = EWF_FORMAT_S01;
 	}
 	else
 	{
-		segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF;
-		ewf_format        = EWF_FORMAT_E01;
+		additional_length = 4;
+	}
+	if( segment_file_type == 0 )
+	{
+		if( ( format == LIBEWF_FORMAT_LOGICAL_ENCASE5 )
+		 || ( format == LIBEWF_FORMAT_LOGICAL_ENCASE6 )
+		 || ( format == LIBEWF_FORMAT_LOGICAL_ENCASE7 ) )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF1_LOGICAL;
+		}
+		else if( format == LIBEWF_FORMAT_SMART )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF1_SMART;
+		}
+		else if( format == LIBEWF_FORMAT_V2_ENCASE7 )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF2;
+		}
+		else if( format == LIBEWF_FORMAT_V2_LOGICAL_ENCASE7 )
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF2_LOGICAL;
+		}
+		else
+		{
+			segment_file_type = LIBEWF_SEGMENT_FILE_TYPE_EWF1;
+		}
 	}
 	if( libbfio_file_initialize(
 	     &file_io_handle,
@@ -1072,17 +1179,24 @@ int libewf_glob_wide(
 
 			goto on_error;
 		}
-		if( additional_length > 0 )
+		if( additional_length == 0 )
 		{
-			segment_filename[ filename_length ] = (wchar_t) '.';
+			segment_filename_index = segment_filename_length - segment_extention_length;
 		}
+		else
+		{
+			segment_filename_index = filename_length;
+		}
+		segment_filename[ segment_filename_index++ ] = (wchar_t) '.';
+
 		if( libewf_filename_set_extension_wide(
-		     &( segment_filename[ segment_filename_length - 3 ] ),
-		     (uint16_t) ( *number_of_filenames + 1 ),
-		     UINT16_MAX,
+		     segment_filename,
+		     segment_filename_length + 1,
+		     &segment_filename_index,
+		     (uint32_t) ( *number_of_filenames + 1 ),
+		     (uint32_t) UINT16_MAX,
 		     segment_file_type,
 		     format,
-		     ewf_format,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -1094,7 +1208,7 @@ int libewf_glob_wide(
 
 			goto on_error;
 		}
-		segment_filename[ segment_filename_length ] = 0;
+		/* The libewf_filename_set_extension_wide also adds the end-of-string character */
 
 		if( libbfio_file_set_name_wide(
 		     file_io_handle,

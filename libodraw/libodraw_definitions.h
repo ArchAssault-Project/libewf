@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2010-2013-2011, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012-2011, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -37,11 +37,11 @@
  * for local use of libodraw
  */
 #else
-#define LIBODRAW_VERSION				20140119
+#define LIBODRAW_VERSION				20120701
 
 /* The version string
  */
-#define LIBODRAW_VERSION_STRING				"20140119"
+#define LIBODRAW_VERSION_STRING				"20120701"
 
 /* The access flags definitions
  * bit 1        set to 1 for read access
@@ -98,6 +98,12 @@ enum LIBODRAW_TRACK_TYPES
 	LIBODRAW_TRACK_TYPE_CDI_2352,
 };
 
+#endif
+
+#if defined( WINAPI )
+#define LIBODRAW_PATH_SEPARATOR				'\\'
+#else
+#define LIBODRAW_PATH_SEPARATOR				'/'
 #endif
 
 #endif

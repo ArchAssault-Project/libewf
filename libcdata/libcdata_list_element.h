@@ -1,7 +1,7 @@
 /*
  * List element functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -27,7 +27,6 @@
 
 #include "libcdata_extern.h"
 #include "libcdata_libcerror.h"
-#include "libcdata_libcthreads.h"
 #include "libcdata_types.h"
 
 #if defined( __cplusplus )
@@ -49,12 +48,6 @@ struct libcdata_internal_list_element
 	/* The value
 	 */
 	intptr_t *value;
-
-#if defined( HAVE_MULTI_THREAD_SUPPORT ) && !defined( HAVE_LOCAL_LIBCDATA )
-	/* The read/write lock
-	 */
-	libcthreads_read_write_lock_t *read_write_lock;
-#endif
 };
 
 LIBCDATA_EXTERN \

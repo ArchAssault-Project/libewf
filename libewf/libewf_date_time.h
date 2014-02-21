@@ -1,7 +1,7 @@
 /*
  * Date and time functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -25,8 +25,6 @@
 #include <common.h>
 #include <types.h>
 
-#include "libewf_libcerror.h"
-
 #if defined( TIME_WITH_SYS_TIME )
 #include <sys/time.h>
 #include <time.h>
@@ -35,6 +33,8 @@
 #else
 #include <time.h>
 #endif
+
+#include "libewf_libcerror.h"
 
 #if defined( __cplusplus )
 extern "C" {

@@ -1,7 +1,7 @@
 /*
  * Support functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -23,11 +23,11 @@
 #include <memory.h>
 #include <types.h>
 
-#if defined( HAVE_SYS_STAT_H )
+#if defined( HAVE_SYS_STAT_H ) || defined( WINAPI )
 #include <sys/stat.h>
 #endif
 
-#if defined( HAVE_ERRNO_H )
+#if defined( HAVE_ERRNO_H ) || defined( WINAPI )
 #include <errno.h>
 #endif
 
@@ -50,7 +50,7 @@ const char *libcfile_get_version(
 
 #endif /* !defined( HAVE_LOCAL_LIBCFILE ) */
 
-#if defined( WINAPI ) && ( WINVER > 0x0500 )
+#if defined( WINAPI ) && ( WINVER > 0x0500 ) && !defined( USE_CRT_FUNCTIONS )
 
 /* Determines if a file exists using get file attibutes
  * This function uses the WINAPI functions for Windows XP or later
@@ -112,12 +112,12 @@ int libcfile_file_exists(
 	return( result );
 }
 
-#elif defined( WINAPI )
+#elif defined( WINAPI ) && !defined( USE_CRT_FUNCTIONS )
 
 /* TODO */
 #error WINAPI file stat function for Windows 2000 or earlier NOT implemented yet
 
-#elif defined( HAVE_STAT )
+#elif defined( HAVE_STAT ) && !defined( WINAPI )
 
 /* Determines if a file exists
  * This function uses the POSIX stat function or equivalent
@@ -201,7 +201,7 @@ int libcfile_file_exists(
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 
-#if defined( WINAPI ) && ( WINVER > 0x0500 )
+#if defined( WINAPI ) && ( WINVER > 0x0500 ) && !defined( USE_CRT_FUNCTIONS )
 
 /* Determines if a file exists using get file attibutes
  * This function uses the WINAPI functions for Windows XP or later
@@ -263,12 +263,12 @@ int libcfile_file_exists_wide(
 	return( result );
 }
 
-#elif defined( WINAPI )
+#elif defined( WINAPI ) && !defined( USE_CRT_FUNCTIONS )
 
 /* TODO */
 #error WINAPI file stat function for Windows 2000 or earlier NOT implemented yet
 
-#elif defined( HAVE_STAT )
+#elif defined( HAVE_STAT ) && !defined( WINAPI )
 
 /* Determines if a file exists
  * This function uses the POSIX stat function or equivalent

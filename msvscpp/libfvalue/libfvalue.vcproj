@@ -163,10 +163,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\libfvalue\libfvalue_filetime.c"
-				>
-			</File>
-			<File
 				RelativePath="..\..\libfvalue\libfvalue_floating_point.c"
 				>
 			</File>
@@ -230,10 +226,6 @@
 			</File>
 			<File
 				RelativePath="..\..\libfvalue\libfvalue_extern.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\libfvalue\libfvalue_filetime.h"
 				>
 			</File>
 			<File

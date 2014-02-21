@@ -1,7 +1,7 @@
 /*
  * Low level reading functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -24,6 +24,7 @@
 
 #include "libewf_chunk_data.h"
 #include "libewf_definitions.h"
+#include "libewf_io_handle.h"
 #include "libewf_libbfio.h"
 #include "libewf_libcdata.h"
 #include "libewf_libcerror.h"
@@ -145,7 +146,6 @@ int libewf_read_io_handle_free(
 	{
 		if( libcdata_range_list_free(
 		     &( ( *read_io_handle )->checksum_errors ),
-		     NULL,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -156,6 +156,16 @@ int libewf_read_io_handle_free(
 			 function );
 
 			result = -1;
+		}
+		if( ( *read_io_handle )->case_data != NULL )
+		{
+			memory_free(
+			 ( *read_io_handle )->case_data );
+		}
+		if( ( *read_io_handle )->device_information != NULL )
+		{
+			memory_free(
+			 ( *read_io_handle )->device_information );
 		}
 		memory_free(
 		 *read_io_handle );
@@ -234,8 +244,6 @@ int libewf_read_io_handle_clone(
 	if( libcdata_range_list_clone(
 	     &( ( *destination_read_io_handle )->checksum_errors ),
 	     source_read_io_handle->checksum_errors,
-	     NULL,
-	     NULL,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
@@ -262,12 +270,13 @@ on_error:
 	return( -1 );
 }
 
-/* Reads a certain chunk of data
+/* Reads a specific chunk of data
  * Adds a checksum error if the data is corrupted
  * Returns 1 if successful or -1 on error
  */
 int libewf_read_io_handle_read_chunk_data(
      libewf_read_io_handle_t *read_io_handle,
+     libewf_io_handle_t *io_handle,
      libbfio_pool_t *file_io_pool,
      libewf_media_values_t *media_values,
      libmfdata_list_t *chunk_table_list,
@@ -290,6 +299,17 @@ int libewf_read_io_handle_read_chunk_data(
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
 		 "%s: invalid read IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid IO handle.",
 		 function );
 
 		return( -1 );
@@ -383,8 +403,8 @@ int libewf_read_io_handle_read_chunk_data(
 
 			return( -1 );
 		}
-		( *chunk_data )->data_size  = chunk_size;
-		( *chunk_data )->is_corrupt = 1;
+		( *chunk_data )->data_size    = chunk_size;
+		( *chunk_data )->range_flags |= LIBEWF_RANGE_FLAG_IS_CORRUPTED;
 
 		if( memory_set(
 		     ( *chunk_data )->data,
@@ -468,6 +488,7 @@ int libewf_read_io_handle_read_chunk_data(
 		if( libewf_chunk_data_unpack(
 		     *chunk_data,
 		     media_values->chunk_size,
+		     io_handle->compression_method,
 		     error ) != 1 )
 		{
 			libcerror_error_set(
@@ -480,7 +501,7 @@ int libewf_read_io_handle_read_chunk_data(
 
 			return( -1 );
 		}
-		if( ( *chunk_data )->is_corrupt != 0 )
+		if( ( ( *chunk_data )->range_flags & LIBEWF_RANGE_FLAG_IS_CORRUPTED ) != 0 )
 		{
 			if( read_io_handle->zero_on_error != 0 )
 			{
@@ -501,7 +522,7 @@ int libewf_read_io_handle_read_chunk_data(
 			}
 		}
 	}
-	if( ( *chunk_data )->is_corrupt != 0 )
+	if( ( ( *chunk_data )->range_flags & LIBEWF_RANGE_FLAG_IS_CORRUPTED ) != 0 )
 	{
 		/* Add checksum error
 		 */
@@ -512,13 +533,10 @@ int libewf_read_io_handle_read_chunk_data(
 		{
 			number_of_sectors = (uint32_t) ( (uint64_t) media_values->number_of_sectors - start_sector );
 		}
-		if( libcdata_range_list_insert_range(
+		if( libcdata_range_list_append_range(
 		     read_io_handle->checksum_errors,
 		     start_sector,
 		     number_of_sectors,
-		     NULL,
-		     NULL,
-		     NULL,
 		     error ) != 1 )
 		{
 			libcerror_error_set(

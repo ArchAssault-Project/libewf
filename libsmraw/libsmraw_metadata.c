@@ -1,7 +1,7 @@
 /*
  * Meta data functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -56,24 +56,13 @@ int libsmraw_handle_get_media_size(
 	}
 	internal_handle = (libsmraw_internal_handle_t *) handle;
 
-	if( internal_handle->io_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid handle - missing IO handle.",
-		 function );
-
-		return( -1 );
-	}
 	if( internal_handle->file_io_pool == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid handle - missing file IO pool.",
+		 "%s: invalid handle - missing file io pool.",
 		 function );
 
 		return( -1 );
@@ -89,7 +78,7 @@ int libsmraw_handle_get_media_size(
 
 		return( -1 );
 	}
-	*media_size = internal_handle->io_handle->media_size;
+	*media_size = internal_handle->media_size;
 
 	return( 1 );
 }
@@ -118,17 +107,6 @@ int libsmraw_handle_set_media_size(
 	}
 	internal_handle = (libsmraw_internal_handle_t *) handle;
 
-	if( internal_handle->io_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid handle - missing IO handle.",
-		 function );
-
-		return( -1 );
-	}
 	if( ( internal_handle->read_values_initialized != 0 )
 	 || ( internal_handle->write_values_initialized != 0 ) )
 	{
@@ -141,7 +119,7 @@ int libsmraw_handle_set_media_size(
 
 		return( -1 );
 	}
-	internal_handle->io_handle->media_size = media_size;
+	internal_handle->media_size = media_size;
 
 	return( 1 );
 }
@@ -236,7 +214,7 @@ int libsmraw_handle_get_bytes_per_sector(
 
 			return( -1 );
 		}
-		*bytes_per_sector = (uint32_t) value_64bit;
+		*bytes_per_sector = (size_t) value_64bit;
 	}
 	return( 1 );
 }

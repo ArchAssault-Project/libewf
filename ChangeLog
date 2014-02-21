@@ -1,52 +1,375 @@
 TODO
-* sync with experimental version
-* move mfdata to fdata - not possible
-  - chunk_table_list - needs mfdata uses grouping
-  - file_list - not supported by fdata
+* ewftools: allow to set date and time
+* add libewf_sector_range_clone function
+* libmfdata/libfdata merge
+  - reimplement chunk table using layered approach
+* pyewf
+  - change header and hash values into sequence objects
+  - setup.py: non Windows support
+* ewftools: rename argv_filenames to source_filenames (see libvmdk)
+* add bzip2 compression support
+* complete work on ewfmount dokan support
+* update codegear files - libcdata
 
-20140216
-* bug fix in recent process status changes
+* add support for set identifier change ?
+* check alignment of:
+  section_data_read CHS cylinders, SMART logs start sector
 
-20140211
-* integrating latest update for multi threaded ewfacquire changes
+* check behavior of ewfacquire resume and specified offset
+* msvscpp
+  - add bzip2 support
+* codegear
+  - add checks to disable compiler warnings
+  - add bzip2 support
 
-20140201
-* changed behavior of empty-block check
-* worked on integrating multi threaded ewfacquire changes
+* complete ewfrecover
+  - max segment size
+  - try to read the chunks by calculating the checksums and see where they align
 
-20140119
-* 2014 update
-* updated dependencies
-* added libcdatetime
-* removed borlandc files
+* corruption scenarios
+  - add strict chunk data flag handling
+  - document how libewf deals with corruption scenarios
 
-20131230
-* small updates
+* implement new chunk IO functions where chunk is an object
 
-20131222
-* moved low-level function support from compile time to run time
-* worked on sync with experimental version
+* add stream write support for EWF-S01 use fill space solution in table section
 
-20131210
-* updated dependencies
-* worked on Python bindings
-* added libcthreads
-* fix in DFXML output for size values
-* worked on ewfmount
+* fix double _FILE_OFFSET_BITS=64
 
-20130416
-* bug fix in libcfile.m4 for building on MingW and Cygwin
-* fix in libsmdev for MinGW build
+* fix output: number of entries: 19175 exceeds maximum: 16375
 
-20130402
-* changes to zlib.m4 for adler32 detection
-* moved README.mingw and README.static to wiki
+* add light-weight function to determine byte frequency ? to check if compression is viable ?
+* work on deduplication support
+
+* allow zlib to be replaced by alternative back-end
+
+* libewf_filename_create split off wide variant ?
+
+* check if compression level none is passed for EWF-S01
+  - validate SMART forced compression of uncompressed chunks
+
+* Add 2 TiB image size test
+* Add 8 TiB image size test
+
+* Ex01/Lx01 format
+  - encryption support (read/write)
+  - analytical data
+    - parse (read)
+  - case data (write)
+    - compression method support
+    - write blocker type support
+  - device information
+    - check TODO (read/write)
+
+* Ex01/Lx01 test images
+  - memory image -> winen and encase ?
+  - resumed ?
+  - encrypted
+  - open single files ?
+
+* Ex01/Lx01 read support
+  - add generic way to parse file object data ?
+  - make sure to correctly deal with aligment padding (should only affect one of the Lx01 tables)
+  - complete: libewf_chunk_table_fill_v2
+
+* Ex01 write support
+  - pattern fill chunk support (set chunk table entry, test)
+  - enable secion data integrity hash support
+
+* Lx01 write support
+  - make sure to correctly deal with aligment padding (should only affect one of the Lx01 tables)
+
+* Ex01/Lx01 extensions
+  - implement SHA256 hash section
+  - allow pattern fill to have a size
+  - hash based imaging?
+
+* ewfexport:
+  - EnCase7 L01 ignore root entry like ewfmount
+  - support for volume letter in -t argument
+
+* pyewf
+  - update (+/-)
+  - file entry data ? instead of file entry
+* ewfmount
+  - check access rights on fuse mount point
+  - add stat info on readdir (see regfmount)
+  - provide means to have a similar naming approach as mount_ewf.py
+* check performance
+
+Error tolerance:
+* add setting to be less strict
+  - non matching data section (set identifier)
+  - expand number of chunks
+
+Roadmap:
+* lvf support
+  - add support for permissions
+  - thread aware support (check)
+* error tollerance
+  - allow for missing segment file(s)
+  - allow for missing section(s)
+  - allow for missing chunk(s). Can the chunks be shifted to match up with the
+  last segment file.
+* bindings
+  - Python (partial)
+  - .Net (partial)
+  - Java/JNI
+* improve device handle (libsmdev)
+  - audio track support - libsmdev
+* libbfio API extensions (partial)
+* low and high level API
+  - to allow low level access to sections etc. (for recovery)
+  - allow access to segment table
+  - allow access to offset/chunk table
+  - ewfdebug
+* internationalisation/localization (i18n/l10n)
+  - Unicode support (added)
+  - locale support (partial)
+  - multi language string support (gettext)
+    need WINAPI version of gettext without libiconv dependency
+* enhance thread safety
+  - cross platform thread and locking functions
+  - protect writing to internal data structures
+  - protect reading when writing to internal data structures
+  - thread safe functions
+  - check for race conditions especially on change of data elements
+* library/tools enhancements
+  - getoptlong
+* ewfx enhancements
+  - xsignature section to sign xhash and/or hash
+
+Code clean up:
+* clean up configure.ac and acinclude.m4
+  - refactor dfxml check
+* ewfinfo
+  - move DFXML code to separate code files, what about separate library ?
+  - implement a statefull XML writer e.g. open/close_section, open/close_value
+* check TODO in code, mainly regarding improvements
+
+BFIO support:
+* improve open file io pool (set basename ?)
+
+Further analysis of the EWF format:
+* password hash
+* volume/disk section (EWF-E01)
+   - do EnCase 5 or earlier versions support 64-bit number of sectors?
+   - unknowns
+* hash section (EWF-E01)
+  - 16 byte unknown
+* values in EnCase5/6 header2 (+/-)
+* values in ltree strings (EWF-L01 LVF)
+* values in session section (+/-)
+* number of sectors in volume/data section has changed to a 64-bit value
+  but what about error2/sessions ? (sessions can be 32-bit)
+* does newer linen6 has sha1 support?
+* LVF: single file entry:
+  - are flags similar to file attribute flags ?
+  - parse first entries differently ? for file hierarchy
+* FTK Imager: support for "Use AD Encryption"
+  - requires support for ADCRYPT file format
+
+Features
+* resume write support for ENCASE1/SMART table sections ?
+* implement low memory usage option
+  - trade off IO versus memory use
+* disk full check
+  - how to detect this condition (cross-platform) ?
+  - solution (A) at creation time of the segment file:
+    linux/unix posix_fallocate(), does not provide the desired result
+    windows SetFileInformationByHandle()
+  - solution (B) on write (backtrack last chunk)
+    implemented close segment file on LIBERROR_OUTPUT_ERROR_INSUFFICIENT_SPACE 
+    although if linux write fails (write_count != write_size) before ENOSPC is set
+    there is still room left on the device, but cannot be claimed by libewf
+* what about header values parsing with preservation of timestamps?
+  - change localtime to gmtime in libewf_date_time_values_copy_to_string ? (NO!)
+  - force set header value to require string formatted in the date format ?
+
+Recovery and analysis:
+* imaging: detect disk full and ask for new segment file location?
+  - have libewf allow to set the segment file path during write (done)
+  - have separate function to preallocate segment file?
+  - like alternative segment file path in EnCase
+    however EnCase seems to fully test if the segment file upfront by
+    allocating the necessary disk space
+    how to detect the destination has no available space ?
+* recovering corrupt EWF files (missing segment file, corrupt sections, etc.)
+  - can the values in data be used to correct a corrupted volume ?
+* check into resume write error for 32-bit compile (different zlib sizes)
+* detect consistent number of chunks in table sections
+
+Error handling/tollerance
+* what about a function that translates error into an equivalent errno?
+* have wchar error messages for WINAPI?
+* improve offset table correction
+  - if not correctable skip chunk while reading and mark as crc error
+    or try to determine offset/size of chunk somehow
+* handle corruption in both table and table2 sections
+  - non-overlapping corruption
+  - overlapping corruption
+* handle missing sections
+* handle missing segment files
+* handle corrupt segment files
+* handle missing delta segment files
+* handle corrupt delta segment files
+* write resume
+  - add support for ENCASE1/SMART table section
+
+Additional (integrity) checks:
+* read: check if successive headers match first header
+* read: add check for next and done segment
+  - really the last segment in the file
+  - offset pointing at themselves
+  - correct size
+
+Possible performance improvements:
+* libewf_device_info_parse do this directly from the UTF16 stream ?
+* libewf_case_data_parse do this directly from the UTF16 stream ?
+* tune read and write buffer sizes
+  - read/write block size seems to have little effect for dd on average
+  - buffered bfio ?
+* reduce alloc, realloc and free (this reduces breaks) use strace to analyze
+  - pass values as parameters or use of handle
+  - what allocation causes the break in strace of ewfacquire with compression libewf? zlib?
+* optimize string functions
+  - pass length/size as much as possible
+* pass zero byte empty block compressed data cache as a pointer
+  do not copy data to compressed chunk cache
+* do not write section start on data update
+  - performance improvement is insignificant
+* read certain section data on demand ?
+
+Python bindings (pyewf)
+* add WINAPI wide character support for open() and glob()
+* add more functions
+  - sessions
+  - acquiry errors
+  - read errors
+
+.Net bindings (ewf.net)
+* handle 
+  - add more functions
+* file entry
+  - add more functions
+* mono support ?
+
+API changes
+* low level API
+  - segment file access
+  - section access
+  - chunk table access
+  - add function to retrieve EWFX xml header/hash directly
+* chunk table access
+  - rewrite read/write chunk functions, pass chunk index
+* add wide character functions definitions by default?
+  - not necessary on most platforms
+* libbfio API extension
+  - add means to obtain libbfio handle of media data in ewf
+  - add means to set narrow string codepage
+  - export libewf_glob_file_io_handle
+    refactor glob functions to use libbfio handle input and return libbfio pool?
+    think about libewf_glob_file_io_handle and abstration of file io handle get/set name
+* LVF write support
+  - libewf_add/remove_file for LVF
+* file structure API extension (idea)
+
+Debug
+* print offsets of segment files
+
+Tools:
+* locale support
+  - print output convert to system string
+  - reduce string conversions, use as much as possible the system string type in the tools
+* when writing check getrlimit( RLIMIT_FSIZE )
+* check char/wchar in/output
+* add getoptlong support
+* make compilation resilient for missing crypto library
+  - compile on system without libcrypto
+  - remove the cryptographic options if crypto library is missing
+* have failed on open return a more sensible error (extract from error)
+* ewfacquire
+  - restrict error granularity and amount per sectors to > encase5 and > linen5 format ?
+    no, although not set in EWF file, the granualarity is still used in handling read errors
+  - warn if values exceed maximum segment count
+  - adjust error granularity if error granularity < process buffer size
+    should not matter for libsmdev
+  - warn if media does not fit using chunk size or APIv1
+    a (32-bit) chunks size of ( 64 * 512 ) will allow up to 128 TiB
+  - for EnCase 6 format request serial number and model if not set ?
+  - add support to manually provide sessions for optical images ?
+  - add support for unattended write resume ?
+  - improve output when encountering a read error
+  - add support to set device label header value
+  - allow for multi stage imaging, where user suspends and resumes
+    imaging process
+* ewfacquirestream
+  - implement stream handle
+* ewfexport
+  - implement more ewfacquire acquiry parameters?
+  - handle different input and ouput chunk sizes in low level functions build
+  - allow different input and output header codepages?
+  - handle ewf/raw like in smioexport
+  - creates write only raw export file with msvscpp compilation
+  - limit output formats for input types (lvf vs ewf)
+  - add information and media values to raw output
+  - improve -f files error tollerability
+* ewfdebug
+  - create a tool to analyse a single segment file
+  - implement low and high level api separation
+* ewfmount
+  - Windows finish Dokan implementation
+  - Windows add ImDisk implementation ?
+  - MacOS native API support ?
+* ewfverify
+  - allow for multi stage verification, where user suspends and resumes
+* process status
+  - improve and remove "This could take a while." ?
+* libsystem path implement GetVolumeInformation
+
+Tests
+* implement read/write chunk test
+  - allow to set maximum delta file size default 4 GiB?
+* ewfexport: export of split RAW
+* implement pyewf tests
+* write resume from volume/disk section - basically re-image
+
+Deployment:
+* spec file
+  - make flex, yacc include flexible ?
+* add BORLANDC deprecated function support, unable to find suitable macro
+  #pragma deprecated( function )
+  __declspec(deprecated)
+* windows build
+  - some of the CRT functions are MVC 2005 or later specific
+  - figure out a way to warn about the compiler used
+  - add VC_EXTRALEAN to msvscpp config
+* integrating libewf.rc into mingw dll ?
+* macosx PackageMaker files
+  - add pyewf
+
+Known issues:
+* error acquiring USB floppy with bad blocks under FreeBSD - no problem with internal floppy drive
+  virtualisation could be part of the problem
+* check chunk size for > 2 GiB table offsets
+  the current assumption is that these chunks only can be uncompressed
+  because the MSB is normally used to mark if the chunk is compressed
+  This actually is a bug in EnCase 6.7.1 the behavior is gone in EnCase 6.8
+* MS Visual Studio C++ does not allow pre compiler macro in macro definitions
+* Cygwin compilation missing __xpg_strerror_r - bug in recent Cygwin 1.7.8
+
+Closed:
+* libewf_single_files refactor to use UTF-16 split string
+  - does not really matter still need to do conversion to runtime UTF-16
+* write resume, allow resume from volume/disk section
+  - why bother no media data has been written anyway
+* EWF2 can handle more then UINT16_MAX segment files - add support for this?
+  - having more than 65000 segment files is a bit overkill,
+    also the naming schema does not support this without creating odd names
+    for now not adding support for this, unless there is a good reason to do so
 
 20130331
-* worked on libcdata integration
-* updated msvscpp files
 * updated codegear files
-* sync with experimental version
 
 20130330
 * updated dependencies
@@ -54,46 +377,207 @@ TODO
 * added error tolerance for Logicube image with missing checksum in data section
 * code clean up
 * worked on libcdata integration
+* update msvscpp files
+
+20130305
+* fixed missing file in libcmulti distribution
+* small build fixes
+
+20130303
+* updated python configure scrips
+* updated macosx files
+* worked on libcmulti
 
 20130302
 * updated types.h
-* fixed maximum number of segments
-
-20130205
-* changes and fixes in debug output
+* small changes in comment
 
 20130128
-* worked on sync with experimental version
-* docstring changes in pyewf
+* updated docstrings in pyewf
 * fix for corruption scenario
 
 20130126
 * fixes in pyewf examples
 
 20130120
-* updated msvscpp files
-* updated codegear files
-* updated pyewf
-* worked on sync with experimental version
-* replace libmfcache by new libfcache
+* replaced mfcache by new fcache
 
 20130119
-* updated configure files
-* updated dpkg files
-* updated rpm spec file
-* updated pyewf - fixes multiple issues
-* updated dependencies
-* worked on sync with experimental version
+* 2013 update
+* updated pyewf
 * added pyewf/setup.py with thanks to Michael Cohen
 
 20130105
 * bug fix for 31th day of the month issue
 
-20121209
-* removed memwatch and gettext
+20120916
+* added detection of empty ha value containing "00000000000000000000000000000000"
+* worked on bzip2 compression
+* worked on chunk data rewrite
+* ewfmount: worked on Dokan sub system support
 
-20120819
-* bug fix for not writing SHA-1 hash
+20120915
+* added -X option to ewfmount
+
+20120902
+* code clean up
+
+20120815
+* Changes to zlib location in msvscpp and codegear project files
+
+20120809
+* minor changes, updated python version in dpkg/rules
+
+20120807
+* updated codegear files
+* fix for writing Ex01 SHA1 hash section
+* worked on libewf_section_ltree_write
+* worked on support for sector table first chunk number
+
+20120806
+* worked on ewfrecover man page
+* updated codegear files
+* added ewfrecover to codegear and msvscpp files
+* added codepages 949 and 950
+* bug fixes for xhash
+
+20120805
+* refactored libewf_section_last_write functionality from section to segment file
+* added libcaes support
+* added support to ewftools to throttle number of open file descriptors used
+  by library about 50% of the available descriptor is currently claimed
+* code clean up
+* worked on compression method support for ewftools
+* fixes for recent changes
+* worked on tests for EWF2
+
+20120804
+* worked on libewf_section_write_data
+* worked on section data integrity hash support
+* worked on encryption support
+* worked on EWF1 ltree header
+
+20120802
+* code clean up
+* worked on encryption support
+* internal library default format is now EnCase 6
+* improved debug output
+* added support for 64-bit number of chunks, this allows for >= 8 TiB storage
+  media with the default chunk size
+* added chunk data alignment support for write
+
+20120801
+* code clean up
+* removed --enable-guid replaced by --with-libuuid=no
+* updated package maker files
+* worked on TODOs
+* worked on pattern fill write support
+* fixes for recent changes
+* worked on encryption support
+
+20120731
+* added configure option to disable adler32 in zlib
+
+20120730
+* fixes for mingw build
+* fixes for codegear build
+* replaced Adler32
+
+20120729
+* code clean up
+* fixes for recent changes
+* preparations for replacing Adler32 calculation
+* worked on Ex01 write support
+
+20120728
+* code clean up
+* fixes for recent changes
+* worked on Ex01 write support
+* added pattern test fill functions and refactored empty block test
+
+20120727
+* code clean up
+
+20120725
+* code clean up
+* added zlib.m4
+* update libuuid.m4
+* worked on Ex01 write support
+* worked on Ex01 pattern fill read support
+
+20120724
+* fixed issue regarding pack flags not being set on initialization
+* moved pack flags to write IO handle
+* added compression method debug description
+* moved chunk data options into flags
+* worked on compression method support
+
+20120722
+* code clean up
+* worked on writing Ex01 files
+
+20120721
+* code clean up
+* fix in spec file
+* worked on writing Ex01 files
+
+20120719
+* worked on codegear files
+* changes for codegear static build of ewftools
+
+20120718
+* removed builder5 files
+* fixed .so library version number
+* worked on codegear files
+
+20120717
+* worked on codegear files
+
+20120715
+* fixes and improvements for recent changes
+* fixes for osxfuse detection requiring FUSE_USE_VERSION
+
+20120714
+* changes for Lx01 support
+
+20120712
+* fixes and improvements for recent changes
+
+20120711
+* fixes and improvements for recent changes
+
+20120709
+* fixes and improvements for recent changes
+* v1 api no longer enabled by default
+
+20120706
+* fixes and improvements for recent changes
+
+20120705
+* fixes and improvements for recent changes
+
+20120704
+* worked on Ex01 and Lx01 support
+
+20120703
+* worked on Ex01 and Lx01 support
+
+20120702
+* worked on Ex01 and Lx01 support
+
+20120701
+* changes due to updates
+* code clean up in export handle
+* added support for exporting EnCase 7 L01 files
+* worked on Ex01 and Lx01 support
+
+20120630
+* worked on EnCase 7 and linen 7 support
+* applied updates
+
+20120629
+* changes to debug output
+* improved L01 support
 
 20120603
 * bug fix for MinGW in liberror

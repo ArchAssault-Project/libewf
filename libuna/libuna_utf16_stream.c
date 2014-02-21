@@ -1,7 +1,7 @@
 /*
  * UTF-16 stream functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -75,7 +75,7 @@ int libuna_utf16_stream_copy_byte_order_mark(
 
 		return( -1 );
 	}
-	if( ( *utf16_stream_index + 2 ) > utf16_stream_size )
+	if( ( *utf16_stream_index + 1 ) >= utf16_stream_size )
 	{
 		libcerror_error_set(
 		 error,
@@ -486,7 +486,7 @@ int libuna_utf16_stream_copy_from_utf16(
 	 */
 	while( utf16_string_index < utf16_string_size )
 	{
-		if( ( utf16_stream_index + 2 ) > utf16_stream_size )
+		if( ( utf16_stream_index + 2 ) >= utf16_stream_size )
 		{
 			libcerror_error_set(
 			 error,

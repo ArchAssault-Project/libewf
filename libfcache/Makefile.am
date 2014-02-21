@@ -3,10 +3,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
 	@LIBCSTRING_CPPFLAGS@ \
-	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
-	@LIBCDATA_CPPFLAGS@ \
-	@PTHREAD_CPPFLAGS@
+	@LIBCDATA_CPPFLAGS@
 
 noinst_LTLIBRARIES = libfcache.la
 

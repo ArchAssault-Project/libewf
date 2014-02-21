@@ -1,7 +1,7 @@
 /*
  * Tree functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -95,8 +95,8 @@ int libcdata_tree_node_clone(
             intptr_t **value,
             libcerror_error_t **error ),
      int (*value_clone_function)(
-            intptr_t **destination_value,
-            intptr_t *source_value,
+            intptr_t **destination,
+            intptr_t *source,
             libcerror_error_t **error ),
      libcerror_error_t **error );
 

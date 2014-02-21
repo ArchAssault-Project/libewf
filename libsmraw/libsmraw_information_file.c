@@ -1,7 +1,7 @@
 /*
  * Information file functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -29,8 +29,7 @@
 #include "libsmraw_libcstring.h"
 #include "libsmraw_libfvalue.h"
 
-/* Creates an information file
- * Make sure the value information_file is referencing, is set to NULL
+/* Creates the information file
  * Returns 1 if successful or -1 on error
  */
 int libsmraw_information_file_initialize(
@@ -102,7 +101,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees an information file
+/* Frees the information file
  * Returns 1 if successful or -1 on error
  */
 int libsmraw_information_file_free(

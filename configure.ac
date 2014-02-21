@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [libewf],
- [20140216],
+ [20130331],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -26,11 +26,6 @@ AC_PROG_CC
 AC_PROG_GCC_TRADITIONAL
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
-
-dnl Check for C++ preprocessor and compiler for ewftools-mt
-AC_PROG_CXXCPP
-AC_PROG_CXX
-AX_CXX_COMPILE_STDCXX_11(noext, optional)
 
 dnl Check for libtool
 AC_PROG_LIBTOOL
@@ -65,17 +60,14 @@ AX_LIBCSTRING_CHECK_ENABLE
 dnl Check for enabling libcerror for cross-platform C error functions
 AX_LIBCERROR_CHECK_ENABLE
 
-dnl Check for enabling libcthreads for cross-platform C threads functions
-AX_LIBCTHREADS_CHECK_ENABLE
-
 dnl Check for enabling libcdata for cross-platform C generic data functions
 AX_LIBCDATA_CHECK_ENABLE
 
-dnl Check for enabling libcdatetime for cross-platform C datetime functions
-AX_LIBCDATETIME_CHECK_ENABLE
-
 dnl Check for enabling libclocale for cross-platform C locale functions
 AX_LIBCLOCALE_CHECK_ENABLE
+
+dnl Check for enabling libcmulti for cross-platform C multi processing/threading functions
+AX_LIBCMULTI_CHECK_ENABLE
 
 dnl Check for enabling libcnotify for cross-platform C notification functions
 AX_LIBCNOTIFY_CHECK_ENABLE
@@ -97,9 +89,6 @@ AX_LIBBFIO_CHECK_ENABLE
 
 dnl Check for enabling libfcache for file value cache support
 AX_LIBFCACHE_CHECK_ENABLE
-
-dnl Check for enabling libfdata for file data types support
-AX_LIBFDATA_CHECK_ENABLE
 
 dnl Check for enabling libfvalue for file value support
 AX_LIBFVALUE_CHECK_ENABLE
@@ -141,9 +130,139 @@ dnl Check for libfuse Filesystem in Userspace (FUSE) support
 AX_LIBFUSE_CHECK_ENABLE
 
 dnl Check for headers and functions used in tools
+
+dnl Function to detect if ctime_r or ctime is available
+dnl Also checks how to use ctime_r
+AC_DEFUN([AX_EWFTOOLS_CHECK_FUNC_CTIME],
+ [AC_CHECK_FUNCS([ctime_r])
+
+ AS_IF(
+  [test "x$ac_cv_func_ctime_r" = xyes],
+  [AC_MSG_CHECKING(
+   [how to use ctime_r])
+
+  AC_LANG_PUSH(C)
+
+  AC_LINK_IFELSE(
+   [AC_LANG_PROGRAM(
+    [[#include <time.h>]],
+    [[ctime_r( NULL, NULL, 0 )]] )],
+    [AC_MSG_RESULT(
+     [with additional size argument])
+    ac_cv_cv_ctime_r_size=yes],
+    [ac_cv_cv_ctime_r_size=no])
+
+  AS_IF(
+   [test "x$ac_cv_cv_ctime_r_size" = xno],
+   [AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM(
+     [[#include <time.h>]],
+     [[ctime_r( NULL, NULL )]] )],
+    [AC_MSG_RESULT(
+     [with two arguments])
+    ac_cv_cv_ctime_r_posix=yes],
+    [ac_cv_cv_ctime_r_posix=no])
+   ])
+
+  AS_IF(
+   [test "x$ac_cv_cv_ctime_r_posix" = xno],
+   [CPPFLAGS="$CPPFLAGS -D_POSIX_PTHREAD_SEMANTICS"
+   AC_LINK_IFELSE(
+    [AC_LANG_PROGRAM(
+     [[#include <time.h>]],
+     [[ctime_r( NULL, NULL )]] )],
+    [AC_MSG_RESULT(
+     [with two arguments and definition _POSIX_PTHREAD_SEMANTICS])
+     ac_cv_cv_ctime_r_posix=yes],
+    [ac_cv_cv_ctime_r_posix=no])
+   ])
+
+  AC_LANG_POP(C)
+
+  AS_IF(
+   [test "x$ac_cv_cv_ctime_r_size" = xno && test "x$ac_cv_cv_ctime_r_posix" = xno],
+   [AC_MSG_WARN(
+    [unknown])
+   ac_cv_func_ctime_r=no])
+
+  AS_IF(
+   [test "x$ac_cv_func_ctime_r" = xyes],
+   [AC_DEFINE(
+    [HAVE_CTIME_R],
+    [1],
+    [Define to 1 if you have the ctime_r function.])
+   ])
+
+  AS_IF(
+   [test "x$ac_cv_cv_ctime_r_size" = xyes],
+   [AC_DEFINE(
+    [HAVE_CTIME_R_SIZE],
+    [1],
+    [Define to 1 if you have the ctime_r function with a third size argument.])
+   ])
+  ])
+
+ AS_IF(
+  [test "x$ac_cv_func_ctime_r" = xno],
+  [AC_CHECK_FUNCS([ctime])
+
+  AS_IF(
+   [test "x$ac_cv_func_ctime" = xno],
+   [AC_MSG_FAILURE(
+    [Missing function: ctime_r and ctime],
+    [1])
+   ])
+  ])
+ ])
+
+AS_IF(
+ [test "x$ac_cv_enable_winapi" = xno],
+ [AC_CHECK_HEADERS([sys/resource.h sys/utsname.h])
+ AC_HEADER_TIME
+ AC_CHECK_FUNCS([getegid geteuid getrlimit getuid time uname])
+ ])
+
+dnl Date and time functions used in libcsystem/libcsystem_date_time.c
+AC_CHECK_FUNCS([localtime localtime_r mktime])
+
+AS_IF(
+ [test "x$ac_cv_func_localtime" != xyes && test "x$ac_cv_func_localtime_r" != xyes],
+ [AC_MSG_FAILURE(
+  [Missing functions: localtime and localtime_r],
+  [1])
+ ])
+ 
+AS_IF(
+ [test "x$ac_cv_func_mktime" != xyes],
+ [AC_MSG_FAILURE(
+  [Missing function: mktime],
+  [1])
+ ])
+ 
+dnl Date and time functions used in libcsystem/libcsystem_date_time.h
+AX_EWFTOOLS_CHECK_FUNC_CTIME
+ 
+AC_CHECK_FUNCS([gmtime gmtime_r time])
+
+AS_IF(
+ [test "x$ac_cv_func_gmtime" != xyes && test "x$ac_cv_func_gmtime_r" != xyes],
+ [AC_MSG_FAILURE(
+  [Missing functions: gmtime_r and gmtime],
+  [1])
+ ])
+ 
+AS_IF(
+ [test "x$ac_cv_func_time" != xyes],
+ [AC_MSG_FAILURE(
+  [Missing function: time],
+  [1])
+ ])
  
 dnl Check if ewftools should be build as static executables
 AX_COMMON_CHECK_ENABLE_STATIC_EXECUTABLES
+
+dnl Check if ewftools should be build with low level read and write functions
+AX_LIBEWF_CHECK_ENABLE_LOW_LEVEL_FUNCTIONS
 
 dnl Check if libewf should be build with verbose output
 AX_COMMON_CHECK_ENABLE_VERBOSE_OUTPUT
@@ -177,7 +296,7 @@ CFLAGS="$CFLAGS -Wall";
 
 dnl Check if requires and build requires should be set in spec file
 AS_IF(
- [test "x$ac_cv_libcstring" = xyes || test "x$ac_cv_libcerror" = xyes || test "x$ac_cv_libcthreads" = xyes || test "x$ac_cv_libcdata" = xyes ||  test "x$ac_cv_libclocale" = xyes || test "x$ac_cv_libcnotify" = xyes || test "x$ac_cv_libcsplit" = xyes || test "x$ac_cv_libuna" = xyes || test "x$ac_cv_libcfile" = xyes || test "x$ac_cv_libcpath" = xyes || test "x$ac_cv_libbfio" = xyes || test "x$ac_cv_libfcache" = xyes || test "x$ac_cv_libfdata" = xyes || test "x$ac_cv_libfvalue" = xyes || test "x$ac_cv_libmfdata" = xyes || test "x$ac_cv_zlib" != xno || test "x$ac_cv_bzip2" != xno || test "x$ac_cv_libhmac" = xyes || test "x$ac_cv_libcaes" = xyes],
+ [test "x$ac_cv_libcstring" = xyes || test "x$ac_cv_libcerror" = xyes || test "x$ac_cv_libcdata" = xyes ||  test "x$ac_cv_libclocale" = xyes || test "x$ac_cv_libcmulti" = xyes ||  test "x$ac_cv_libcnotify" = xyes || test "x$ac_cv_libcsplit" = xyes || test "x$ac_cv_libuna" = xyes || test "x$ac_cv_libcfile" = xyes || test "x$ac_cv_libcpath" = xyes || test "x$ac_cv_libbfio" = xyes || test "x$ac_cv_libfcache" = xyes || test "x$ac_cv_libfvalue" = xyes || test "x$ac_cv_libmfdata" = xyes || test "x$ac_cv_zlib" != xno || test "x$ac_cv_bzip2" != xno || test "x$ac_cv_libhmac" = xyes || test "x$ac_cv_libcaes" = xyes],
  [AC_SUBST(
   [libewf_spec_requires],
   [Requires:])
@@ -207,10 +326,9 @@ AC_CONFIG_FILES([include/Makefile])
 AC_CONFIG_FILES([common/Makefile])
 AC_CONFIG_FILES([libcstring/Makefile])
 AC_CONFIG_FILES([libcerror/Makefile])
-AC_CONFIG_FILES([libcthreads/Makefile])
 AC_CONFIG_FILES([libcdata/Makefile])
-AC_CONFIG_FILES([libcdatetime/Makefile])
 AC_CONFIG_FILES([libclocale/Makefile])
+AC_CONFIG_FILES([libcmulti/Makefile])
 AC_CONFIG_FILES([libcnotify/Makefile])
 AC_CONFIG_FILES([libcsplit/Makefile])
 AC_CONFIG_FILES([libuna/Makefile])
@@ -218,7 +336,6 @@ AC_CONFIG_FILES([libcfile/Makefile])
 AC_CONFIG_FILES([libcpath/Makefile])
 AC_CONFIG_FILES([libbfio/Makefile])
 AC_CONFIG_FILES([libfcache/Makefile])
-AC_CONFIG_FILES([libfdata/Makefile])
 AC_CONFIG_FILES([libfvalue/Makefile])
 AC_CONFIG_FILES([libmfdata/Makefile])
 AC_CONFIG_FILES([libhmac/Makefile])
@@ -229,7 +346,6 @@ AC_CONFIG_FILES([libsmdev/Makefile])
 AC_CONFIG_FILES([libsmraw/Makefile])
 AC_CONFIG_FILES([libcsystem/Makefile])
 AC_CONFIG_FILES([ewftools/Makefile])
-AC_CONFIG_FILES([ewftools-mt/Makefile])
 AC_CONFIG_FILES([ewf.net/Makefile])
 AC_CONFIG_FILES([pyewf/Makefile])
 AC_CONFIG_FILES([po/Makefile.in])
@@ -239,6 +355,7 @@ AC_CONFIG_FILES([manuals/Makefile])
 AC_CONFIG_FILES([tests/Makefile])
 AC_CONFIG_FILES([examples/Makefile])
 AC_CONFIG_FILES([macosx/Makefile])
+AC_CONFIG_FILES([borlandc/Makefile])
 AC_CONFIG_FILES([msvscpp/Makefile])
 dnl Have configure make the include files
 AC_CONFIG_FILES([include/libewf.h])
@@ -270,45 +387,43 @@ AC_OUTPUT
 dnl Print a summary
 AC_MSG_NOTICE([
 Building:
-   libcstring support:                       $ac_cv_libcstring
-   libcerror support:                        $ac_cv_libcerror
-   libcthreads support:                      $ac_cv_libcthreads
-   libcdata support:                         $ac_cv_libcdata
-   libcdatetime support:                     $ac_cv_libcdatetime
-   libclocale support:                       $ac_cv_libclocale
-   libcnotify support:                       $ac_cv_libcnotify
-   libcsplit support:                        $ac_cv_libcsplit
-   libuna support:                           $ac_cv_libuna
-   libcfile support:                         $ac_cv_libcfile
-   libcpath support:                         $ac_cv_libcpath
-   libbfio support:                          $ac_cv_libbfio
-   libfcache support:                        $ac_cv_libfcache
-   libfdata support:                         $ac_cv_libfdata
-   libfvalue support:                        $ac_cv_libfvalue
-   libmfdata support:                        $ac_cv_libmfdata
-   ADLER32 checksum support:                 $ac_cv_adler32
-   DEFLATE compression support:              $ac_cv_zlib
-   BZIP2 compression support:                $ac_cv_bzip2
-   libhmac support:                          $ac_cv_libhmac
-   MD5 support:                              $ac_cv_libhmac_md5
-   SHA1 support:                             $ac_cv_libhmac_sha1
-   SHA256 support:                           $ac_cv_libhmac_sha256
-   libcaes support:                          $ac_cv_libcaes
-   AES support:                              $ac_cv_libcaes_aes
-   libodraw support:                         $ac_cv_libodraw
-   libsmdev support:                         $ac_cv_libsmdev
-   libsmraw support:                         $ac_cv_libsmraw
-   libcsystem support:                       $ac_cv_libcsystem
-   GUID/UUID support:                        $ac_cv_libuuid
-   FUSE support:                             $ac_cv_libfuse
+   libcstring support:                              $ac_cv_libcstring
+   libcerror support:                               $ac_cv_libcerror
+   libcdata support:                                $ac_cv_libcdata
+   libclocale support:                              $ac_cv_libclocale
+   libcmulti support:                               $ac_cv_libcmulti
+   libcnotify support:                              $ac_cv_libcnotify
+   libcsplit support:                               $ac_cv_libcsplit
+   libuna support:                                  $ac_cv_libuna
+   libcfile support:                                $ac_cv_libcfile
+   libcpath support:                                $ac_cv_libcpath
+   libbfio support:                                 $ac_cv_libbfio
+   libfcache support:                               $ac_cv_libfcache
+   libfvalue support:                               $ac_cv_libfvalue
+   libmfdata support:                               $ac_cv_libmfdata
+   ADLER32 checksum support:                        $ac_cv_with_adler32
+   DEFLATE compression support:                     $ac_cv_zlib
+   BZIP2 compression support:                       $ac_cv_bzip2
+   libhmac support:                                 $ac_cv_libhmac
+   MD5 support:                                     $ac_cv_libhmac_md5
+   SHA1 support:                                    $ac_cv_libhmac_sha1
+   SHA256 support:                                  $ac_cv_libhmac_sha256
+   libcaes support:                                 $ac_cv_libcaes
+   AES support:                                     $ac_cv_libcaes_aes
+   libodraw support:                                $ac_cv_libodraw
+   libsmdev support:                                $ac_cv_libsmdev
+   libsmraw support:                                $ac_cv_libsmraw
+   libcsystem support:                              $ac_cv_libcsystem
+   GUID/UUID support:                               $ac_cv_libuuid
+   FUSE support:                                    $ac_cv_libfuse
 
 Features:
-   Multi-threading support:                  $ac_cv_libcthreads_multi_threading
-   Wide character type support:              $ac_cv_enable_wide_character_type
-   ewftools are build as static executables: $ac_cv_enable_static_executables
-   Python (pyewf) support:                   $ac_cv_enable_python
-   Verbose output:                           $ac_cv_enable_verbose_output
-   Debug output:                             $ac_cv_enable_debug_output
-   Version 1 API compatibility:              $ac_cv_enable_v1_api
+   Wide character type support:                     $ac_cv_enable_wide_character_type
+   ewftools are build as static executables:        $ac_cv_enable_static_executables
+   ewftools use low level read and write functions: $ac_cv_enable_low_level_functions
+   Python (pyewf) support:                          $ac_cv_enable_python
+   Verbose output:                                  $ac_cv_enable_verbose_output
+   Debug output:                                    $ac_cv_enable_debug_output
+   Version 1 API compatibility:                     $ac_cv_enable_v1_api
 ]);
 

@@ -1,7 +1,7 @@
 /*
  * The libfvalue header wrapper
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -39,7 +39,7 @@
 #include <libfvalue_value.h>
 #include <libfvalue_value_type.h>
 
-#else
+#elif defined( HAVE_LIBFVALUE_H )
 
 /* If libtool DLL support is enabled set LIBFVALUE_DLL_IMPORT
  * before including libfvalue.h
@@ -50,6 +50,8 @@
 
 #include <libfvalue.h>
 
+#else
+#error Missing libfvalue.h
 #endif
 
 #endif

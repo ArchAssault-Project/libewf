@@ -1,7 +1,7 @@
 /*
  * Data handle functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -31,7 +31,6 @@
 #include "libfvalue_value_entry.h"
 
 /* Creates a data handle
- * Make sure the value data_handle is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_data_handle_initialize(
@@ -104,7 +103,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a data handle
+/* Frees the data handle
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_data_handle_free(

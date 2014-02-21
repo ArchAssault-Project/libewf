@@ -1,7 +1,7 @@
 /*
  * String value functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -32,8 +32,7 @@
 #include "libfvalue_string.h"
 #include "libfvalue_types.h"
 
-/* Creates a string
- * Make sure the value string is referencing, is set to NULL
+/* Initialize a string
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_string_initialize(
@@ -197,25 +196,6 @@ int libfvalue_string_clone(
 
 		goto on_error;
 	}
-	if( memory_set(
-	     *destination_string,
-	     0,
-	     sizeof( libfvalue_string_t ) ) == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_MEMORY,
-		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
-		 "%s: unable to clear destination string.",
-		 function );
-
-		memory_free(
-		 *destination_string );
-
-		*destination_string = NULL;
-
-		return( -1 );
-	}
 	if( ( source_string->flags & LIBFVALUE_VALUE_FLAG_DATA_MANAGED ) == 0 )
 	{
 		( *destination_string )->data      = source_string->data;
@@ -256,7 +236,7 @@ int libfvalue_string_clone(
 			goto on_error;
 		}
 	}
-	( *destination_string )->codepage = source_string->codepage;
+	( *destination_string )->codepage   = source_string->codepage;
 
 	return( 1 );
 
@@ -327,14 +307,11 @@ int libfvalue_string_copy_from_byte_stream(
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_874 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_932 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_936 )
-	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_949 )
-	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_950 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1250 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1251 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1252 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1253 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1254 )
-	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1255 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1256 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1257 )
 	 && ( encoding != LIBFVALUE_CODEPAGE_WINDOWS_1258 ) )
@@ -2687,7 +2664,8 @@ int libfvalue_utf8_string_split(
 
 		goto on_error;
 	}
-	string_end = &( segment_start[ string_size - 1 ] );
+	segment_end = segment_start;
+	string_end  = &( segment_start[ string_size - 1 ] );
 
 	for( segment_index = 0;
 	     segment_index < number_of_segments;
@@ -2955,7 +2933,8 @@ int libfvalue_utf16_string_split(
 
 		goto on_error;
 	}
-	string_end = &( segment_start[ string_size - 1 ] );
+	segment_end = segment_start;
+	string_end  = &( segment_start[ string_size - 1 ] );
 
 	for( segment_index = 0;
 	     segment_index < number_of_segments;

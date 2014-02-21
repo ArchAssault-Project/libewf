@@ -1,7 +1,7 @@
 /*
  * Memory range functions
  *
- * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -29,8 +29,7 @@
 #include "libbfio_memory_range.h"
 #include "libbfio_types.h"
 
-/* Creates a memory range IO handle
- * Make sure the value memory_range_io_handle is referencing, is set to NULL
+/* Initializes the memory range IO handle
  * Returns 1 if successful or -1 on error
  */
 int libbfio_memory_range_io_handle_initialize(
@@ -102,8 +101,7 @@ on_error:
 	return( -1 );
 }
 
-/* Creates a memory range handle
- * Make sure the value handle is referencing, is set to NULL
+/* Initializes the memory range handle
  * Returns 1 if successful or -1 on error
  */
 int libbfio_memory_range_initialize(
@@ -185,7 +183,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a memory range IO handle
+/* Frees the memory range IO handle and its attributes
  * Returns 1 if succesful or -1 on error
  */
 int libbfio_memory_range_io_handle_free(

@@ -1,7 +1,7 @@
 <pkmkdoc spec="1.12">
 	<properties>
 		<title>libewf</title>
-		<build>/home/lordyesta/Projects/libewf-sync/macosx/libewf.mpkg</build>
+		<build>/home/lordyesta/Projects/libewf/macosx/libewf.mpkg</build>
 		<organization>com.google.code.p</organization>
 		<userSees ui="both"/>
 		<min-target os="1"/>

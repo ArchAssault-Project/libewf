@@ -1,7 +1,7 @@
 /*
  * IO handle functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -27,8 +27,6 @@
 
 #include "libewf_libcerror.h"
 
-#include "libewf_libbfio.h"
-
 #if defined( __cplusplus )
 extern "C" {
 #endif
@@ -45,22 +43,37 @@ struct libewf_io_handle
 	 */
 	off64_t current_offset;
 
+	/* The segment file type
+	 */
+	uint8_t segment_file_type;
+
 	/* Value to indicate which file format is used
 	 */
 	uint8_t format;
 
-	/* Value to indicate which ewf format is used
+	/* The format major version
 	 */
-	uint8_t ewf_format;
+	uint8_t major_version;
 
-	/* Value to indicate the compression level used
+	/* The format minor version
+	 */
+	uint8_t minor_version;
+
+	/* The compression method
+	 */
+	uint16_t compression_method;
+
+	/* The compression level
 	 */
 	int8_t compression_level;
 
-	/* Value to indicate certain compression modes
-	 * like empty block compression
+	/* The compression flags
 	 */
 	uint8_t compression_flags;
+
+	/* Value to indicate the data and some metadata is encrypted
+	 */
+	uint8_t is_encrypted;
 
 	/* The header codepage
 	 */

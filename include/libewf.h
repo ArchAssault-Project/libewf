@@ -1,7 +1,7 @@
 /*
  * Library to access the Expert Witness Compression Format (EWF)
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -388,14 +388,15 @@ ssize_t libewf_handle_prepare_read_chunk(
          size_t *uncompressed_chunk_buffer_size,
          int8_t is_compressed,
          uint32_t chunk_checksum,
-         int8_t read_checksum,
+         int8_t chunk_io_flags,
          libewf_error_t **error );
 
 /* Reads a chunk of (media) data from the current offset into a buffer
  * Will read until the requested size is filled or the entire chunk is read
- * The values read_checksum and chunk_checksum are used for uncompressed chunks only
  * The value chunk_checksum is set to a runtime version of the value in the checksum_buffer
- * The value read_checksum is set if the checksum has been read into checksum_buffer
+ * and is used for uncompressed chunks only
+ * The LIBEWF_CHUNK_IO_FLAG_CHECKSUM_SET chunk_io_flags is set if the checksum was read into checksum_buffer
+ * otherwise the checksum is considered part of the data in the chunk buffer
  * The value chunk_buffer_size contains the size of the chunk buffer
  * Returns the number of bytes read or -1 on error
  */
@@ -407,7 +408,7 @@ ssize_t libewf_handle_read_chunk(
          int8_t *is_compressed,
          void *checksum_buffer,
          uint32_t *chunk_checksum,
-         int8_t *read_checksum,
+         int8_t *chunk_io_flags,
          libewf_error_t **error );
 
 /* Reads (media) data at the current offset into a buffer
@@ -434,7 +435,9 @@ ssize_t libewf_handle_read_random(
 /* Prepares a chunk of (media) data before writing according to the handle settings
  * This function should be used before libewf_handle_write_chunk
  * The chunk_buffer_size should contain the actual chunk size
- * The function sets the chunk checksum, is compressed and write checksum values
+ * The function sets the is_compressed, chunk_checksum and chunk_io_flags values
+ * The LIBEWF_CHUNK_IO_FLAG_CHECKSUM_SET chunk_io_flags is set if the checksum was set in checksum_buffer
+ * and needs to be written separately from the chunk data, in case of an uncompressed chunk
  * Returns the resulting chunk size or -1 on error
  */
 LIBEWF_EXTERN \
@@ -446,7 +449,7 @@ ssize_t libewf_handle_prepare_write_chunk(
          size_t *compressed_chunk_buffer_size,
          int8_t *is_compressed,
          uint32_t *chunk_checksum,
-         int8_t *write_checksum,
+         int8_t *chunk_io_flags,
          libewf_error_t **error );
 
 /* Writes a chunk of (media) data in EWF format at the current offset
@@ -465,7 +468,7 @@ ssize_t libewf_handle_write_chunk(
          int8_t is_compressed,
          void *checksum_buffer,
          uint32_t chunk_checksum,
-         int8_t write_checksum,
+         int8_t chunk_io_flags,
          libewf_error_t **error );
 
 /* Writes (media) data at the current offset
@@ -705,6 +708,14 @@ int libewf_handle_segment_files_corrupted(
      libewf_handle_t *handle,
      libewf_error_t **error );
 
+/* Determine if the segment files are encrypted
+ * Returns 1 if encrypted, 0 if not or -1 on error
+ */
+LIBEWF_EXTERN \
+int libewf_handle_segment_files_encrypted(
+     libewf_handle_t *handle,
+     libewf_error_t **error );
+
 /* Retrieves the filename size of the (delta) segment file of the current chunk
  * The filename size includes the end of string character
  * Returns 1 if successful, 0 if no such filename or -1 on error
@@ -924,6 +935,24 @@ int libewf_handle_set_error_granularity(
      uint32_t error_granularity,
      libewf_error_t **error );
 
+/* Retrieves the compression method
+ * Returns 1 if successful or -1 on error
+ */
+LIBEWF_EXTERN \
+int libewf_handle_get_compression_method(
+     libewf_handle_t *handle,
+     uint16_t *compression_method,
+     libewf_error_t **error );
+
+/* Sets the compression method
+ * Returns 1 if successful or -1 on error
+ */
+LIBEWF_EXTERN \
+int libewf_handle_set_compression_method(
+     libewf_handle_t *handle,
+     uint16_t compression_method,
+     libewf_error_t **error );
+
 /* Retrieves the compression values
  * Returns 1 if successful or -1 on error
  */
@@ -1018,6 +1047,16 @@ int libewf_handle_set_format(
      uint8_t format,
      libewf_error_t **error );
 
+/* Retrieves the segment file version
+ * Returns 1 if successful or -1 on error
+ */
+LIBEWF_EXTERN \
+int libewf_handle_get_segment_file_version(
+     libewf_handle_t *handle,
+     uint8_t *major_version,
+     uint8_t *minor_version,
+     libewf_error_t **error );
+
 /* Retrieves the segment file set identifier
  * The identifier is a GUID and is 16 bytes of size
  * Returns 1 if successful or -1 on error
@@ -1056,7 +1095,7 @@ int libewf_handle_get_md5_hash(
 LIBEWF_EXTERN \
 int libewf_handle_set_md5_hash(
      libewf_handle_t *handle,
-     uint8_t *md5_hash,
+     const uint8_t *md5_hash,
      size_t size,
      libewf_error_t **error );
 
@@ -1076,7 +1115,7 @@ int libewf_handle_get_sha1_hash(
 LIBEWF_EXTERN \
 int libewf_handle_set_sha1_hash(
      libewf_handle_t *handle,
-     uint8_t *sha1_hash,
+     const uint8_t *sha1_hash,
      size_t size,
      libewf_error_t **error );
 
@@ -2300,6 +2339,26 @@ int libewf_file_entry_get_utf16_hash_value_md5(
      size_t utf16_string_size,
      libewf_error_t **error );
 
+/* Retrieves the UTF-8 encoded SHA1 hash value
+ * Returns 1 if successful, 0 if value not present or -1 on error
+ */
+LIBEWF_EXTERN \
+int libewf_file_entry_get_utf8_hash_value_sha1(
+     libewf_file_entry_t *file_entry,
+     uint8_t *utf8_string,
+     size_t utf8_string_size,
+     libewf_error_t **error );
+
+/* Retrieves the UTF-16 encoded SHA1 hash value
+ * Returns 1 if successful, 0 if value not present or -1 on error
+ */
+LIBEWF_EXTERN \
+int libewf_file_entry_get_utf16_hash_value_sha1(
+     libewf_file_entry_t *file_entry,
+     uint16_t *utf16_string,
+     size_t utf16_string_size,
+     libewf_error_t **error );
+
 /* Reads data at the current offset
  * Returns the number of bytes read or -1 on error
  */
@@ -2552,7 +2611,7 @@ LIBEWF_EXTERN ssize_t libewf_raw_read_prepare_buffer(
                        size_t *uncompressed_buffer_size,
                        int8_t is_compressed,
                        uint32_t chunk_checksum,
-                       int8_t read_checksum );
+                       int8_t chunk_io_flags );
 
 /* Reads 'raw' data from the current offset into a buffer
  * size contains the size of the buffer
@@ -2568,7 +2627,7 @@ LIBEWF_EXTERN ssize_t libewf_raw_read_buffer(
                        size_t buffer_size,
                        int8_t *is_compressed,
                        uint32_t *chunk_checksum,
-                       int8_t *read_checksum );
+                       int8_t *chunk_io_flags );
 
 /* Reads data from the current offset into a buffer
  * Returns the amount of bytes read or -1 on error
@@ -2610,7 +2669,7 @@ LIBEWF_EXTERN ssize_t libewf_raw_write_prepare_buffer(
                        size_t *compressed_buffer_size,
                        int8_t *is_compressed,
                        uint32_t *chunk_checksum,
-                       int8_t *write_checksum );
+                       int8_t *chunk_io_flags );
 
 /* Writes 'raw' data in EWF format at the current offset
  * the necessary settings of the write values must have been made
@@ -2629,7 +2688,7 @@ LIBEWF_EXTERN ssize_t libewf_raw_write_buffer(
                        size_t data_size,
                        int8_t is_compressed,
                        uint32_t chunk_checksum,
-                       int8_t write_checksum );
+                       int8_t chunk_io_flags );
 
 /* Writes data in EWF format at the current offset
  * the necessary settings of the write values must have been made

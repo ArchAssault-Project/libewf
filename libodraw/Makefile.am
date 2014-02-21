@@ -7,7 +7,6 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/common \
 	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
-	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
 	@LIBCLOCALE_CPPFLAGS@ \
 	@LIBCNOTIFY_CPPFLAGS@ \
@@ -15,14 +14,14 @@ AM_CPPFLAGS = \
 	@LIBUNA_CPPFLAGS@ \
 	@LIBCFILE_CPPFLAGS@ \
 	@LIBCPATH_CPPFLAGS@ \
-	@LIBBFIO_CPPFLAGS@ \
-	@PTHREAD_CPPFLAGS@
+	@LIBBFIO_CPPFLAGS@
 
 BUILT_SOURCES = libodraw_cue_parser.h
 
 noinst_LTLIBRARIES = libodraw.la
 
 libodraw_la_SOURCES = \
+	libodraw_array_type.c libodraw_array_type.h \
 	libodraw_codepage.h \
 	libodraw_cue_parser.y \
 	libodraw_cue_scanner.l \
@@ -36,11 +35,9 @@ libodraw_la_SOURCES = \
 	libodraw_io_handle.c libodraw_io_handle.h \
 	libodraw_metadata.c libodraw_metadata.h \
 	libodraw_libbfio.h \
-	libodraw_libcdata.h \
 	libodraw_libcerror.h \
 	libodraw_libclocale.h \
 	libodraw_libcnotify.h \
-	libodraw_libcpath.h \
 	libodraw_libcstring.h \
 	libodraw_libuna.h \
 	libodraw_notify.c libodraw_notify.h \
@@ -53,7 +50,6 @@ libodraw_la_SOURCES = \
 libodraw_la_LIBADD = \
 	@LIBCSTRING_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
-	@LIBCTHREADS_LIBADD@ \
 	@LIBCDATA_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCNOTIFY_LIBADD@ \
@@ -61,8 +57,7 @@ libodraw_la_LIBADD = \
 	@LIBUNA_LIBADD@ \
 	@LIBCFILE_LIBADD@ \
 	@LIBCPATH_LIBADD@ \
-	@LIBBFIO_LIBADD@ \
-	@PTHREAD_LIBADD@
+	@LIBBFIO_LIBADD@
 endif
 
 EXTRA_DIST = \

@@ -1,7 +1,7 @@
 /*
  * File stream functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -44,6 +44,13 @@ typedef struct libcfile_internal_stream libcfile_internal_stream_t;
 
 struct libcfile_internal_stream
 {
+/* TODO
+#if defined( WINAPI ) && !defined( USE_CRT_FUNCTIONS )
+	HANDLE handle;
+#else
+	FILE *stream;
+#endif
+*/
 	FILE *stream;
 };
 

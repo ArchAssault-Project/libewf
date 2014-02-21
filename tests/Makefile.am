@@ -10,7 +10,7 @@ AM_CPPFLAGS = \
 	@LIBCSYSTEM_CPPFLAGS@
 
 if HAVE_PYTHON
-TESTS_PYEWF  = \
+TESTS_PYEWF = \
 	test_pyewf.sh
 endif
 
@@ -69,8 +69,8 @@ ewf_test_glob_SOURCES = \
 	ewf_test_libewf.h
 
 ewf_test_glob_LDADD = \
-	../libewf/libewf.la \
-	@LIBCSTRING_LIBADD@
+	@LIBCSTRING_LIBADD@ \
+	../libewf/libewf.la
 
 ewf_test_read_SOURCES = \
 	ewf_test_definitions.h \
@@ -119,7 +119,7 @@ ewf_test_seek_SOURCES = \
 	ewf_test_seek.c
 
 ewf_test_seek_LDADD = \
-	../libewf/libewf.la \
+	../libewf/libewf.la
 	@LIBCERROR_LIBADD@ \
 	@LIBCSTRING_LIBADD@
 

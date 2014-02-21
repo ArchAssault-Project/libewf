@@ -1,7 +1,7 @@
 /*
  * Mount handle
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -632,7 +632,6 @@ int mount_handle_get_file_entry_by_path(
      mount_handle_t *mount_handle,
      const libcstring_system_character_t *path,
      size_t path_length,
-     libcstring_system_character_t path_separator,
      libewf_file_entry_t **file_entry,
      libcerror_error_t **error )
 {
@@ -674,7 +673,7 @@ int mount_handle_get_file_entry_by_path(
 
 		return( -1 );
 	}
-	if( path[ 0 ] != path_separator )
+	if( path[ 0 ] != (libcstring_system_character_t) '/' )
 	{
 		libcerror_error_set(
 		 error,
@@ -694,41 +693,36 @@ int mount_handle_get_file_entry_by_path(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_MEMORY,
 		 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
-		 "%s: unable to create EWF path.",
+		 "%s: unable to create REGF path.",
 		 function );
 
 		goto on_error;
 	}
-	if( libcstring_system_string_copy(
+	if( memory_copy(
 	     ewf_path,
 	     path,
-	     path_length ) == NULL )
+	     path_length + 1 ) == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_MEMORY,
 		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
-		 "%s: unable to copy EWF path.",
+		 "%s: unable to copy REGF path.",
 		 function );
 
 		goto on_error;
 	}
-	ewf_path[ path_length ] = 0;
-
-	if( path_separator == (libcstring_system_character_t) '/' )
+	for( path_index = 0;
+	     path_index < path_length;
+	     path_index++ )
 	{
-		for( path_index = 0;
-		     path_index < path_length;
-		     path_index++ )
+		if( ewf_path[ path_index ] == (libcstring_system_character_t) '/' )
 		{
-			if( ewf_path[ path_index ] == (libcstring_system_character_t) '/' )
-			{
-				ewf_path[ path_index ] = (libcstring_system_character_t) '\\';
-			}
-			else if( ewf_path[ path_index ] == (libcstring_system_character_t) '\\' )
-			{
-				ewf_path[ path_index ] = (libcstring_system_character_t) '/';
-			}
+			ewf_path[ path_index ] = (libcstring_system_character_t) '\\';
+		}
+		else if( ewf_path[ path_index ] == (libcstring_system_character_t) '\\' )
+		{
+			ewf_path[ path_index ] = (libcstring_system_character_t) '/';
 		}
 	}
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
@@ -769,42 +763,5 @@ on_error:
 		 ewf_path );
 	}
 	return( -1 );
-}
-
-/* Retrieves the number of input handles
- * Returns 1 if successful or -1 on error
- */
-int mount_handle_get_number_of_input_handles(
-     mount_handle_t *mount_handle,
-     int *number_of_input_handles,
-     libcerror_error_t **error )
-{
-	static char *function = "mount_handle_get_number_of_input_handles";
-
-	if( mount_handle == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid mount handle.",
-		 function );
-
-		return( -1 );
-	}
-	if( number_of_input_handles == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid number of input handles.",
-		 function );
-
-		return( -1 );
-	}
-	*number_of_input_handles = 1;
-
-	return( 1 );
 }
 

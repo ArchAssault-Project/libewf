@@ -1,7 +1,7 @@
 /*
  * EWF data section
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -108,7 +108,7 @@ struct ewf_data
 	 */
 	uint8_t smart_logs_start_sector[ 4 ];
 
-	/* Compression level (Encase 5 or later)
+	/* Compression level
 	 * consists of 1 byte
 	 * 0x00 => no compression,
 	 * 0x01 => fast/good compression
@@ -133,10 +133,11 @@ struct ewf_data
 	 */
 	uint8_t unknown5[ 4 ];
 
-	/* The GUID (Encase 5 or later)
-	 * consists of 16 bytes
+	/* The segment file set identifier
+	 * Consists of 16 bytes
+	 * Contains a GUID
 	 */
-	uint8_t guid[ 16 ];
+	uint8_t set_identifier[ 16 ];
 
 	/* Unknown
 	 * consists of 963 bytes
@@ -149,9 +150,8 @@ struct ewf_data
 	 */
 	uint8_t signature[ 5 ];
 
-	/* The section checksum of all (previous) volume data
+	/* The section checksum of all (previous) data
 	 * consists of 4 bytes (32 bits)
-	 * starts with offset 76
 	 */
 	uint8_t checksum[ 4 ];
 };

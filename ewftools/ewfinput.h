@@ -1,7 +1,7 @@
 /*
  * User input functions for the ewftools
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -32,13 +32,13 @@
 extern "C" {
 #endif
 
-#define EWFINPUT_COMPRESSION_METHODS_AMOUNT		1
+#define EWFINPUT_COMPRESSION_METHODS_AMOUNT		2
 #define EWFINPUT_COMPRESSION_METHODS_DEFAULT		0
 
 #define EWFINPUT_COMPRESSION_LEVELS_AMOUNT		4
 #define EWFINPUT_COMPRESSION_LEVELS_DEFAULT		0
 
-#define EWFINPUT_FORMAT_TYPES_AMOUNT			12
+#define EWFINPUT_FORMAT_TYPES_AMOUNT			15
 #define EWFINPUT_FORMAT_TYPES_DEFAULT			8
 
 #define EWFINPUT_MEDIA_TYPES_AMOUNT			4
@@ -50,9 +50,9 @@ extern "C" {
 #define EWFINPUT_SECTOR_PER_BLOCK_SIZES_AMOUNT		12
 #define EWFINPUT_SECTOR_PER_BLOCK_SIZES_DEFAULT		2
 
-extern libcstring_system_character_t *ewfinput_compression_methods[ 1 ];
+extern libcstring_system_character_t *ewfinput_compression_methods[ 2 ];
 extern libcstring_system_character_t *ewfinput_compression_levels[ 4 ];
-extern libcstring_system_character_t *ewfinput_format_types[ 12 ];
+extern libcstring_system_character_t *ewfinput_format_types[ 15 ];
 extern libcstring_system_character_t *ewfinput_media_types[ 4 ];
 extern libcstring_system_character_t *ewfinput_media_flags[ 2 ];
 extern libcstring_system_character_t *ewfinput_sector_per_block_sizes[ 12 ];

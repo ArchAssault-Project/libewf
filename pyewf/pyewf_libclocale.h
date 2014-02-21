@@ -1,7 +1,7 @@
 /*
  * The internal libclocale header
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2011-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -33,7 +33,7 @@
 #include <libclocale_locale.h>
 #include <libclocale_support.h>
 
-#else
+#elif defined( HAVE_LIBCLOCALE_H )
 
 /* If libtool DLL support is enabled set LIBCLOCALE_DLL_IMPORT
  * before including libclocale.h
@@ -44,6 +44,8 @@
 
 #include <libclocale.h>
 
+#else
+#error Missing libclocale.h
 #endif
 
 #endif

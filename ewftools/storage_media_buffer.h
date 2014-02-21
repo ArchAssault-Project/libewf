@@ -1,7 +1,7 @@
 /*
  * Storage media buffer
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -31,20 +31,10 @@
 extern "C" {
 #endif
 
-enum STORAGE_MEDIA_BUFFER_MODES
-{
-	STORAGE_MEDIA_BUFFER_MODE_BUFFERED	= 0,
-	STORAGE_MEDIA_BUFFER_MODE_CHUNK_DATA	= 1
-};
-
 typedef struct storage_media_buffer storage_media_buffer_t;
 
 struct storage_media_buffer
 {
-	/* The mode
-	 */
-	uint8_t mode;
-
 	/* The raw buffer
 	 */
 	uint8_t *raw_buffer;
@@ -57,6 +47,7 @@ struct storage_media_buffer
 	 */
 	size_t raw_buffer_data_size;
 
+#if defined( HAVE_LOW_LEVEL_FUNCTIONS )
         /* Value to indicate if the compression buffer
 	 * contains uncompressed data
 	 */
@@ -78,10 +69,6 @@ struct storage_media_buffer
 	 */
 	size_t compression_buffer_data_size;
 
-	/* The process count after read or write prepare
-	 */
-	size_t process_count;
-
 	/* The checksum buffer
 	 */
 	uint8_t *checksum_buffer;
@@ -94,11 +81,11 @@ struct storage_media_buffer
 	/* The checksum of the data within the buffer
 	 */
 	uint32_t checksum;
+#endif
 };
 
 int storage_media_buffer_initialize(
      storage_media_buffer_t **buffer,
-     uint8_t mode,
      size_t size,
      libcerror_error_t **error );
 

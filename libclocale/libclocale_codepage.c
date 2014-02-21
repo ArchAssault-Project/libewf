@@ -1,7 +1,7 @@
 /*
  * Codepage functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -23,9 +23,7 @@
 #include <types.h>
 
 #include "libclocale_codepage.h"
-#include "libclocale_definitions.h"
 #include "libclocale_libcerror.h"
-#include "libclocale_libcstring.h"
 
 /* If the codepage is not set strings are formatted using UTF-8
  */

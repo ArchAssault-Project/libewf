@@ -1,7 +1,7 @@
 /*
  * File stream functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -45,8 +45,7 @@
 #include "libcfile_stream.h"
 #include "libcfile_types.h"
 
-/* Creates a file stream
- * Make sure the value stream is referencing, is set to NULL
+/* Initializes the file stream
  * Returns 1 if successful or -1 on error
  */
 int libcfile_stream_initialize(
@@ -106,6 +105,11 @@ int libcfile_stream_initialize(
 
 		goto on_error;
 	}
+/* TODO
+#if defined( WINAPI ) && !defined( USE_CRT_FUNCTIONS )
+	internal_stream->handle = INVALID_HANDLE_VALUE;
+#endif
+*/
 	*stream = (libcfile_stream_t *) internal_stream;
 
 	return( 1 );
@@ -119,7 +123,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a file stream
+/* Frees the file stream including elements
  * Returns 1 if successful or -1 on error
  */
 int libcfile_stream_free(
@@ -145,6 +149,13 @@ int libcfile_stream_free(
 	{
 		internal_stream = (libcfile_internal_stream_t *) *stream;
 
+/* TODO
+#if defined( WINAPI ) && !defined( USE_CRT_FUNCTIONS )
+		if( internal_stream->handle != INVALID_HANDLE_VALUE )
+#else
+		if( internal_stream->stream != NULL )
+#endif
+*/
 		if( internal_stream->stream != NULL )
 		{
 			if( libcfile_stream_close(

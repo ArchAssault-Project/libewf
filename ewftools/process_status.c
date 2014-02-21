@@ -1,7 +1,7 @@
 /*
  * Process status functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -33,14 +33,279 @@
 #endif
 
 #include "byte_size_string.h"
-#include "ewftools_libcdatetime.h"
 #include "ewftools_libcerror.h"
-#include "ewftools_libcnotify.h"
 #include "ewftools_libcstring.h"
 #include "process_status.h"
 
-/* Creates process status information
- * Make sure the value X is referencing, is set to NULL
+#if defined( HAVE_CTIME ) || defined( HAVE_CTIME_R ) || defined( WINAPI )
+
+/* Retrieves a ctime formatted string
+ * The string must be at least 32 characters of size including the end of string character
+ * Returns 1 if successful or -1 on error
+ */
+int process_status_get_ctime_string(
+     const time_t *timestamp,
+     libcstring_system_character_t *string,
+     size_t string_size,
+     libcerror_error_t **error )
+{
+	static char *function                                    = "process_status_get_ctime_string";
+
+#if ( defined( HAVE_CTIME ) && !defined( HAVE_CTIME_R ) ) || ( defined( WINAPI ) && !defined( _MSC_VER ) )
+	const libcstring_system_character_t *static_ctime_string = NULL;
+	size_t static_ctime_string_length                        = 0;
+#endif
+
+	if( timestamp == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid timestamp.",
+		 function );
+
+		return( -1 );
+	}
+	if( string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid string.",
+		 function );
+
+		return( -1 );
+	}
+	if( string_size > (size_t) SSIZE_MAX )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_EXCEEDS_MAXIMUM,
+		 "%s: invalid string size value exceeds maximum.",
+		 function );
+
+		return( -1 );
+	}
+	if( string_size < 32 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_VALUE_TOO_SMALL,
+		 "%s: string too small.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( _MSC_VER )
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	if( _wctime_s(
+	     string,
+	     string_size,
+	     timestamp ) != 0 )
+#else
+	if( ctime_s(
+	     string,
+	     string_size,
+	     timestamp ) != 0 )
+#endif
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set string.",
+		 function );
+
+		return( -1 );
+	}
+
+#elif defined( HAVE_CTIME_R )
+/* Sanity check
+ */
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+#error Missing wide character ctime_r function
+#endif
+
+#if defined( HAVE_CTIME_R_SIZE )
+	if( ctime_r(
+	     timestamp,
+	     string,
+	     string_size ) == NULL )
+#else
+	if( ctime_r(
+	     timestamp,
+	     string ) == NULL )
+#endif
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set string.",
+		 function );
+
+		return( -1 );
+	}
+
+#else
+/* Sanity check
+ */
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER ) && !defined( WINAPI )
+#error Missing wide character ctime function
+#endif
+
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+	static_ctime_string = _wctime(
+	                       timestamp );
+#else
+	static_ctime_string = ctime(
+	                       timestamp );
+#endif
+	if( static_ctime_string == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to create static ctime string.",
+		 function );
+
+		return( -1 );
+	}
+	static_ctime_string_length = libcstring_system_string_length(
+	                              static_ctime_string );
+
+	if( libcstring_system_string_copy(
+	     string,
+	     static_ctime_string,
+	     static_ctime_string_length ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set string.",
+		 function );
+
+		return( -1 );
+	}
+	string[ static_ctime_string_length ] = 0;
+#endif
+
+	return( 1 );
+}
+
+#endif
+
+#if defined( HAVE_GMTIME ) || defined( HAVE_GMTIME_R ) || defined( WINAPI )
+
+/* Retrieves time elements in UTC (GMT)
+ * Returns 1 if successful or -1 on error
+ */
+int process_status_get_time_elements_in_utc(
+     const time_t *timestamp,
+     struct tm *time_elements,
+     libcerror_error_t **error )
+{
+	static char *function           = "process_status_get_time_elements_in_utc";
+
+#if !defined( HAVE_GMTIME_R ) && !defined( _MSC_VER )
+	struct tm *static_time_elements = NULL;
+#endif
+
+	if( timestamp == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid timestamp.",
+		 function );
+
+		return( -1 );
+	}
+	if( time_elements == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid time elements.",
+		 function );
+
+		return( -1 );
+	}
+#if defined( _MSC_VER )
+	if( gmtime_s(
+	     time_elements,
+	     timestamp ) != 0 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set time elements.",
+		 function );
+
+		return( -1 );
+	}
+
+#elif defined( HAVE_GMTIME_R )
+	if( gmtime_r(
+	     timestamp,
+	     time_elements ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to set time elements.",
+		 function );
+
+		return( -1 );
+	}
+
+#else
+	static_time_elements = gmtime(
+	                        timestamp );
+
+	if( static_time_elements == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+		 "%s: unable to create static time elements.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_copy(
+	     time_elements,
+	     static_time_elements,
+	     sizeof( struct tm ) ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+		 "%s: unable to set time elements.",
+		 function );
+
+		return( -1 );
+	}
+#endif
+
+	return( 1 );
+}
+
+#endif
+
+/* Initializes the process status information
  * Returns 1 if successful or -1 on error
  */
 int process_status_initialize(
@@ -102,50 +367,6 @@ int process_status_initialize(
 		 "%s: unable to clear process status.",
 		 function );
 
-		memory_free(
-		 *process_status );
-
-		*process_status = NULL;
-
-		return( -1 );
-	}
-	if( libcdatetime_elements_initialize(
-	     &( ( *process_status )->start_time_elements ),
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create start time elements.",
-		 function );
-
-		goto on_error;
-	}
-	if( libcdatetime_elements_initialize(
-	     &( ( *process_status )->current_time_elements ),
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create current time elements.",
-		 function );
-
-		goto on_error;
-	}
-	if( libcdatetime_elements_initialize(
-	     &( ( *process_status )->last_time_elements ),
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
-		 "%s: unable to create last time elements.",
-		 function );
-
 		goto on_error;
 	}
 	( *process_status )->status_process_string    = status_process_string;
@@ -167,7 +388,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees process status information
+/* Frees the process status information
  * Returns 1 if successful or -1 on error
  */
 int process_status_free(
@@ -175,7 +396,6 @@ int process_status_free(
      libcerror_error_t **error )
 {
 	static char *function = "process_status_free";
-	int result            = 1;
 
 	if( process_status == NULL )
 	{
@@ -190,51 +410,12 @@ int process_status_free(
 	}
 	if( *process_status != NULL )
 	{
-		if( libcdatetime_elements_free(
-		     &( ( *process_status )->start_time_elements ),
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free start time elements.",
-			 function );
-
-			result = -1;
-		}
-		if( libcdatetime_elements_free(
-		     &( ( *process_status )->current_time_elements ),
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free current time elements.",
-			 function );
-
-			result = -1;
-		}
-		if( libcdatetime_elements_free(
-		     &( ( *process_status )->last_time_elements ),
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
-			 "%s: unable to free last time elements.",
-			 function );
-
-			result = -1;
-		}
 		memory_free(
 		 *process_status );
 
 		*process_status = NULL;
 	}
-	return( result );
+	return( 1 );
 }
 
 /* Starts the process status information
@@ -260,57 +441,17 @@ int process_status_start(
 		return( -1 );
 	}
 	process_status->last_percentage = -1;
+	process_status->start_timestamp = time(
+	                                   NULL );
 
-	if( libcdatetime_elements_set_current_time_localtime(
-	     process_status->start_time_elements,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set start time elements to current time.",
-		 function );
-
-		return( -1 );
-	}
-	if( libcdatetime_elements_copy(
-	     process_status->current_time_elements,
-	     process_status->start_time_elements,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy start time elements to current.",
-		 function );
-
-		return( -1 );
-	}
-	if( libcdatetime_elements_copy(
-	     process_status->last_time_elements,
-	     process_status->start_time_elements,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-		 "%s: unable to copy start time elements to last.",
-		 function );
-
-		return( -1 );
-	}
 	if( ( process_status->output_stream != NULL )
 	 && ( process_status->print_status_information != 0 )
 	 && ( process_status->status_process_string != NULL ) )
 	{
-		if( libcdatetime_elements_copy_to_string(
-		     process_status->start_time_elements,
-		     (uint8_t *) time_string,
+		if( process_status_get_ctime_string(
+		     &( process_status->start_timestamp ),
+		     time_string,
 		     32,
-		     LIBCDATETIME_STRING_FORMAT_TYPE_CTIME | LIBCDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
 		     NULL ) == 1 )
 		{
 			fprintf(
@@ -342,11 +483,12 @@ int process_status_update(
      size64_t bytes_total,
      libcerror_error_t **error )
 {
-	static char *function               = "process_status_update";
-	int64_t number_of_seconds           = 0;
-	int64_t remaining_number_of_seconds = 0;
-	int64_t total_number_of_seconds     = 0;
-	int8_t new_percentage               = 0;
+	static char *function    = "process_status_update";
+	time_t seconds_current   = 0;
+	time_t seconds_total     = 0;
+	time_t seconds_remaining = 0;
+	time_t timestamp_current = 0;
+	int8_t new_percentage    = 0;
 
 	if( process_status == NULL )
 	{
@@ -368,67 +510,13 @@ int process_status_update(
 		{
 			new_percentage = (int8_t) ( ( bytes_read * 100 ) / bytes_total );
 		}
-		if( libcdatetime_elements_set_current_time_localtime(
-		     process_status->current_time_elements,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-			 "%s: unable to set current time elements to current time.",
-			 function );
-
-			return( -1 );
-		}
-		if( libcdatetime_elements_get_delta_in_seconds(
-		     process_status->current_time_elements,
-		     process_status->last_time_elements,
-		     &number_of_seconds,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine delta between last and current time.",
-			 function );
-
-			return( -1 );
-		}
 		/* Estimate the remaining time
 		 */
-		if( number_of_seconds > 3 )
+		timestamp_current = time( NULL );
+
+		if( ( new_percentage > process_status->last_percentage )
+		 && ( timestamp_current > process_status->last_timestamp ) )
 		{
-			if( libcdatetime_elements_copy(
-			     process_status->last_time_elements,
-			     process_status->current_time_elements,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-				 "%s: unable to copy current time elements to last.",
-				 function );
-
-				return( -1 );
-			}
-			if( libcdatetime_elements_get_delta_in_seconds(
-			     process_status->last_time_elements,
-			     process_status->start_time_elements,
-			     &number_of_seconds,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to determine delta between last and start time.",
-				 function );
-
-				return( -1 );
-			}
 			process_status->last_percentage = new_percentage;
 
 			fprintf(
@@ -457,16 +545,20 @@ int process_status_update(
 			 process_status->output_stream,
 			 ".\n" );
 
-			if( new_percentage > 0 )
+			if( ( timestamp_current > process_status->start_timestamp )
+			 && ( new_percentage > 0 ) )
 			{
-				total_number_of_seconds     = ( ( number_of_seconds * 100 ) / new_percentage );
-				remaining_number_of_seconds = total_number_of_seconds - number_of_seconds;
+				process_status->last_timestamp = timestamp_current;
+
+				seconds_current   = timestamp_current - process_status->start_timestamp;
+				seconds_total     = ( ( seconds_current * 100 ) / new_percentage );
+				seconds_remaining = seconds_total - seconds_current;
 
 				/* Negative time means nearly finished
 				 */
-				if( remaining_number_of_seconds < 0 )
+				if( seconds_remaining < 0 )
 				{
-					remaining_number_of_seconds = 0;
+					seconds_remaining = 0;
 				}
 				fprintf(
 				 process_status->output_stream,
@@ -474,16 +566,20 @@ int process_status_update(
 
 				process_status_timestamp_fprint(
 				 process_status->output_stream,
-				 remaining_number_of_seconds );
+				 seconds_remaining );
 
 				process_status_bytes_per_second_fprint(
 				 process_status->output_stream,
 				 bytes_total,
-				 total_number_of_seconds );
+				 seconds_total );
+
+				fprintf(
+				 process_status->output_stream,
+				 ".\n" );
 			}
 			fprintf(
 			 process_status->output_stream,
-			 ".\n\n" );
+			 "\n" );
 		}
 	}
 	return( 1 );
@@ -497,8 +593,9 @@ int process_status_update_unknown_total(
      size64_t bytes_read,
      libcerror_error_t **error )
 {
-	static char *function     = "process_status_update_unknown_total";
-	int64_t number_of_seconds = 0;
+	static char *function    = "process_status_update_unknown_total";
+	time_t seconds_current   = 0;
+	time_t timestamp_current = 0;
 
 	if( process_status == NULL )
 	{
@@ -515,96 +612,54 @@ int process_status_update_unknown_total(
 	 && ( process_status->print_status_information != 0 )
 	 && ( process_status->status_update_string != NULL ) )
 	{
-		if( libcdatetime_elements_set_current_time_localtime(
-		     process_status->current_time_elements,
-		     error ) != 1 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-			 "%s: unable to set current time elements to current time.",
-			 function );
+		timestamp_current = time( NULL );
 
-			return( -1 );
-		}
-		if( libcdatetime_elements_get_delta_in_seconds(
-		     process_status->current_time_elements,
-		     process_status->last_time_elements,
-		     &number_of_seconds,
-		     error ) != 1 )
+		if( timestamp_current > process_status->last_timestamp )
 		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-			 "%s: unable to determine delta between last and current time.",
-			 function );
-
-			return( -1 );
-		}
-		if( number_of_seconds > 3 )
-		{
-			if( libcdatetime_elements_copy(
-			     process_status->last_time_elements,
-			     process_status->current_time_elements,
-			     error ) != 1 )
+			/* Update state
+			 * - if no status was printed before
+			 * - or input has grown > 10 MiB
+			 * - or the last update was 30 seconds ago
+			 */
+			if( ( process_status->last_bytes_total == 0 )
+			 || ( bytes_read > ( process_status->last_bytes_total + ( 10 * 1024 * 1024 ) ) )
+			 || ( ( timestamp_current - process_status->last_timestamp ) > 30 ) )
 			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-				 "%s: unable to copy current time elements to last.",
-				 function );
+				process_status->last_timestamp   = timestamp_current;
+				process_status->last_bytes_total = bytes_read;
 
-				return( -1 );
+				fprintf(
+				 process_status->output_stream,
+				 "Status: %" PRIs_LIBCSTRING_SYSTEM "",
+				 process_status->status_update_string );
+
+				process_status_bytes_fprint(
+				 process_status->output_stream,
+				 bytes_read );
+
+				fprintf(
+				 process_status->output_stream,
+				 "\n" );
+
+				seconds_current = timestamp_current - process_status->start_timestamp;
+
+				fprintf(
+				 process_status->output_stream,
+				 "       " );
+
+				process_status_timestamp_fprint(
+				 process_status->output_stream,
+				 seconds_current );
+
+				process_status_bytes_per_second_fprint(
+				 process_status->output_stream,
+				 bytes_read,
+				 seconds_current );
+
+				fprintf(
+				 process_status->output_stream,
+				 ".\n\n" );
 			}
-			if( libcdatetime_elements_get_delta_in_seconds(
-			     process_status->last_time_elements,
-			     process_status->start_time_elements,
-			     &number_of_seconds,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to determine delta between last and start time.",
-				 function );
-
-				return( -1 );
-			}
-			process_status->last_bytes_total = bytes_read;
-
-			fprintf(
-			 process_status->output_stream,
-			 "Status: %" PRIs_LIBCSTRING_SYSTEM "",
-			 process_status->status_update_string );
-
-			process_status_bytes_fprint(
-			 process_status->output_stream,
-			 bytes_read );
-
-			fprintf(
-			 process_status->output_stream,
-			 "\n" );
-
-			fprintf(
-			 process_status->output_stream,
-			 "       " );
-
-			process_status_timestamp_fprint(
-			 process_status->output_stream,
-			 number_of_seconds );
-
-			process_status_bytes_per_second_fprint(
-			 process_status->output_stream,
-			 bytes_read,
-			 number_of_seconds );
-
-			fprintf(
-			 process_status->output_stream,
-			 ".\n\n" );
 		}
 	}
 	return( 1 );
@@ -621,9 +676,9 @@ int process_status_stop(
 {
 	libcstring_system_character_t time_string[ 32 ];
 
-	static char *function                              = "process_status_start";
+	static char *function                      = "process_status_start";
 	const libcstring_system_character_t *status_string = NULL;
-	int64_t total_number_of_seconds                    = 0;
+	time_t seconds_total                       = 0;
 
 	if( process_status == NULL )
 	{
@@ -649,19 +704,9 @@ int process_status_stop(
 
 		return( -1 );
 	}
-	if( libcdatetime_elements_set_current_time_localtime(
-	     process_status->last_time_elements,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set last time elements to current time.",
-		 function );
+	process_status->last_timestamp = time(
+	                                  NULL );
 
-		return( -1 );
-	}
 	if( ( process_status->output_stream != NULL )
 	 && ( process_status->print_status_information != 0 )
 	 && ( process_status->status_process_string != NULL ) )
@@ -684,11 +729,10 @@ int process_status_stop(
 		 process_status->status_process_string,
 		 status_string );
 
-		if( libcdatetime_elements_copy_to_string(
-		     process_status->last_time_elements,
-		     (uint8_t *) time_string,
+		if( process_status_get_ctime_string(
+		     &( process_status->last_timestamp ),
+		     time_string,
 		     32,
-		     LIBCDATETIME_STRING_FORMAT_TYPE_CTIME | LIBCDATETIME_STRING_FORMAT_FLAG_DATE_TIME,
 		     NULL ) == 1 )
 		{
 			fprintf(
@@ -706,46 +750,29 @@ int process_status_stop(
 	 	 && ( process_status->status_summary_string != NULL )
 		 && ( bytes_total > 0 ) )
 		{
-			fprintf(
-			 process_status->output_stream,
-			 "\n" );
+			seconds_total = process_status->last_timestamp - process_status->start_timestamp;
 
-			if( libcdatetime_elements_get_delta_in_seconds(
-			     process_status->last_time_elements,
-			     process_status->start_time_elements,
-			     &total_number_of_seconds,
-			     error ) != 1 )
-			{
-				libcerror_error_set(
-				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-				 "%s: unable to determine delta between last and start time.",
-				 function );
-
-				return( -1 );
-			}
 			fprintf(
-			 process_status->output_stream,
-			 "%" PRIs_LIBCSTRING_SYSTEM ":",
-			 process_status->status_summary_string );
+			process_status->output_stream,
+			"%" PRIs_LIBCSTRING_SYSTEM ":",
+			process_status->status_summary_string );
 
 			process_status_bytes_fprint(
-			 process_status->output_stream,
-			 bytes_total );
+			process_status->output_stream,
+			bytes_total );
 
 			process_status_timestamp_fprint(
-			 process_status->output_stream,
-			 total_number_of_seconds );
+			process_status->output_stream,
+			seconds_total );
 
 			process_status_bytes_per_second_fprint(
-			 process_status->output_stream,
-			 bytes_total,
-			 total_number_of_seconds );
+			process_status->output_stream,
+			bytes_total,
+			seconds_total );
 
 			fprintf(
-			 process_status->output_stream,
-			 ".\n" );
+			process_status->output_stream,
+			".\n" );
 		}
 	}
 	return( 1 );
@@ -755,94 +782,56 @@ int process_status_stop(
  */
 void process_status_timestamp_fprint(
       FILE *stream,
-      int64_t number_of_seconds )
+      time_t timestamp )
 {
-	libcdatetime_elements_t *time_elements = NULL;
-	libcerror_error_t *error               = NULL;
-	uint16_t day_of_year                   = 0;
-	uint8_t hours                          = 0;
-	uint8_t minutes                        = 0;
-	uint8_t seconds                        = 0;
+	struct tm time_elements;
 
 	if( stream == NULL )
 	{
 		return;
 	}
-	if( libcdatetime_elements_initialize(
+	if( process_status_get_time_elements_in_utc(
+	     &timestamp,
 	     &time_elements,
-	     &error ) != 1 )
+	     NULL ) == 1 )
 	{
-		goto on_error;
-	}
-	if( libcdatetime_elements_set_from_delta_in_seconds(
-	     time_elements,
-	     number_of_seconds,
-	     &error ) != 1 )
-	{
-		goto on_error;
-	}
-	if( libcdatetime_elements_get_day_of_year(
-	     time_elements,
-	     &day_of_year,
-	     &error ) != 1 )
-	{
-		goto on_error;
-	}
-	if( libcdatetime_elements_get_time_values(
-	     time_elements,
-	     &hours,
-	     &minutes,
-	     &seconds,
-	     &error ) != 1 )
-	{
-		goto on_error;
-	}
-	fprintf(
-	 stream,
-	 " in" );
+		fprintf(
+		 stream,
+		 " in" );
 
-	if( day_of_year > 0 )
-	{
+		if( time_elements.tm_isdst != 0 )
+		{
+			time_elements.tm_hour -= 1;
+			time_elements.tm_isdst = 0;	
+		}
+		if( time_elements.tm_yday > 0 )
+		{
+			fprintf(
+			 stream,
+			 " %i day(s), %i hour(s), %i minute(s) and",
+			 time_elements.tm_yday,
+			 time_elements.tm_hour,
+			 time_elements.tm_min );
+		}
+		else if( time_elements.tm_hour > 0 )
+		{
+			fprintf(
+			 stream,
+			 " %i hour(s), %i minute(s) and",
+			 time_elements.tm_hour,
+			 time_elements.tm_min );
+		}
+		else if( time_elements.tm_min > 0 )
+		{
+			fprintf(
+			 stream,
+			 " %i minute(s) and",
+			 time_elements.tm_min );
+		}
 		fprintf(
 		 stream,
-		 " %" PRIu16 " day(s), %" PRIu8 " hour(s), %" PRIu8 " minute(s) and",
-		 day_of_year,
-		 hours,
-		 minutes );
-	}
-	else if( hours > 0 )
-	{
-		fprintf(
-		 stream,
-		 " %" PRIu8 " hour(s), %" PRIu8 " minute(s) and",
-		 hours,
-		 minutes );
-	}
-	else if( minutes > 0 )
-	{
-		fprintf(
-		 stream,
-		 " %" PRIu8 " minute(s) and",
-		 minutes );
-	}
-	fprintf(
-	 stream,
-	 " %" PRIu8 " second(s)",
-	 seconds );
-
-on_error:
-	if( error != NULL )
-	{
-		libcnotify_print_error_backtrace(
-		 error );
-		libcerror_error_free(
-		 &error );
-	}
-	if( time_elements != NULL )
-	{
-		libcdatetime_elements_free(
-		 &time_elements,
-		 NULL );
+		 " %i second(s)",
+		 time_elements.tm_sec );
 	}
 }
 
@@ -859,10 +848,6 @@ void process_status_bytes_per_second_fprint(
 	int result                = 0;
 
 	if( stream == NULL )
-	{
-		return;
-	}
-	if( seconds == 0 )
 	{
 		return;
 	}

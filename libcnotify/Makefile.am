@@ -1,4 +1,3 @@
-if HAVE_LOCAL_LIBCNOTIFY
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
@@ -16,7 +15,6 @@ libcnotify_la_SOURCES = \
 	libcnotify_stream.c libcnotify_stream.h \
 	libcnotify_unused.h \
 	libcnotify_verbose.c libcnotify_verbose.h
-endif
 
 MAINTAINERCLEANFILES = \
 	Makefile.in

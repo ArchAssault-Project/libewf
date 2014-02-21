@@ -1,7 +1,7 @@
 /*
  * Binary data value functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -64,9 +64,9 @@ int libfvalue_binary_data_copy_from_byte_stream(
      int encoding,
      libcerror_error_t **error );
 
-int libfvalue_binary_data_get_utf8_string_size(
+int libfvalue_binary_data_get_string_size(
      libfvalue_binary_data_t *binary_data,
-     size_t *utf8_string_size,
+     size_t *string_size,
      uint32_t string_format_flags,
      libcerror_error_t **error );
 
@@ -78,23 +78,11 @@ int libfvalue_binary_data_copy_to_utf8_string_with_index(
      uint32_t string_format_flags,
      libcerror_error_t **error );
 
-int libfvalue_binary_data_get_utf16_string_size(
-     libfvalue_binary_data_t *binary_data,
-     size_t *utf16_string_size,
-     uint32_t string_format_flags,
-     libcerror_error_t **error );
-
 int libfvalue_binary_data_copy_to_utf16_string_with_index(
      libfvalue_binary_data_t *binary_data,
      uint16_t *utf16_string,
      size_t utf16_string_size,
      size_t *utf16_string_index,
-     uint32_t string_format_flags,
-     libcerror_error_t **error );
-
-int libfvalue_binary_data_get_utf32_string_size(
-     libfvalue_binary_data_t *binary_data,
-     size_t *utf32_string_size,
      uint32_t string_format_flags,
      libcerror_error_t **error );
 

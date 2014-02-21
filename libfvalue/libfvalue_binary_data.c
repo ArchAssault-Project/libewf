@@ -1,7 +1,7 @@
 /*
  * Binary data value functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -28,8 +28,7 @@
 #include "libfvalue_libcerror.h"
 #include "libfvalue_libuna.h"
 
-/* Creates a binary data
- * Make sure the value binary_data is referencing, is set to NULL
+/* Initialize a binary data
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_binary_data_initialize(
@@ -250,16 +249,16 @@ int libfvalue_binary_data_copy_from_byte_stream(
 	return( 1 );
 }
 
-/* Retrieves the size of an UTF-8 formatted string of the binary data
+/* Retrieves the size of a string of the binary data
  * Returns 1 if successful or -1 on error
  */
-int libfvalue_binary_data_get_utf8_string_size(
+int libfvalue_binary_data_get_string_size(
      libfvalue_binary_data_t *binary_data,
-     size_t *utf8_string_size,
+     size_t *string_size,
      uint32_t string_format_flags,
      libcerror_error_t **error )
 {
-	static char *function       = "libfvalue_binary_data_get_utf8_string_size";
+	static char *function       = "libfvalue_binary_data_get_string_size";
 	uint32_t format_flags       = 0;
 	uint32_t string_format_type = 0;
 	uint32_t supported_flags    = 0;
@@ -306,18 +305,18 @@ int libfvalue_binary_data_get_utf8_string_size(
 
 		return( -1 );
 	}
-	if( utf8_string_size == NULL )
+	if( string_size == NULL )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-8 string size.",
+		 "%s: invalid string size.",
 		 function );
 
 		return( -1 );
 	}
-	*utf8_string_size = 0;
+	*string_size = 0;
 
 	if( ( binary_data->data != NULL )
 	 && ( binary_data->data_size != 0 ) )
@@ -331,7 +330,7 @@ int libfvalue_binary_data_get_utf8_string_size(
 				if( libuna_base16_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
-				     utf8_string_size,
+				     string_size,
 				     format_flags,
 				     error ) != 1 )
 				{
@@ -339,7 +338,7 @@ int libfvalue_binary_data_get_utf8_string_size(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-8 string of base16 formatted binary data.",
+					 "%s: unable to determine size of string of base16 formatted binary data.",
 					 function );
 
 					return( -1 );
@@ -354,7 +353,7 @@ int libfvalue_binary_data_get_utf8_string_size(
 				if( libuna_base32_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
-				     utf8_string_size,
+				     string_size,
 				     format_flags,
 				     error ) != 1 )
 				{
@@ -362,7 +361,7 @@ int libfvalue_binary_data_get_utf8_string_size(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-8 string of base32 formatted binary data.",
+					 "%s: unable to determine size of string of base32 formatted binary data.",
 					 function );
 
 					return( -1 );
@@ -377,7 +376,7 @@ int libfvalue_binary_data_get_utf8_string_size(
 				if( libuna_base64_stream_size_from_byte_stream(
 				     binary_data->data,
 				     binary_data->data_size,
-				     utf8_string_size,
+				     string_size,
 				     format_flags,
 				     error ) != 1 )
 				{
@@ -385,7 +384,7 @@ int libfvalue_binary_data_get_utf8_string_size(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-8 string of base64 formatted binary data.",
+					 "%s: unable to determine size of string of base64 formatted binary data.",
 					 function );
 
 					return( -1 );
@@ -395,7 +394,7 @@ int libfvalue_binary_data_get_utf8_string_size(
 	}
 	/* Add space for the end-of-string character
 	 */
-	*utf8_string_size += 1;
+	*string_size += 1;
 
 	return( 1 );
 }
@@ -589,217 +588,6 @@ int libfvalue_binary_data_copy_to_utf8_string_with_index(
 	return( 1 );
 }
 
-/* Retrieves the size of an UTF-16 formatted string of the binary data
- * Returns 1 if successful or -1 on error
- */
-int libfvalue_binary_data_get_utf16_string_size(
-     libfvalue_binary_data_t *binary_data,
-     size_t *utf16_string_size,
-     uint32_t string_format_flags,
-     libcerror_error_t **error )
-{
-	static char *function       = "libfvalue_binary_data_get_utf16_string_size";
-	uint32_t format_flags       = 0;
-	uint32_t string_format_type = 0;
-	uint32_t supported_flags    = 0;
-
-	if( binary_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid binary data.",
-		 function );
-
-		return( -1 );
-	}
-	supported_flags = 0x000000ffUL
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
-
-	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
-		 function,
-		 string_format_flags );
-
-		return( -1 );
-	}
-	string_format_type = string_format_flags & 0x000000ffUL;
-
-	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf16_string_size == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-16 string size.",
-		 function );
-
-		return( -1 );
-	}
-	*utf16_string_size = 0;
-
-	if( ( binary_data->data != NULL )
-	 && ( binary_data->data_size != 0 ) )
-	{
-		switch( string_format_type )
-		{
-			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16:
-				format_flags = LIBUNA_BASE16_VARIANT_CASE_UPPER
-					     | LIBUNA_BASE16_VARIANT_CHARACTER_LIMIT_NONE;
-
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
-				if( libuna_base16_stream_size_from_byte_stream(
-				     binary_data->data,
-				     binary_data->data_size,
-				     utf16_string_size,
-				     format_flags,
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-16 string of base16 formatted binary data.",
-					 function );
-
-					return( -1 );
-				}
-				break;
-
-			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32:
-				format_flags = LIBUNA_BASE32_VARIANT_ALPHABET_NORMAL
-					     | LIBUNA_BASE32_VARIANT_CHARACTER_LIMIT_NONE
-					     | LIBUNA_BASE32_VARIANT_PADDING_REQUIRED;
-
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
-				if( libuna_base32_stream_size_from_byte_stream(
-				     binary_data->data,
-				     binary_data->data_size,
-				     utf16_string_size,
-				     format_flags,
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-16 string of base32 formatted binary data.",
-					 function );
-
-					return( -1 );
-				}
-				break;
-
-			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64:
-				format_flags = LIBUNA_BASE64_VARIANT_ALPHABET_NORMAL
-					     | LIBUNA_BASE64_VARIANT_CHARACTER_LIMIT_NONE
-					     | LIBUNA_BASE64_VARIANT_PADDING_REQUIRED;
-
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
-				if( libuna_base64_stream_size_from_byte_stream(
-				     binary_data->data,
-				     binary_data->data_size,
-				     utf16_string_size,
-				     format_flags,
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-16 string of base64 formatted binary data.",
-					 function );
-
-					return( -1 );
-				}
-				break;
-		}
-		/* The size returned is the size of the byte stream and the size needed
-		 * should be the number of characters
-		 */
-		*utf16_string_size /= sizeof( uint16_t );
-	}
-	/* Add space for the end-of-string character
-	 */
-	*utf16_string_size += 1;
-
-	return( 1 );
-}
-
 /* Copies the binary data to an UTF-16 encoded string
  * Returns 1 if successful or -1 on error
  */
@@ -813,7 +601,6 @@ int libfvalue_binary_data_copy_to_utf16_string_with_index(
 {
 	static char *function       = "libfvalue_binary_data_copy_to_utf16_string_with_index";
 	size_t string_index         = 0;
-	size_t string_size          = 0;
 	uint32_t format_flags       = 0;
 	uint32_t string_format_type = 0;
 	uint32_t supported_flags    = 0;
@@ -940,223 +727,6 @@ int libfvalue_binary_data_copy_to_utf16_string_with_index(
 	if( ( binary_data->data != NULL )
 	 && ( binary_data->data_size != 0 ) )
 	{
-		string_index = *utf16_string_index * sizeof( uint16_t );
-		string_size  = utf16_string_size * sizeof( uint16_t );
-
-		switch( string_format_type )
-		{
-			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16:
-				format_flags = LIBUNA_BASE16_VARIANT_CASE_UPPER
-					     | LIBUNA_BASE16_VARIANT_CHARACTER_LIMIT_NONE;
-
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE16_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
-				if( libuna_base16_stream_with_index_copy_from_byte_stream(
-				     (uint8_t *) utf16_string,
-				     string_size,
-				     &string_index,
-				     binary_data->data,
-				     binary_data->data_size,
-				     format_flags,
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-					 "%s: unable to copy base16 formatted binary data to UTF-16 string.",
-					 function );
-
-					return( -1 );
-				}
-				break;
-
-			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32:
-				format_flags = LIBUNA_BASE32_VARIANT_ALPHABET_NORMAL
-					     | LIBUNA_BASE32_VARIANT_CHARACTER_LIMIT_NONE
-					     | LIBUNA_BASE32_VARIANT_PADDING_REQUIRED;
-
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE32_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
-				if( libuna_base32_stream_with_index_copy_from_byte_stream(
-				     (uint8_t *) utf16_string,
-				     string_size,
-				     &string_index,
-				     binary_data->data,
-				     binary_data->data_size,
-				     format_flags,
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-					 "%s: unable to copy base32 formatted binary data to UTF-16 string.",
-					 function );
-
-					return( -1 );
-				}
-				break;
-
-			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64:
-				format_flags = LIBUNA_BASE64_VARIANT_ALPHABET_NORMAL
-					     | LIBUNA_BASE64_VARIANT_CHARACTER_LIMIT_NONE
-					     | LIBUNA_BASE64_VARIANT_PADDING_REQUIRED;
-
-				if( _BYTE_STREAM_HOST_IS_ENDIAN_BIG )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_BIG_ENDIAN;
-				}
-				else if( _BYTE_STREAM_HOST_IS_ENDIAN_LITTLE )
-				{
-					format_flags |= LIBUNA_BASE64_VARIANT_ENCODING_UTF16_LITTLE_ENDIAN;
-				}
-				else
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-					 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-					 "%s: unsupported host byte order.",
-					 function );
-
-					return( -1 );
-				}
-				if( libuna_base64_stream_with_index_copy_from_byte_stream(
-				     (uint8_t *) utf16_string,
-				     string_size,
-				     &string_index,
-				     binary_data->data,
-				     binary_data->data_size,
-				     format_flags,
-				     error ) != 1 )
-				{
-					libcerror_error_set(
-					 error,
-					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
-					 "%s: unable to copy base64 formatted binary data to UTF-16 string.",
-					 function );
-
-					return( -1 );
-				}
-				break;
-		}
-		*utf16_string_index = string_index / sizeof( uint16_t );
-	}
-	utf16_string[ *utf16_string_index ] = 0;
-
-	*utf16_string_index += 1;
-
-	return( 1 );
-}
-
-/* Retrieves the size of an UTF-32 formatted string of the binary data
- * Returns 1 if successful or -1 on error
- */
-int libfvalue_binary_data_get_utf32_string_size(
-     libfvalue_binary_data_t *binary_data,
-     size_t *utf32_string_size,
-     uint32_t string_format_flags,
-     libcerror_error_t **error )
-{
-	static char *function       = "libfvalue_binary_data_get_utf32_string_size";
-	uint32_t format_flags       = 0;
-	uint32_t string_format_type = 0;
-	uint32_t supported_flags    = 0;
-
-	if( binary_data == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid binary data.",
-		 function );
-
-		return( -1 );
-	}
-	supported_flags = 0x000000ffUL
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_LOWER
-	                | LIBFVALUE_BINARY_DATA_FORMAT_FLAG_CASE_UPPER;
-
-	if( ( string_format_flags & ~( supported_flags ) ) != 0 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format flags: 0x%08" PRIx32 ".",
-		 function,
-		 string_format_flags );
-
-		return( -1 );
-	}
-	string_format_type = string_format_flags & 0x000000ffUL;
-
-	if( ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32 )
-	 && ( string_format_type != LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64 ) )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_UNSUPPORTED_VALUE,
-		 "%s: unsupported string format type.",
-		 function );
-
-		return( -1 );
-	}
-	if( utf32_string_size == NULL )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
-		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid UTF-32 string size.",
-		 function );
-
-		return( -1 );
-	}
-	*utf32_string_size = 0;
-
-	if( ( binary_data->data != NULL )
-	 && ( binary_data->data_size != 0 ) )
-	{
 		switch( string_format_type )
 		{
 			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16:
@@ -1182,22 +752,28 @@ int libfvalue_binary_data_get_utf32_string_size(
 
 					return( -1 );
 				}
-				if( libuna_base16_stream_size_from_byte_stream(
+				string_index = *utf16_string_index * sizeof( uint16_t );
+
+				if( libuna_base16_stream_with_index_copy_from_byte_stream(
+				     (uint8_t *) utf16_string,
+				     utf16_string_size,
+				     &string_index,
 				     binary_data->data,
 				     binary_data->data_size,
-				     utf32_string_size,
 				     format_flags,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-32 string of base16 formatted binary data.",
+					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+					 "%s: unable to copy base16 formatted binary data to UTF-16 string.",
 					 function );
 
 					return( -1 );
 				}
+				*utf16_string_index = string_index / sizeof( uint16_t );
+
 				break;
 
 			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32:
@@ -1224,22 +800,28 @@ int libfvalue_binary_data_get_utf32_string_size(
 
 					return( -1 );
 				}
-				if( libuna_base32_stream_size_from_byte_stream(
+				string_index = *utf16_string_index * sizeof( uint16_t );
+
+				if( libuna_base32_stream_with_index_copy_from_byte_stream(
+				     (uint8_t *) utf16_string,
+				     utf16_string_size,
+				     &string_index,
 				     binary_data->data,
 				     binary_data->data_size,
-				     utf32_string_size,
 				     format_flags,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-32 string of base32 formatted binary data.",
+					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+					 "%s: unable to copy base32 formatted binary data to UTF-16 string.",
 					 function );
 
 					return( -1 );
 				}
+				*utf16_string_index = string_index / sizeof( uint16_t );
+
 				break;
 
 			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64:
@@ -1266,32 +848,34 @@ int libfvalue_binary_data_get_utf32_string_size(
 
 					return( -1 );
 				}
-				if( libuna_base64_stream_size_from_byte_stream(
+				string_index = *utf16_string_index * sizeof( uint16_t );
+
+				if( libuna_base64_stream_with_index_copy_from_byte_stream(
+				     (uint8_t *) utf16_string,
+				     utf16_string_size,
+				     &string_index,
 				     binary_data->data,
 				     binary_data->data_size,
-				     utf32_string_size,
 				     format_flags,
 				     error ) != 1 )
 				{
 					libcerror_error_set(
 					 error,
 					 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-					 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-					 "%s: unable to determine size of UTF-32 string of base64 formatted binary data.",
+					 LIBCERROR_RUNTIME_ERROR_COPY_FAILED,
+					 "%s: unable to copy base64 formatted binary data to UTF-16 string.",
 					 function );
 
 					return( -1 );
 				}
+				*utf16_string_index = string_index / sizeof( uint16_t );
+
 				break;
 		}
-		/* The size returned is the size of the byte stream and the size needed
-		 * should be the number of characters
-		 */
-		*utf32_string_size /= sizeof( uint32_t );
 	}
-	/* Add space for the end-of-string character
-	 */
-	*utf32_string_size += 1;
+	utf16_string[ *utf16_string_index ] = 0;
+
+	*utf16_string_index += 1;
 
 	return( 1 );
 }
@@ -1309,7 +893,6 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 {
 	static char *function       = "libfvalue_binary_data_copy_to_utf32_string_with_index";
 	size_t string_index         = 0;
-	size_t string_size          = 0;
 	uint32_t format_flags       = 0;
 	uint32_t string_format_type = 0;
 	uint32_t supported_flags    = 0;
@@ -1436,9 +1019,6 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 	if( ( binary_data->data != NULL )
 	 && ( binary_data->data_size != 0 ) )
 	{
-		string_index = *utf32_string_index * sizeof( uint32_t );
-		string_size  = utf32_string_size * sizeof( uint32_t );
-
 		switch( string_format_type )
 		{
 			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE16:
@@ -1464,9 +1044,11 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 
 					return( -1 );
 				}
+				string_index = *utf32_string_index * sizeof( uint32_t );
+
 				if( libuna_base16_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf32_string,
-				     string_size,
+				     utf32_string_size,
 				     &string_index,
 				     binary_data->data,
 				     binary_data->data_size,
@@ -1482,6 +1064,8 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 
 					return( -1 );
 				}
+				*utf32_string_index = string_index / sizeof( uint32_t );
+
 				break;
 
 			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE32:
@@ -1508,9 +1092,11 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 
 					return( -1 );
 				}
+				string_index = *utf32_string_index * sizeof( uint32_t );
+
 				if( libuna_base32_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf32_string,
-				     string_size,
+				     utf32_string_size,
 				     &string_index,
 				     binary_data->data,
 				     binary_data->data_size,
@@ -1526,6 +1112,8 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 
 					return( -1 );
 				}
+				*utf32_string_index = string_index / sizeof( uint32_t );
+
 				break;
 
 			case LIBFVALUE_BINARY_DATA_FORMAT_TYPE_BASE64:
@@ -1552,9 +1140,11 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 
 					return( -1 );
 				}
+				string_index = *utf32_string_index * sizeof( uint32_t );
+
 				if( libuna_base64_stream_with_index_copy_from_byte_stream(
 				     (uint8_t *) utf32_string,
-				     string_size,
+				     utf32_string_size,
 				     &string_index,
 				     binary_data->data,
 				     binary_data->data_size,
@@ -1570,9 +1160,10 @@ int libfvalue_binary_data_copy_to_utf32_string_with_index(
 
 					return( -1 );
 				}
+				*utf32_string_index = string_index / sizeof( uint32_t );
+
 				break;
 		}
-		*utf32_string_index = string_index / sizeof( uint32_t );
 	}
 	utf32_string[ *utf32_string_index ] = 0;
 

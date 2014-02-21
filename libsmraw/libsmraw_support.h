@@ -1,7 +1,7 @@
 /*
  * Support functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -31,6 +31,34 @@
 #if defined( __cplusplus )
 extern "C" {
 #endif
+
+enum LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMAS
+{
+	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_UNKNOWN	= 0,
+
+	/* Numeric naming schema e.g.
+	 * .1, .2, ... .10 ...
+	 * .000, .001, ... .010 ...
+	 * PREFIX000, PREFIX001, ...
+	 */
+	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_NUMERIC	= (uint8_t) 'n',
+
+	/* Single naming schema e.g.
+	 * .dd
+	 * .raw
+	 */
+	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_SINGLE	= (uint8_t) '1',
+
+	/* Split naming schema e.g.
+	 * PREFIXaa, PREFIXab, ...
+	 */
+	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_SPLIT	= (uint8_t) 's',
+
+	/* XofN naming schema e.g.
+	 * PREFIX.1of5, PREFIX.2of5, ...
+	 */
+	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_X_OF_N	= (uint8_t) 'x'
+};
 
 #if !defined( HAVE_LOCAL_LIBSMRAW )
 

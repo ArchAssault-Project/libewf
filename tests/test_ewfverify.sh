@@ -2,7 +2,7 @@
 #
 # ewfverify testing script
 #
-# Copyright (c) 2006-2012, Joachim Metz <joachim.metz@gmail.com>
+# Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
 #
 # Refer to AUTHORS for acknowledgements.
 #
@@ -87,17 +87,7 @@ then
 	else
 		for FILENAME in `${LS} ${INPUT}/*.[esE]01 | ${TR} ' ' '\n'`;
 		do
-			if [ "${FILENAME}" = "${INPUT}/floppy-ewf1.35-best-compression.E01" ];
-			then
-				# experimental version only
-				echo;
-
-			elif [ "${FILENAME}" = "${INPUT}/floppy-ewf1.35-nocompression.E01" ];
-			then
-				# experimental version only
-				echo;
-
-			elif ! test_verify "${FILENAME}";
+			if ! test_verify "${FILENAME}";
 			then
 				exit ${EXIT_FAILURE};
 			fi

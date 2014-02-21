@@ -1,7 +1,7 @@
 /*
  * Value functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -25,7 +25,6 @@
 #include "libfvalue_binary_data.h"
 #include "libfvalue_data_handle.h"
 #include "libfvalue_definitions.h"
-#include "libfvalue_filetime.h"
 #include "libfvalue_floating_point.h"
 #include "libfvalue_integer.h"
 #include "libfvalue_libcerror.h"
@@ -126,8 +125,7 @@ const char *libfvalue_value_type_descriptions[ 27 ] = {
 	"NT Security Identifier (SID)",
 };
 
-/* Creates a value of a specific type
- * Make sure the value value is referencing, is set to NULL
+/* Initialize a value of a specific type
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_value_type_initialize(
@@ -290,15 +288,15 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          NULL,
 
 			          NULL,
-			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_get_utf8_string_size,
+			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_get_string_size,
 			          (int (*)(intptr_t *, uint8_t *, size_t, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_copy_to_utf8_string_with_index,
 
 			          NULL,
-			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_get_utf16_string_size,
+			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_get_string_size,
 			          (int (*)(intptr_t *, uint16_t *, size_t, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_copy_to_utf16_string_with_index,
 
 			          NULL,
-			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_get_utf32_string_size,
+			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_get_string_size,
 			          (int (*)(intptr_t *, uint32_t *, size_t, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_binary_data_copy_to_utf32_string_with_index,
 
 			          error );
@@ -333,8 +331,8 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          (int (*)(intptr_t *, uint64_t, size_t, libcerror_error_t **)) &libfvalue_floating_point_copy_from_integer,
 			          (int (*)(intptr_t *, uint64_t *, size_t *, libcerror_error_t **)) &libfvalue_floating_point_copy_to_integer,
 
-			          (int (*)(intptr_t *, double, size_t, libcerror_error_t **)) &libfvalue_floating_point_copy_from_floating_point,
-			          (int (*)(intptr_t *, double *, size_t *, libcerror_error_t **)) &libfvalue_floating_point_copy_to_floating_point,
+			          NULL,
+			          NULL,
 
 			          (int (*)(intptr_t *, const uint8_t *, size_t, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_floating_point_copy_from_utf8_string_with_index,
 			          (int (*)(intptr_t *, size_t *, uint32_t, libcerror_error_t **)) &libfvalue_floating_point_get_string_size,
@@ -526,8 +524,8 @@ int libfvalue_value_type_initialize_with_data_handle(
 			          (int (*)(intptr_t *, const uint8_t *, size_t, int, libcerror_error_t **)) &libfdatetime_filetime_copy_from_byte_stream,
 			          NULL,
 
-			          (int (*)(intptr_t *, uint64_t, size_t, libcerror_error_t **)) &libfvalue_filetime_copy_from_integer,
-			          (int (*)(intptr_t *, uint64_t *, size_t *, libcerror_error_t **)) &libfvalue_filetime_copy_to_integer,
+			          NULL,
+			          NULL,
 
 			          NULL,
 			          NULL,

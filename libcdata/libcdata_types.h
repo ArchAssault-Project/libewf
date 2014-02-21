@@ -1,7 +1,7 @@
 /*
  * The internal type definitions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -19,8 +19,8 @@
  * along with this software.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if !defined( _LIBCDATA_INTERNAL_TYPES_H )
-#define _LIBCDATA_INTERNAL_TYPES_H
+#if !defined( _LIBCDATA_TYPES_H )
+#define _LIBCDATA_TYPES_H
 
 #include <common.h>
 #include <types.h>

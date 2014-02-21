@@ -1,7 +1,7 @@
 /*
  * Reads data from a file or device and writes it in EWF format
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -117,7 +117,7 @@ void ewfacquire_usage_fprint(
 	                 "                  [ -o offset ] [ -p process_buffer_size ]\n"
 	                 "                  [ -P bytes_per_sector ] [ -r read_error_retries ]\n"
 	                 "                  [ -S segment_file_size ] [ -t target ] [ -T toc_file ]\n"
-	                 "                  [ -2 secondary_target ] [ -hqRsuvVwx ] source\n\n" );
+	                 "                  [ -2 secondary_target ] [ -hqRsuvVw ] source\n\n" );
 
 	fprintf( stream, "\tsource: the source file(s) or device\n\n" );
 
@@ -190,8 +190,6 @@ void ewfacquire_usage_fprint(
 	fprintf( stream, "\t-v:     verbose output to stderr\n" );
 	fprintf( stream, "\t-V:     print version\n" );
 	fprintf( stream, "\t-w:     zero sectors on read error (mimic EnCase like behavior)\n" );
-	fprintf( stream, "\t-x:     use the chunk data instead of the buffered read and write\n"
-	                 "\t        functions.\n" );
 	fprintf( stream, "\t-2:     specify the secondary target file (without extension) to write\n"
 	                 "\t        to\n" );
 }
@@ -202,7 +200,7 @@ void ewfacquire_signal_handler(
       libcsystem_signal_t signal LIBCSYSTEM_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error = NULL;
-	static char *function    = "ewfacquire_signal_handler";
+	static char *function   = "ewfacquire_signal_handler";
 
 	LIBCSYSTEM_UNREFERENCED_PARAMETER( signal )
 
@@ -558,7 +556,6 @@ int ewfacquire_read_input(
      off64_t resume_acquiry_offset,
      uint8_t swap_byte_pairs,
      uint8_t print_status_information,
-     uint8_t use_chunk_data_functions,
      log_handle_t *log_handle,
      libcerror_error_t **error )
 {
@@ -576,7 +573,6 @@ int ewfacquire_read_input(
 	ssize_t process_count                        = 0;
 	ssize_t write_count                          = 0;
 	uint32_t chunk_size                          = 0;
-	uint8_t storage_media_buffer_mode            = 0;
 	int number_of_read_errors                    = 0;
 	int read_error_iterator                      = 0;
 	int status                                   = PROCESS_STATUS_COMPLETED;
@@ -592,6 +588,7 @@ int ewfacquire_read_input(
 
 		return( -1 );
 	}
+#if !defined( HAVE_LOW_LEVEL_FUNCTIONS )
 	if( imaging_handle->process_buffer_size > (size_t) SSIZE_MAX )
 	{
 		libcerror_error_set(
@@ -603,6 +600,7 @@ int ewfacquire_read_input(
 
 		return( -1 );
 	}
+#endif
         if( imaging_handle->acquiry_size > (ssize64_t) INT64_MAX )
 	{
 		libcerror_error_set(
@@ -735,26 +733,20 @@ int ewfacquire_read_input(
 
 		goto on_error;
 	}
-	if( use_chunk_data_functions != 0 )
+#if defined( HAVE_LOW_LEVEL_FUNCTIONS )
+	process_buffer_size = (size_t) chunk_size;
+#else
+	if( imaging_handle->process_buffer_size == 0 )
 	{
-		process_buffer_size       = (size_t) chunk_size;
-		storage_media_buffer_mode = STORAGE_MEDIA_BUFFER_MODE_CHUNK_DATA;
+		process_buffer_size = (size_t) chunk_size;
 	}
 	else
 	{
-		if( imaging_handle->process_buffer_size == 0 )
-		{
-			process_buffer_size = (size_t) chunk_size;
-		}
-		else
-		{
-			process_buffer_size = imaging_handle->process_buffer_size;
-		}
-		storage_media_buffer_mode = STORAGE_MEDIA_BUFFER_MODE_BUFFERED;
+		process_buffer_size = imaging_handle->process_buffer_size;
 	}
+#endif
 	if( storage_media_buffer_initialize(
 	     &storage_media_buffer,
-	     storage_media_buffer_mode,
 	     process_buffer_size,
 	     error ) != 1 )
 	{
@@ -849,10 +841,9 @@ int ewfacquire_read_input(
 
 				goto on_error;
 			}
-			if( storage_media_buffer->mode == STORAGE_MEDIA_BUFFER_MODE_CHUNK_DATA )
-			{
-				storage_media_buffer->data_in_compression_buffer = 0;
-			}
+#if defined( HAVE_LOW_LEVEL_FUNCTIONS )
+			storage_media_buffer->data_in_compression_buffer = 0;
+#endif
 			storage_media_buffer->raw_buffer_data_size = (size_t) read_count;
 
 			/* Swap byte pairs
@@ -943,15 +934,14 @@ int ewfacquire_read_input(
 			}
 			read_count = process_count;
 
-			if( storage_media_buffer->mode == STORAGE_MEDIA_BUFFER_MODE_CHUNK_DATA )
+#if defined( HAVE_LOW_LEVEL_FUNCTIONS )
+			/* Set the chunk data size in the compression buffer
+			 */
+			if( storage_media_buffer->data_in_compression_buffer == 1 )
 			{
-				/* Set the chunk data size in the compression buffer
-				 */
-				if( storage_media_buffer->data_in_compression_buffer == 1 )
-				{
-					storage_media_buffer->compression_buffer_data_size = (size_t) process_count;
-				}
+				storage_media_buffer->compression_buffer_data_size = (size_t) process_count;
 			}
+#endif
 		}
 		/* Digest hashes are calcultated after swap
 		 */
@@ -1306,7 +1296,6 @@ int main( int argc, char * const argv[] )
 	uint8_t print_status_information                                = 1;
 	uint8_t resume_acquiry                                          = 0;
 	uint8_t swap_byte_pairs                                         = 0;
-	uint8_t use_chunk_data_functions                                = 0;
 	uint8_t verbose                                                 = 0;
 	uint8_t zero_buffer_on_error                                    = 0;
 	int8_t acquiry_parameters_confirmed                             = 0;
@@ -1346,7 +1335,7 @@ int main( int argc, char * const argv[] )
 	while( ( option = libcsystem_getopt(
 	                   argc,
 	                   argv,
-	                   _LIBCSTRING_SYSTEM_STRING( "A:b:B:c:C:d:D:e:E:f:g:hl:m:M:N:o:p:P:qr:RsS:t:T:uvVwx2:" ) ) ) != (libcstring_system_integer_t) -1 )
+	                   _LIBCSTRING_SYSTEM_STRING( "A:b:B:c:C:d:D:e:E:f:g:hl:m:M:N:o:p:P:qr:RsS:t:T:uvVw2:" ) ) ) != (libcstring_system_integer_t) -1 )
 	{
 		switch( option )
 		{
@@ -1526,11 +1515,6 @@ int main( int argc, char * const argv[] )
 
 				break;
 
-			case (libcstring_system_integer_t) 'x':
-				use_chunk_data_functions = 1;
-
-				break;
-
 			case (libcstring_system_integer_t) '2':
 				option_secondary_target_filename = optarg;
 
@@ -1688,7 +1672,6 @@ int main( int argc, char * const argv[] )
 	if( imaging_handle_initialize(
 	     &ewfacquire_imaging_handle,
 	     calculate_md5,
-	     use_chunk_data_functions,
 	     &error ) != 1 )
 	{
 		fprintf(
@@ -2874,7 +2857,6 @@ int main( int argc, char * const argv[] )
 		  resume_acquiry_offset,
 		  swap_byte_pairs,
 		  print_status_information,
-	          use_chunk_data_functions,
 		  log_handle,
 		  &error );
 

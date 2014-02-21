@@ -1,7 +1,7 @@
 /*
  * UTF-8 stream functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -75,7 +75,7 @@ int libuna_utf8_stream_copy_byte_order_mark(
 
 		return( -1 );
 	}
-	if( ( *utf8_stream_index + 3 ) > utf8_stream_size )
+	if( ( *utf8_stream_index + 2 ) >= utf8_stream_size )
 	{
 		libcerror_error_set(
 		 error,

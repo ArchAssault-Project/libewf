@@ -1,7 +1,7 @@
 /*
  * Filename functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -26,30 +26,32 @@
 #include <memory.h>
 #include <types.h>
 
-#include "libewf_libcstring.h"
 #include "libewf_libcerror.h"
+#include "libewf_libcstring.h"
 
 #if defined( __cplusplus )
 extern "C" {
 #endif
 
 int libewf_filename_set_extension(
-     char *extension,
-     uint16_t segment_number,
-     uint16_t maximum_number_of_segments,
+     char *filename,
+     size_t filename_size,
+     size_t *filename_index,
+     uint32_t segment_number,
+     uint32_t maximum_number_of_segments,
      uint8_t segment_file_type,
      uint8_t format,
-     uint8_t ewf_format,
      libcerror_error_t **error );
 
 #if defined( HAVE_WIDE_CHARACTER_TYPE )
 int libewf_filename_set_extension_wide(
-     wchar_t *extension,
-     uint16_t segment_number,
-     uint16_t maximum_number_of_segments,
+     wchar_t *filename,
+     size_t filename_size,
+     size_t *filename_index,
+     uint32_t segment_number,
+     uint32_t maximum_number_of_segments,
      uint8_t segment_file_type,
      uint8_t format,
-     uint8_t ewf_format,
      libcerror_error_t **error );
 #endif
 
@@ -58,11 +60,10 @@ int libewf_filename_create(
      size_t *filename_size,
      libcstring_system_character_t *basename,
      size_t basename_length,
-     uint16_t segment_number,
-     uint16_t maximum_number_of_segments,
+     uint32_t segment_number,
+     uint32_t maximum_number_of_segments,
      uint8_t segment_file_type,
      uint8_t format,
-     uint8_t ewf_format,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

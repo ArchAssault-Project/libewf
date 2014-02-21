@@ -1,7 +1,7 @@
 /*
  * Handle functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -25,10 +25,10 @@
 #include <common.h>
 #include <types.h>
 
+#include "libodraw_array_type.h"
 #include "libodraw_extern.h"
 #include "libodraw_io_handle.h"
 #include "libodraw_libbfio.h"
-#include "libodraw_libcdata.h"
 #include "libodraw_libcerror.h"
 #include "libodraw_libcstring.h"
 #include "libodraw_sector_range.h"
@@ -61,23 +61,23 @@ struct libodraw_internal_handle
 
 	/* The data file descriptors array
 	 */
-	libcdata_array_t *data_file_descriptors_array;
+	libodraw_array_t *data_file_descriptors_array;
 
 	/* The sessions array
 	 */
-	libcdata_array_t *sessions_array;
+	libodraw_array_t *sessions_array;
 
 	/* The run-outs array
 	 */
-	libcdata_array_t *run_outs_array;
+	libodraw_array_t *run_outs_array;
 
 	/* The lead-outs array
 	 */
-	libcdata_array_t *lead_outs_array;
+	libodraw_array_t *lead_outs_array;
 
 	/* The tracks array
 	 */
-	libcdata_array_t *tracks_array;
+	libodraw_array_t *tracks_array;
 
 	/* The basename
 	 */

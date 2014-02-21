@@ -1,7 +1,7 @@
 /*
  * Date and time functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -23,8 +23,6 @@
 #include <memory.h>
 #include <types.h>
 
-#include "libewf_libcerror.h"
-
 #if defined( TIME_WITH_SYS_TIME )
 #include <sys/time.h>
 #include <time.h>
@@ -35,6 +33,7 @@
 #endif
 
 #include "libewf_date_time.h"
+#include "libewf_libcerror.h"
 
 /* Returns a structured representation of a time using the local timezone, or NULL on error
  */

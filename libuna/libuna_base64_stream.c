@@ -1,7 +1,7 @@
 /*
  * Base64 stream functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -82,7 +82,7 @@ int libuna_base64_character_copy_to_sixtet(
 
 			return( -1 );
 	}
-	/* A-Z is not a continous range on an EBCDIC based system
+	/* A-Z is not a continous range on a EBCDIC based system
 	 * it consists of the ranges: A-I, J-R, S-Z
 	 */
 	if( ( base64_character >= (uint8_t) 'A' )
@@ -100,7 +100,7 @@ int libuna_base64_character_copy_to_sixtet(
 	{
 		*base64_sixtet = base64_character - (uint8_t) 'S' + 18;
 	}
-	/* a-z is not a continous range on an EBCDIC based system
+	/* a-z is not a continous range on a EBCDIC based system
 	 * it consists of the ranges: a-i, j-r, s-z
 	 */
 	else if( ( base64_character >= (uint8_t) 'a' )
@@ -1529,6 +1529,8 @@ int libuna_base64_stream_size_to_byte_stream(
 				 base64_character1 );
 				break;
 		}
+		base64_stream_index -= base64_character_size;
+
 		if( base64_character1 == (uint32_t) '=' )
 		{
 			libcerror_error_set(
@@ -1682,7 +1684,7 @@ int libuna_base64_stream_size_to_byte_stream(
 		}
 		if( strip_mode == LIBUNA_STRIP_MODE_NON_WHITESPACE )
 		{
-			/* A-Z is not a continous range on an EBCDIC based system
+			/* A-Z is not a continous range on a EBCDIC based system
 			 * it consists of the ranges: A-I, J-R, S-Z
 			 */
 			if( ( base64_character1 >= (uint32_t) 'A' )
@@ -1700,7 +1702,7 @@ int libuna_base64_stream_size_to_byte_stream(
 			{
 				number_of_characters++;
 			}
-			/* a-z is not a continous range on an EBCDIC based system
+			/* a-z is not a continous range on a EBCDIC based system
 			 * it consists of the ranges: a-i, j-r, s-z
 			 */
 			else if( ( base64_character1 >= (uint32_t) 'a' )
@@ -1989,6 +1991,7 @@ int libuna_base64_stream_copy_to_byte_stream(
 	}
 	base64_stream_size -= whitespace_size;
 	base64_stream_index = 0;
+	whitespace_size     = 0;
 
 	if( ( flags & LIBUNA_BASE64_FLAG_STRIP_WHITESPACE ) == 0 )
 	{

@@ -4,14 +4,11 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/common \
 	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
-	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
 	@LIBCLOCALE_CPPFLAGS@ \
-	@LIBCNOTIFY_CPPFLAGS@ \
 	@LIBUNA_CPPFLAGS@ \
 	@LIBCFILE_CPPFLAGS@ \
-	@LIBCPATH_CPPFLAGS@ \
-	@PTHREAD_CPPFLAGS@
+	@LIBCPATH_CPPFLAGS@
 
 noinst_LTLIBRARIES = libbfio.la
 
@@ -24,13 +21,13 @@ libbfio_la_SOURCES = \
 	libbfio_file_pool.c libbfio_file_pool.h \
 	libbfio_file_range.c libbfio_file_range.h \
 	libbfio_handle.c libbfio_handle.h \
+	libbfio_legacy.c libbfio_legacy.h \
 	libbfio_libcdata.h \
 	libbfio_libcerror.h \
 	libbfio_libcfile.h \
 	libbfio_libclocale.h \
 	libbfio_libcpath.h \
 	libbfio_libcstring.h \
-	libbfio_libcthreads.h \
 	libbfio_libuna.h \
 	libbfio_memory_range.c libbfio_memory_range.h \
 	libbfio_pool.c libbfio_pool.h \

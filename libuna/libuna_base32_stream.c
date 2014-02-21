@@ -1,7 +1,7 @@
 /*
  * Base32 stream functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -60,7 +60,7 @@ int libuna_base32_character_copy_to_quintet(
 	switch( base32_variant & 0x000f0000UL )
 	{
 		case LIBUNA_BASE32_VARIANT_ALPHABET_NORMAL:
-			/* A-Z is not a continous range on an EBCDIC based system
+			/* A-Z is not a continous range on a EBCDIC based system
 			 * it consists of the ranges: A-I, J-R, S-Z
 			 */
 			if( ( base32_character >= (uint8_t) 'A' )
@@ -103,7 +103,7 @@ int libuna_base32_character_copy_to_quintet(
 			{
 				*base32_quintet = base32_character - (uint8_t) '0';
 			}
-			/* A-V is not a continous range on an EBCDIC based system
+			/* A-V is not a continous range on a EBCDIC based system
 			 * it consists of the ranges: A-I, J-R, S-V
 			 */
 			else if( ( base32_character >= (uint8_t) 'A' )
@@ -1787,7 +1787,7 @@ int libuna_base32_stream_size_to_byte_stream(
 			switch( base32_variant & 0x000f0000UL )
 			{
 				case LIBUNA_BASE32_VARIANT_ALPHABET_NORMAL:
-					/* A-Z is not a continous range on an EBCDIC based system
+					/* A-Z is not a continous range on a EBCDIC based system
 					 * it consists of the ranges: A-I, J-R, S-Z
 					 */
 					if( ( base32_stream[ base32_stream_index ] >= (uint8_t) 'A' )
@@ -1822,7 +1822,7 @@ int libuna_base32_stream_size_to_byte_stream(
 					{
 						number_of_characters++;
 					}
-					/* A-V is not a continous range on an EBCDIC based system
+					/* A-V is not a continous range on a EBCDIC based system
 					 * it consists of the ranges: A-I, J-R, S-V
 					 */
 					else if( ( base32_stream[ base32_stream_index ] >= (uint8_t) 'A' )
@@ -1891,6 +1891,22 @@ int libuna_base32_stream_size_to_byte_stream(
 	}
 	*byte_stream_size *= 5;
 
+	if( padding_size == 1 )
+	{
+		base32_stream_size -= 1;
+	}
+	else if( padding_size == 3 )
+	{
+		base32_stream_size -= 2;
+	}
+	else if( padding_size == 4 )
+	{
+		base32_stream_size -= 3;
+	}
+	else if( padding_size == 6 )
+	{
+		base32_stream_size -= 4;
+	}
 	return( 1 );
 }
 

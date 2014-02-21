@@ -17,7 +17,6 @@ libfvalue_la_SOURCES = \
 	libfvalue_definitions.h \
 	libfvalue_error.c libfvalue_error.h \
 	libfvalue_extern.h \
-	libfvalue_filetime.c libfvalue_filetime.h \
 	libfvalue_floating_point.c libfvalue_floating_point.h \
 	libfvalue_integer.c libfvalue_integer.h \
 	libfvalue_libcdata.h \

@@ -1,7 +1,7 @@
 /*
  * The internal pool functions
  *
- * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -28,7 +28,6 @@
 #include "libbfio_extern.h"
 #include "libbfio_libcdata.h"
 #include "libbfio_libcerror.h"
-#include "libbfio_libcthreads.h"
 #include "libbfio_types.h"
 
 #if defined( __cplusplus )
@@ -39,6 +38,10 @@ typedef struct libbfio_internal_pool libbfio_internal_pool_t;
 
 struct libbfio_internal_pool
 {
+	/* The number of handles in the pool
+	 */
+	int number_of_handles;
+
 	/* The number of used handles in the pool
 	 */
 	int number_of_used_handles;
@@ -51,21 +54,15 @@ struct libbfio_internal_pool
 	 */
 	int maximum_number_of_open_handles;
 
-	/* The handles array
+	/* A dynamic array containing the handles
 	 */
-	libcdata_array_t *handles_array;
+	libbfio_handle_t **handles;
 
 	/* A list containing the file IO handles in order of the last use
 	 * it starts with the last used at the beginning of the list
 	 * the value of the list element refers to the corresponding file IO handle
 	 */
 	libcdata_list_t *last_used_list;
-
-#if defined( HAVE_MULTI_THREAD_SUPPORT ) && !defined( HAVE_LOCAL_LIBBFIO )
-	/* The read/write lock
-	 */
-	libcthreads_read_write_lock_t *read_write_lock;
-#endif
 };
 
 LIBBFIO_EXTERN \

@@ -1,7 +1,7 @@
 /*
  * The libfdatetime header wrapper
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -30,6 +30,7 @@
 
 #include <libfdatetime_date_time_values.h>
 #include <libfdatetime_definitions.h>
+#include <libfdatetime_error.h>
 #include <libfdatetime_fat_date_time.h>
 #include <libfdatetime_filetime.h>
 #include <libfdatetime_floatingtime.h>

@@ -1,7 +1,7 @@
 /*
  * Handle functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -23,6 +23,7 @@
 #include <memory.h>
 #include <types.h>
 
+#include "libodraw_array_type.h"
 #include "libodraw_codepage.h"
 #include "libodraw_cue_parser.h"
 #include "libodraw_data_file.h"
@@ -32,11 +33,9 @@
 #include "libodraw_io_handle.h"
 #include "libodraw_handle.h"
 #include "libodraw_libbfio.h"
-#include "libodraw_libcdata.h"
 #include "libodraw_libcerror.h"
 #include "libodraw_libclocale.h"
 #include "libodraw_libcnotify.h"
-#include "libodraw_libcpath.h"
 #include "libodraw_libcstring.h"
 #include "libodraw_libuna.h"
 #include "libodraw_sector_range.h"
@@ -49,8 +48,8 @@ extern int cue_parser_parse_buffer(
             size_t buffer_size,
             libcerror_error_t **error );
 
-/* Creates a handle
- * Make sure the value handle is referencing, is set to NULL
+/* Initializes a handle
+ * Make sure the value handle is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int libodraw_handle_initialize(
@@ -113,7 +112,7 @@ int libodraw_handle_initialize(
 
 		return( -1 );
 	}
-	if( libcdata_array_initialize(
+	if( libodraw_array_initialize(
 	     &( internal_handle->data_file_descriptors_array ),
 	     0,
 	     error ) != 1 )
@@ -127,7 +126,7 @@ int libodraw_handle_initialize(
 
 		goto on_error;
 	}
-	if( libcdata_array_initialize(
+	if( libodraw_array_initialize(
 	     &( internal_handle->sessions_array ),
 	     0,
 	     error ) != 1 )
@@ -141,7 +140,7 @@ int libodraw_handle_initialize(
 
 		goto on_error;
 	}
-	if( libcdata_array_initialize(
+	if( libodraw_array_initialize(
 	     &( internal_handle->run_outs_array ),
 	     0,
 	     error ) != 1 )
@@ -155,7 +154,7 @@ int libodraw_handle_initialize(
 
 		goto on_error;
 	}
-	if( libcdata_array_initialize(
+	if( libodraw_array_initialize(
 	     &( internal_handle->lead_outs_array ),
 	     0,
 	     error ) != 1 )
@@ -169,7 +168,7 @@ int libodraw_handle_initialize(
 
 		goto on_error;
 	}
-	if( libcdata_array_initialize(
+	if( libodraw_array_initialize(
 	     &( internal_handle->tracks_array ),
 	     0,
 	     error ) != 1 )
@@ -207,35 +206,35 @@ on_error:
 	{
 		if( internal_handle->tracks_array != NULL )
 		{
-			libcdata_array_free(
+			libodraw_array_free(
 			 &( internal_handle->tracks_array ),
 			 NULL,
 			 NULL );
 		}
 		if( internal_handle->lead_outs_array != NULL )
 		{
-			libcdata_array_free(
+			libodraw_array_free(
 			 &( internal_handle->lead_outs_array ),
 			 NULL,
 			 NULL );
 		}
 		if( internal_handle->run_outs_array != NULL )
 		{
-			libcdata_array_free(
+			libodraw_array_free(
 			 &( internal_handle->run_outs_array ),
 			 NULL,
 			 NULL );
 		}
 		if( internal_handle->sessions_array != NULL )
 		{
-			libcdata_array_free(
+			libodraw_array_free(
 			 &( internal_handle->sessions_array ),
 			 NULL,
 			 NULL );
 		}
 		if( internal_handle->data_file_descriptors_array != NULL )
 		{
-			libcdata_array_free(
+			libodraw_array_free(
 			 &( internal_handle->data_file_descriptors_array ),
 			 NULL,
 			 NULL );
@@ -291,7 +290,7 @@ int libodraw_handle_free(
 		}
 		*handle = NULL;
 
-		if( libcdata_array_free(
+		if( libodraw_array_free(
 		     &( internal_handle->data_file_descriptors_array ),
 		     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_data_file_descriptor_free,
 		     error ) != 1 )
@@ -305,7 +304,7 @@ int libodraw_handle_free(
 
 			result = -1;
 		}
-		if( libcdata_array_free(
+		if( libodraw_array_free(
 		     &( internal_handle->sessions_array ),
 		     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
 		     error ) != 1 )
@@ -319,7 +318,7 @@ int libodraw_handle_free(
 
 			result = -1;
 		}
-		if( libcdata_array_free(
+		if( libodraw_array_free(
 		     &( internal_handle->run_outs_array ),
 		     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
 		     error ) != 1 )
@@ -333,7 +332,7 @@ int libodraw_handle_free(
 
 			result = -1;
 		}
-		if( libcdata_array_free(
+		if( libodraw_array_free(
 		     &( internal_handle->lead_outs_array ),
 		     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
 		     error ) != 1 )
@@ -347,7 +346,7 @@ int libodraw_handle_free(
 
 			result = -1;
 		}
-		if( libcdata_array_free(
+		if( libodraw_array_free(
 		     &( internal_handle->tracks_array ),
 		     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_track_value_free,
 		     error ) != 1 )
@@ -435,10 +434,10 @@ int libodraw_handle_open(
 {
 	libbfio_handle_t *file_io_handle            = NULL;
 	libodraw_internal_handle_t *internal_handle = NULL;
-	char *basename_end                          = NULL;
 	static char *function                       = "libodraw_handle_open";
 	size_t basename_length                      = 0;
 	size_t filename_length                      = 0;
+	char *basename_end                          = NULL;
 
 	if( handle == NULL )
 	{
@@ -492,7 +491,7 @@ int libodraw_handle_open(
 
 	basename_end = libcstring_narrow_string_search_character_reverse(
 	                filename,
-	                (int) LIBCPATH_SEPARATOR,
+	                LIBODRAW_PATH_SEPARATOR,
 	                filename_length + 1 );
 
 	if( basename_end != NULL )
@@ -536,12 +535,12 @@ int libodraw_handle_open(
 	     1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set track offsets read in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set track offsets read in file IO handle.",
+                 function );
 
 		goto on_error;
 	}
@@ -552,12 +551,12 @@ int libodraw_handle_open(
 	     filename_length + 1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set filename in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set filename in file IO handle.",
+                 function );
 
 		goto on_error;
 	}
@@ -604,10 +603,10 @@ int libodraw_handle_open_wide(
 {
 	libbfio_handle_t *file_io_handle            = NULL;
 	libodraw_internal_handle_t *internal_handle = NULL;
-	wchar_t *basename_end                       = NULL;
 	static char *function                       = "libodraw_handle_open_wide";
 	size_t basename_length                      = 0;
 	size_t filename_length                      = 0;
+	wchar_t *basename_end                       = NULL;
 
 	if( handle == NULL )
 	{
@@ -662,7 +661,7 @@ int libodraw_handle_open_wide(
 /* TODO does this work for UTF-16 ? */
 	basename_end = libcstring_wide_string_search_character_reverse(
 	                filename,
-	                (wint_t) LIBCPATH_SEPARATOR,
+	                (wint_t) LIBODRAW_PATH_SEPARATOR,
 	                filename_length + 1 );
 
 	if( basename_end != NULL )
@@ -706,12 +705,12 @@ int libodraw_handle_open_wide(
 	     1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set track offsets read in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set track offsets read in file IO handle.",
+                 function );
 
 		goto on_error;
 	}
@@ -723,12 +722,12 @@ int libodraw_handle_open_wide(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set filename in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set filename in file IO handle.",
+                 function );
 
 		goto on_error;
 	}
@@ -935,7 +934,7 @@ int libodraw_handle_open_data_files(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->data_file_descriptors_array,
 	     &number_of_data_file_descriptors,
 	     error ) != 1 )
@@ -953,7 +952,7 @@ int libodraw_handle_open_data_files(
 	     data_file_descriptor_index < number_of_data_file_descriptors;
 	     data_file_descriptor_index++ )
 	{
-		if( libcdata_array_get_entry_by_index(
+		if( libodraw_array_get_entry_by_index(
 		     internal_handle->data_file_descriptors_array,
 		     data_file_descriptor_index,
 		     (intptr_t **) &data_file_descriptor,
@@ -999,14 +998,15 @@ int libodraw_handle_open_data_files(
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 			data_file_name_start = libcstring_wide_string_search_character_reverse(
 			                        data_file_descriptor->name,
-			                        (wint_t) LIBCPATH_SEPARATOR,
+			                        (wint_t) LIBODRAW_PATH_SEPARATOR,
 			                        data_file_descriptor->name_size );
 #else
 			data_file_name_start = libcstring_narrow_string_search_character_reverse(
 			                        data_file_descriptor->name,
-			                        (int) LIBCPATH_SEPARATOR,
+			                        (int) LIBODRAW_PATH_SEPARATOR,
 		        	                data_file_descriptor->name_size );
 #endif
+
 		}
 		if( data_file_name_start != NULL )
 		{
@@ -1025,35 +1025,65 @@ int libodraw_handle_open_data_files(
 		if( ( data_file_descriptor->name_set == 0 )
 		 && ( internal_handle->basename != NULL ) )
 		{
-#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
-			if( libcpath_path_join_wide(
-			     &data_file_location,
-			     &data_file_location_size,
-			     internal_handle->basename,
-			     internal_handle->basename_size - 1,
-			     data_file_name_start,
-			     data_file_name_size - 1,
-			     error ) != 1 )
-#else
-			if( libcpath_path_join(
-			     &data_file_location,
-			     &data_file_location_size,
-			     internal_handle->basename,
-			     internal_handle->basename_size - 1,
-			     data_file_name_start,
-			     data_file_name_size - 1,
-			     error ) != 1 )
-#endif
+			data_file_location_size = internal_handle->basename_size + data_file_name_size - 1;
+
+			data_file_location = libcstring_system_string_allocate(
+			                      data_file_location_size );
+
+			if( data_file_location == NULL )
 			{
 				libcerror_error_set(
 				 error,
-				 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-				 LIBCERROR_RUNTIME_ERROR_INITIALIZE_FAILED,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_INSUFFICIENT,
 				 "%s: unable to create data file location.",
 				 function );
 
 				goto on_error;
 			}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+			if( libcstring_wide_string_copy(
+			     data_file_location,
+			     internal_handle->basename,
+			     internal_handle->basename_size - 1 ) == NULL )
+#else
+			if( libcstring_narrow_string_copy(
+			     data_file_location,
+			     internal_handle->basename,
+			     internal_handle->basename_size - 1 ) == NULL )
+#endif
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+				 "%s: unable to copy basename to data file location.",
+				 function );
+
+				goto on_error;
+			}
+#if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
+			if( libcstring_wide_string_copy(
+			     &( data_file_location[ internal_handle->basename_size - 1 ] ),
+			     data_file_name_start,
+			     data_file_name_size - 1 ) == NULL )
+#else
+			if( libcstring_narrow_string_copy(
+			     &( data_file_location[ internal_handle->basename_size - 1 ] ),
+			     data_file_name_start,
+			     data_file_name_size - 1 ) == NULL )
+#endif
+			{
+				libcerror_error_set(
+				 error,
+				 LIBCERROR_ERROR_DOMAIN_MEMORY,
+				 LIBCERROR_MEMORY_ERROR_COPY_FAILED,
+				 "%s: unable to copy data file name to data file location.",
+				 function );
+
+				goto on_error;
+			}
+			data_file_location[ data_file_location_size - 1 ] = 0;
 		}
 		else
 		{
@@ -1098,14 +1128,14 @@ int libodraw_handle_open_data_files(
 	     internal_handle,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set media values.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set media values.",
+                 function );
 
-		goto on_error;
+                return( -1 );
 	}
 	return( 1 );
 
@@ -1179,19 +1209,6 @@ int libodraw_handle_open_data_files_file_io_pool(
 	}
 	internal_handle->data_file_io_pool = file_io_pool;
 
-	if( libodraw_handle_set_media_values(
-	     internal_handle,
-	     error ) != 1 )
-	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set media values.",
-		 function );
-
-		return( -1 );
-	}
 	return( 1 );
 }
 
@@ -1259,14 +1276,14 @@ int libodraw_handle_open_data_file(
 	     1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set track offsets read in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set track offsets read in file IO handle.",
+                 function );
 
-		goto on_error;
+                goto on_error;
 	}
 #endif
 	if( libbfio_file_set_name(
@@ -1276,14 +1293,14 @@ int libodraw_handle_open_data_file(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set filename in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set filename in file IO handle.",
+                 function );
 
-		goto on_error;
+                goto on_error;
 	}
 	if( libodraw_handle_open_data_file_io_handle(
 	     internal_handle,
@@ -1371,7 +1388,7 @@ int libodraw_handle_open_data_file_wide(
 		 "%s: unable to create file IO handle.",
 		 function );
 
-		goto on_error;
+                goto on_error;
 	}
 #if defined( HAVE_DEBUG_OUTPUT )
 	if( libbfio_handle_set_track_offsets_read(
@@ -1379,14 +1396,14 @@ int libodraw_handle_open_data_file_wide(
 	     1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set track offsets read in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set track offsets read in file IO handle.",
+                 function );
 
-		goto on_error;
+                goto on_error;
 	}
 #endif
 	if( libbfio_file_set_name_wide(
@@ -1396,14 +1413,14 @@ int libodraw_handle_open_data_file_wide(
 	      filename ) + 1,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-		 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
-		 "%s: unable to set filename in file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+                 LIBCERROR_RUNTIME_ERROR_SET_FAILED,
+                 "%s: unable to set filename in file IO handle.",
+                 function );
 
-		goto on_error;
+                goto on_error;
 	}
 	if( libodraw_handle_open_data_file_io_handle(
 	     internal_handle,
@@ -1506,7 +1523,7 @@ int libodraw_handle_open_data_file_io_handle(
 	}
 	if( internal_handle->data_file_io_pool == NULL )
 	{
-		if( libcdata_array_get_number_of_entries(
+		if( libodraw_array_get_number_of_entries(
 		     internal_handle->data_file_descriptors_array,
 		     &number_of_data_file_descriptors,
 		     error ) != 1 )
@@ -1546,14 +1563,14 @@ int libodraw_handle_open_data_file_io_handle(
 	     bfio_access_flags,
 	     error ) != 1 )
 	{
-		libcerror_error_set(
-		 error,
-		 LIBCERROR_ERROR_DOMAIN_IO,
-		 LIBCERROR_IO_ERROR_OPEN_FAILED,
-		 "%s: unable to open file IO handle.",
-		 function );
+                libcerror_error_set(
+                 error,
+                 LIBCERROR_ERROR_DOMAIN_IO,
+                 LIBCERROR_IO_ERROR_OPEN_FAILED,
+                 "%s: unable to open file IO handle.",
+                 function );
 
-		return( -1 );
+                return( -1 );
 	}
 	/* This function currently does not allow the file_io_handle to be set more than once
 	 */
@@ -1697,7 +1714,7 @@ int libodraw_handle_close(
 	internal_handle->data_file_io_pool                    = NULL;
 	internal_handle->data_file_io_pool_created_in_library = 0;
 
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->data_file_descriptors_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_data_file_descriptor_free,
@@ -1712,7 +1729,7 @@ int libodraw_handle_close(
 
 		result = -1;
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->sessions_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
@@ -1727,7 +1744,7 @@ int libodraw_handle_close(
 
 		result = -1;
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->run_outs_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
@@ -1742,7 +1759,7 @@ int libodraw_handle_close(
 
 		result = -1;
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->lead_outs_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
@@ -1757,7 +1774,7 @@ int libodraw_handle_close(
 
 		result = -1;
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->tracks_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_track_value_free,
@@ -1811,7 +1828,7 @@ int libodraw_handle_open_read(
 
 		return( -1 );
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->data_file_descriptors_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_track_value_free,
@@ -1826,7 +1843,7 @@ int libodraw_handle_open_read(
 
 		return( -1 );
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->sessions_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
@@ -1841,7 +1858,7 @@ int libodraw_handle_open_read(
 
 		return( -1 );
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->run_outs_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
@@ -1856,7 +1873,7 @@ int libodraw_handle_open_read(
 
 		return( -1 );
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->lead_outs_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_sector_range_free,
@@ -1871,7 +1888,7 @@ int libodraw_handle_open_read(
 
 		return( -1 );
 	}
-	if( libcdata_array_resize(
+	if( libodraw_array_resize(
 	     internal_handle->tracks_array,
 	     0,
 	     (int (*)(intptr_t **, libcerror_error_t **)) &libodraw_track_value_free,
@@ -2091,7 +2108,7 @@ ssize_t libodraw_handle_read_buffer(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->run_outs_array,
 	     &number_of_run_outs,
 	     error ) != 1 )
@@ -2105,7 +2122,7 @@ ssize_t libodraw_handle_read_buffer(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->lead_outs_array,
 	     &number_of_lead_outs,
 	     error ) != 1 )
@@ -2140,7 +2157,7 @@ ssize_t libodraw_handle_read_buffer(
 	{
 		in_known_range = 0;
 
-		if( libcdata_array_get_entry_by_index(
+		if( libodraw_array_get_entry_by_index(
 		     internal_handle->tracks_array,
 		     internal_handle->io_handle->current_track,
 		     (intptr_t **) &track_value,
@@ -2224,7 +2241,7 @@ ssize_t libodraw_handle_read_buffer(
 		}
 		if( internal_handle->io_handle->current_run_out < number_of_run_outs )
 		{
-			if( libcdata_array_get_entry_by_index(
+			if( libodraw_array_get_entry_by_index(
 			     internal_handle->run_outs_array,
 			     internal_handle->io_handle->current_run_out,
 			     (intptr_t **) &sector_range,
@@ -2309,7 +2326,7 @@ ssize_t libodraw_handle_read_buffer(
 		}
 		if( internal_handle->io_handle->current_lead_out < number_of_lead_outs )
 		{
-			if( libcdata_array_get_entry_by_index(
+			if( libodraw_array_get_entry_by_index(
 			     internal_handle->lead_outs_array,
 			     internal_handle->io_handle->current_lead_out,
 			     (intptr_t **) &sector_range,
@@ -2507,7 +2524,7 @@ ssize_t libodraw_handle_read_buffer_from_run_out(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->run_outs_array,
 	     internal_handle->io_handle->current_run_out,
 	     (intptr_t **) &sector_range,
@@ -2574,7 +2591,7 @@ ssize_t libodraw_handle_read_buffer_from_run_out(
 #endif
 	/* Retrieves the track that corresponds to the run-out
 	 */
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->tracks_array,
 	     internal_handle->io_handle->current_track - 1,
 	     (intptr_t **) &track_value,
@@ -2868,7 +2885,7 @@ ssize_t libodraw_handle_read_buffer_from_lead_out(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->lead_outs_array,
 	     internal_handle->io_handle->current_lead_out,
 	     (intptr_t **) &sector_range,
@@ -2935,7 +2952,7 @@ ssize_t libodraw_handle_read_buffer_from_lead_out(
 #endif
 	/* Retrieves the track that corresponds to the lead-out
 	 */
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->tracks_array,
 	     internal_handle->io_handle->current_track - 1,
 	     (intptr_t **) &track_value,
@@ -3250,7 +3267,7 @@ ssize_t libodraw_handle_read_buffer_from_unspecified_sector(
 #endif
 	/* Retrieves the track that corresponds to the unspecified range
 	 */
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->tracks_array,
 	     internal_handle->io_handle->current_track - 1,
 	     (intptr_t **) &track_value,
@@ -3519,7 +3536,7 @@ ssize_t libodraw_handle_read_buffer_from_track(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->tracks_array,
 	     internal_handle->io_handle->current_track,
 	     (intptr_t **) &track_value,
@@ -4008,7 +4025,7 @@ off64_t libodraw_handle_seek_offset(
 	}
 	else
 	{
-		if( libcdata_array_get_number_of_entries(
+		if( libodraw_array_get_number_of_entries(
 		     internal_handle->run_outs_array,
 		     &current_run_out,
 		     error ) != 1 )
@@ -4022,7 +4039,7 @@ off64_t libodraw_handle_seek_offset(
 
 			return( -1 );
 		}
-		if( libcdata_array_get_number_of_entries(
+		if( libodraw_array_get_number_of_entries(
 		     internal_handle->lead_outs_array,
 		     &current_lead_out,
 		     error ) != 1 )
@@ -4036,7 +4053,7 @@ off64_t libodraw_handle_seek_offset(
 
 			return( -1 );
 		}
-		if( libcdata_array_get_number_of_entries(
+		if( libodraw_array_get_number_of_entries(
 		     internal_handle->tracks_array,
 		     &current_track,
 		     error ) != 1 )
@@ -4141,7 +4158,7 @@ int libodraw_handle_get_run_out_at_offset(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->run_outs_array,
 	     &number_of_run_outs,
 	     error ) != 1 )
@@ -4172,7 +4189,7 @@ int libodraw_handle_get_run_out_at_offset(
 	     *run_out_index < number_of_run_outs;
 	     *run_out_index += 1 )
 	{
-		if( libcdata_array_get_entry_by_index(
+		if( libodraw_array_get_entry_by_index(
 		     internal_handle->run_outs_array,
 		     *run_out_index,
 		     (intptr_t **) run_out_sector_range,
@@ -4300,7 +4317,7 @@ int libodraw_handle_get_lead_out_at_offset(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->lead_outs_array,
 	     &number_of_lead_outs,
 	     error ) != 1 )
@@ -4331,7 +4348,7 @@ int libodraw_handle_get_lead_out_at_offset(
 	     *lead_out_index < number_of_lead_outs;
 	     *lead_out_index += 1 )
 	{
-		if( libcdata_array_get_entry_by_index(
+		if( libodraw_array_get_entry_by_index(
 		     internal_handle->lead_outs_array,
 		     *lead_out_index,
 		     (intptr_t **) lead_out_sector_range,
@@ -4459,7 +4476,7 @@ int libodraw_handle_get_track_at_offset(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->tracks_array,
 	     &number_of_tracks,
 	     error ) != 1 )
@@ -4490,7 +4507,7 @@ int libodraw_handle_get_track_at_offset(
 	     *track_index < number_of_tracks;
 	     *track_index += 1 )
 	{
-		if( libcdata_array_get_entry_by_index(
+		if( libodraw_array_get_entry_by_index(
 		     internal_handle->tracks_array,
 		     *track_index,
 		     (intptr_t **) track_value,
@@ -5679,7 +5696,7 @@ int libodraw_handle_set_media_values(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->tracks_array,
 	     &number_of_tracks,
 	     error ) != 1 )
@@ -5704,7 +5721,7 @@ int libodraw_handle_set_media_values(
 
 		return( -1 );
 	}
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->tracks_array,
 	     number_of_tracks - 1,
 	     (intptr_t **) &track_value,
@@ -5791,7 +5808,7 @@ int libodraw_handle_set_media_values(
 			return( -1 );
 		}
 	}
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->sessions_array,
 	     &number_of_sessions,
 	     error ) != 1 )
@@ -5807,7 +5824,7 @@ int libodraw_handle_set_media_values(
 	}
 	if( number_of_sessions > 0 )
 	{
-		if( libcdata_array_get_entry_by_index(
+		if( libodraw_array_get_entry_by_index(
 		     internal_handle->sessions_array,
 		     number_of_sessions - 1,
 		     (intptr_t **) &sector_range,
@@ -5961,14 +5978,11 @@ int libodraw_handle_set_ascii_codepage(
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_874 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_932 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_936 )
-	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_949 )
-	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_950 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1250 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1251 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1252 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1253 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1254 )
-	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1255 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1256 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1257 )
 	 && ( ascii_codepage != LIBODRAW_CODEPAGE_WINDOWS_1258 ) )
@@ -6011,7 +6025,7 @@ int libodraw_handle_get_number_of_data_files(
 	}
 	internal_handle = (libodraw_internal_handle_t *) handle;
 
-	if( libcdata_array_get_number_of_entries(
+	if( libodraw_array_get_number_of_entries(
 	     internal_handle->data_file_descriptors_array,
 	     number_of_data_files,
 	     error ) != 1 )
@@ -6054,7 +6068,7 @@ int libodraw_handle_get_data_file(
 	}
 	internal_handle = (libodraw_internal_handle_t *) handle;
 
-	if( libcdata_array_get_entry_by_index(
+	if( libodraw_array_get_entry_by_index(
 	     internal_handle->data_file_descriptors_array,
 	     index,
 	     (intptr_t **) &data_file_descriptor,
@@ -6173,7 +6187,7 @@ int libodraw_handle_append_data_file(
 	}
 	data_file_descriptor->type = type;
 
-	if( libcdata_array_append_entry(
+	if( libodraw_array_append_entry(
 	     internal_handle->data_file_descriptors_array,
 	     &entry_index,
 	     (intptr_t *) data_file_descriptor,
@@ -6287,7 +6301,7 @@ int libodraw_handle_append_data_file_wide(
 	}
 	data_file_descriptor->type = type;
 
-	if( libcdata_array_append_entry(
+	if( libodraw_array_append_entry(
 	     internal_handle->data_file_descriptors_array,
 	     &entry_index,
 	     (intptr_t *) data_file_descriptor,

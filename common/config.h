@@ -43,9 +43,6 @@
 /* Define to 1 if you have the ctime_r function with a third size argument. */
 /* #undef HAVE_CTIME_R_SIZE */
 
-/* define if the compiler supports basic C++11 syntax */
-#define HAVE_CXX11 1
-
 /* Define to 1 if you have the <cygwin/fs.h> header file. */
 /* #undef HAVE_CYGWIN_FS_H */
 
@@ -81,9 +78,6 @@
 
 /* Define to 1 if you have the `EVP_sha256' function". */
 #define HAVE_EVP_SHA256 1
-
-/* Define to 1 if you have the `EVP_sha512' function". */
-#define HAVE_EVP_SHA512 1
 
 /* Define to 1 if you have the `fclose' function. */
 #define HAVE_FCLOSE 1
@@ -139,14 +133,26 @@
 /* Define to 1 if you have the `getcwd' function. */
 #define HAVE_GETCWD 1
 
+/* Define to 1 if you have the `getegid' function. */
+#define HAVE_GETEGID 1
+
 /* Define to 1 if you have the `getenv' function. */
 #define HAVE_GETENV 1
+
+/* Define to 1 if you have the `geteuid' function. */
+#define HAVE_GETEUID 1
 
 /* Define to 1 if you have the `getopt' function. */
 #define HAVE_GETOPT 1
 
+/* Define to 1 if you have the `getrlimit' function. */
+#define HAVE_GETRLIMIT 1
+
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
+
+/* Define to 1 if you have the `getuid' function. */
+#define HAVE_GETUID 1
 
 /* Define to 1 if you have the <glob.h> header file. */
 #define HAVE_GLOB_H 1
@@ -199,12 +205,6 @@
 /* Define to 1 if you have the <libcdata.h> header file. */
 /* #undef HAVE_LIBCDATA_H */
 
-/* Define to 1 if you have the `cdatetime' library (-lcdatetime). */
-/* #undef HAVE_LIBCDATETIME */
-
-/* Define to 1 if you have the <libcdatetime.h> header file. */
-/* #undef HAVE_LIBCDATETIME_H */
-
 /* Define to 1 if you have the `cerror' library (-lcerror). */
 /* #undef HAVE_LIBCERROR */
 
@@ -222,6 +222,12 @@
 
 /* Define to 1 if you have the <libclocale.h> header file. */
 /* #undef HAVE_LIBCLOCALE_H */
+
+/* Define to 1 if you have the `cmulti' library (-lcmulti). */
+/* #undef HAVE_LIBCMULTI */
+
+/* Define to 1 if you have the <libcmulti.h> header file. */
+/* #undef HAVE_LIBCMULTI_H */
 
 /* Define to 1 if you have the `cnotify' library (-lcnotify). */
 /* #undef HAVE_LIBCNOTIFY */
@@ -256,23 +262,11 @@
 /* Define to 1 if you have the <libcsystem.h> header file. */
 /* #undef HAVE_LIBCSYSTEM_H */
 
-/* Define to 1 if you have the `cthreads' library (-lcthreads). */
-/* #undef HAVE_LIBCTHREADS */
-
-/* Define to 1 if you have the <libcthreads.h> header file. */
-/* #undef HAVE_LIBCTHREADS_H */
-
 /* Define to 1 if you have the `fcache' library (-lfcache). */
 /* #undef HAVE_LIBFCACHE */
 
 /* Define to 1 if you have the <libfcache.h> header file. */
 /* #undef HAVE_LIBFCACHE_H */
-
-/* Define to 1 if you have the `fdata' library (-lfdata). */
-/* #undef HAVE_LIBFDATA */
-
-/* Define to 1 if you have the <libfdata.h> header file. */
-/* #undef HAVE_LIBFDATA_H */
 
 /* Define to 1 if you have the 'fuse' library (-lfuse). */
 #define HAVE_LIBFUSE 1
@@ -370,9 +364,6 @@
 /* Define to 1 if the local version of libcdata is used. */
 #define HAVE_LOCAL_LIBCDATA 1
 
-/* Define to 1 if the local version of libcdatetime is used. */
-#define HAVE_LOCAL_LIBCDATETIME 1
-
 /* Define to 1 if the local version of libcerror is used. */
 #define HAVE_LOCAL_LIBCERROR 1
 
@@ -381,6 +372,9 @@
 
 /* Define to 1 if the local version of libclocale is used. */
 #define HAVE_LOCAL_LIBCLOCALE 1
+
+/* Define to 1 if the local version of libcmulti is used. */
+#define HAVE_LOCAL_LIBCMULTI 1
 
 /* Define to 1 if the local version of libcnotify is used. */
 #define HAVE_LOCAL_LIBCNOTIFY 1
@@ -397,14 +391,8 @@
 /* Define to 1 if the local version of libcsystem is used. */
 #define HAVE_LOCAL_LIBCSYSTEM 1
 
-/* Define to 1 if the local version of libcthreads is used. */
-#define HAVE_LOCAL_LIBCTHREADS 1
-
 /* Define to 1 if the local version of libfcache is used. */
 #define HAVE_LOCAL_LIBFCACHE 1
-
-/* Define to 1 if the local version of libfdata is used. */
-#define HAVE_LOCAL_LIBFDATA 1
 
 /* Define to 1 if the local version of libfvalue is used. */
 #define HAVE_LOCAL_LIBFVALUE 1
@@ -426,6 +414,10 @@
 
 /* Define to 1 if the local version of libuna is used. */
 #define HAVE_LOCAL_LIBUNA 1
+
+/* Define to 1 if libewfs low level read and write functions should be used in
+   the ewf tools. */
+/* #undef HAVE_LOW_LEVEL_FUNCTIONS */
 
 /* Define to 1 if you have the `lseek' function. */
 #define HAVE_LSEEK 1
@@ -460,9 +452,6 @@
 /* Define to 1 if you have the `mktime' function. */
 #define HAVE_MKTIME 1
 
-/* Define to 1 if multi thread support should be used. */
-#define HAVE_MULTI_THREAD_SUPPORT 1
-
 /* Define to 1 if you have the `nl_langinfo' function. */
 #define HAVE_NL_LANGINFO 1
 
@@ -495,12 +484,6 @@
 
 /* Define to 1 whether printf supports the conversion specifier "%zd". */
 #define HAVE_PRINTF_ZD 1
-
-/* Define to 1 if you have the 'pthread' library (-lpthread). */
-#define HAVE_PTHREAD 1
-
-/* Define to 1 if you have the <pthread.h> header file. */
-#define HAVE_PTHREAD_H 1
 
 /* Define to 1 if you have Python */
 /* #undef HAVE_PYTHON */
@@ -583,9 +566,6 @@
 /* Define to 1 if you have the `strncpy' function. */
 #define HAVE_STRNCPY 1
 
-/* Define to 1 if you have the `strnicmp' function. */
-/* #undef HAVE_STRNICMP */
-
 /* Define to 1 if you have the `strrchr' function. */
 #define HAVE_STRRCHR 1
 
@@ -604,6 +584,9 @@
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #define HAVE_SYS_IOCTL_H 1
 
+/* Define to 1 if you have the <sys/resource.h> header file. */
+#define HAVE_SYS_RESOURCE_H 1
+
 /* Define to 1 if you have the <sys/signal.h> header file. */
 #define HAVE_SYS_SIGNAL_H 1
 
@@ -616,6 +599,9 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
 
+/* Define to 1 if you have the <sys/utsname.h> header file. */
+#define HAVE_SYS_UTSNAME_H 1
+
 /* Define to 1 if you have the `textdomain' function. */
 #define HAVE_TEXTDOMAIN 1
 
@@ -624,6 +610,9 @@
 
 /* Define to 1 if you have the `towlower' function. */
 /* #undef HAVE_TOWLOWER */
+
+/* Define to 1 if you have the `uname' function. */
+#define HAVE_UNAME 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
@@ -672,9 +661,6 @@
 
 /* Define to 1 if you have the `wcsncpy' function. */
 /* #undef HAVE_WCSNCPY */
-
-/* Define to 1 if you have the `wcsnicmp' function. */
-/* #undef HAVE_WCSNICMP */
 
 /* Define to 1 if you have the `wcsrchr' function. */
 /* #undef HAVE_WCSRCHR */
@@ -738,7 +724,7 @@
 #define PACKAGE_NAME "libewf"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libewf 20140216"
+#define PACKAGE_STRING "libewf 20130331"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libewf"
@@ -747,7 +733,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "20140216"
+#define PACKAGE_VERSION "20130331"
 
 /* The size of `off_t', as computed by sizeof. */
 #define SIZEOF_OFF_T 8
@@ -771,7 +757,7 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "20140216"
+#define VERSION "20130331"
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */

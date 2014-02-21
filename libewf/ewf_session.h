@@ -1,7 +1,7 @@
 /*
  * EWF session section (EWF-E01)
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -29,55 +29,92 @@
 extern "C" {
 #endif
 
-typedef struct ewf_session_header ewf_session_header_t;
+typedef struct ewf_session_header_v1 ewf_session_header_v1_t;
 
-struct ewf_session_header
+struct ewf_session_header_v1
 {
-	/* Number of sessions
-	 * consists of 4 bytes
+	/* Number of entries
+	 * Consists of 4 bytes
 	 */
-	uint8_t number_of_sessions[ 4 ];
+	uint8_t number_of_entries[ 4 ];
 
 	/* Unknown
-	 * consists of 28 bytes
-	 * contains 0x00
+	 * Consists of 28 bytes
+	 * Contains 0x00
 	 */
 	uint8_t unknown1[ 28 ];
 
-	/* The section checksum of all (previous) session data
-	 * consists of 4 bytes (32 bits)
-	 * starts with offset 76
+	/* The section checksum of all (previous) session header data
+	 * Consists of 4 bytes
 	 */
 	uint8_t checksum[ 4 ];
-
-	/* The session entry array
-	 * consists of 32 bytes per sector
-	 * as long as necessary
-	 */
-
-	/* The last session entry is followed by a 4 byte checksum
-	 */
 };
 
-typedef struct ewf_session_entry ewf_session_entry_t;
+typedef struct ewf_session_entry_v1 ewf_session_entry_v1_t;
 
-struct ewf_session_entry
+struct ewf_session_entry_v1
 {
-	/* The type
-	 * consists of 4 bytes
+	/* The flags
+	 * Consists of 4 bytes
 	 */
-	uint8_t type[ 4 ];
+	uint8_t flags[ 4 ];
 
 	/* The start sector of the session
-	 * consists of 4 bytes
+	 * Consists of 4 bytes
 	 */
 	uint8_t start_sector[ 4 ];
 
 	/* Unknown
-	 * consists of 24 bytes
-	 * contains 0x00
+	 * Consists of 24 bytes
+	 * Contains 0x00
 	 */
-	uint8_t unknown2[ 24 ];
+	uint8_t unknown1[ 24 ];
+};
+
+typedef struct ewf_session_header_v2 ewf_session_header_v2_t;
+
+struct ewf_session_header_v2
+{
+	/* Number of entries
+	 * Consists of 4 bytes
+	 */
+	uint8_t number_of_entries[ 4 ];
+
+	/* Unknown
+	 * Consists of 12 bytes
+	 */
+	uint8_t unknown1[ 12 ];
+
+	/* The section checksum of all (previous) session header data
+	 * Consists of 4 bytes
+	 */
+	uint8_t checksum[ 4 ];
+
+	/* Padding
+	 * Consists of 12 bytes
+	 */
+	uint8_t padding[ 12 ];
+};
+
+typedef struct ewf_session_entry_v2 ewf_session_entry_v2_t;
+
+struct ewf_session_entry_v2
+{
+	/* The start sector of the session
+	 * Consists of 8 bytes
+	 */
+	uint8_t start_sector[ 8 ];
+
+	/* The flags
+	 * Consists of 4 bytes
+	 */
+	uint8_t flags[ 4 ];
+
+	/* Unknown
+	 * Consists of 20 bytes
+	 * Contains 0x00
+	 */
+	uint8_t unknown1[ 20 ];
 };
 
 #if defined( __cplusplus )

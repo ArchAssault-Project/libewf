@@ -1,7 +1,7 @@
 /*
  * File functions
  *
- * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -34,8 +34,7 @@
 #include "libbfio_libuna.h"
 #include "libbfio_types.h"
 
-/* Creates a file IO handle
- * Make sure the value file_io_handle is referencing, is set to NULL
+/* Initializes the file IO handle
  * Returns 1 if successful or -1 on error
  */
 int libbfio_file_io_handle_initialize(
@@ -120,8 +119,7 @@ on_error:
 	return( -1 );
 }
 
-/* Creates a file handle
- * Make sure the value handle is referencing, is set to NULL
+/* Initializes the file handle
  * Returns 1 if successful or -1 on error
  */
 int libbfio_file_initialize(
@@ -203,7 +201,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a file IO handle
+/* Frees the file IO handle and its attributes
  * Returns 1 if succesful or -1 on error
  */
 int libbfio_file_io_handle_free(

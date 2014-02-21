@@ -1,7 +1,7 @@
 /*
  * Metadata functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -25,9 +25,8 @@
 #include <common.h>
 #include <types.h>
 
-#include "libewf_libcerror.h"
-
 #include "libewf_extern.h"
+#include "libewf_libcerror.h"
 #include "libewf_types.h"
 
 #if defined( __cplusplus )
@@ -80,6 +79,18 @@ LIBEWF_EXTERN \
 int libewf_handle_set_error_granularity(
      libewf_handle_t *handle,
      uint32_t error_granularity,
+     libcerror_error_t **error );
+
+LIBEWF_EXTERN \
+int libewf_handle_get_compression_method(
+     libewf_handle_t *handle,
+     uint16_t *compression_method,
+     libcerror_error_t **error );
+
+LIBEWF_EXTERN \
+int libewf_handle_set_compression_method(
+     libewf_handle_t *handle,
+     uint16_t compression_method,
      libcerror_error_t **error );
 
 LIBEWF_EXTERN \
@@ -145,6 +156,13 @@ int libewf_handle_set_format(
      libcerror_error_t **error );
 
 LIBEWF_EXTERN \
+int libewf_handle_get_segment_file_version(
+     libewf_handle_t *handle,
+     uint8_t *major_version,
+     uint8_t *minor_version,
+     libcerror_error_t **error );
+
+LIBEWF_EXTERN \
 int libewf_handle_get_segment_file_set_identifier(
      libewf_handle_t *handle,
      uint8_t *set_identifier,
@@ -168,7 +186,7 @@ int libewf_handle_get_md5_hash(
 LIBEWF_EXTERN \
 int libewf_handle_set_md5_hash(
      libewf_handle_t *handle,
-     uint8_t *md5_hash,
+     const uint8_t *md5_hash,
      size_t size,
      libcerror_error_t **error );
 
@@ -182,14 +200,8 @@ int libewf_handle_get_sha1_hash(
 LIBEWF_EXTERN \
 int libewf_handle_set_sha1_hash(
      libewf_handle_t *handle,
-     uint8_t *sha1_hash,
+     const uint8_t *sha1_hash,
      size_t size,
-     libcerror_error_t **error );
-
-LIBEWF_EXTERN \
-int libewf_handle_get_number_of_chunks_written(
-     libewf_handle_t *handle,
-     uint32_t *number_of_chunks,
      libcerror_error_t **error );
 
 LIBEWF_EXTERN \
@@ -383,10 +395,6 @@ int libewf_handle_set_utf16_header_value(
      size_t identifier_length,
      const uint16_t *utf16_string,
      size_t utf16_string_length,
-     libcerror_error_t **error );
-
-int libewf_handle_parse_header_values(
-     libewf_internal_handle_t *internal_handle,
      libcerror_error_t **error );
 
 LIBEWF_EXTERN \

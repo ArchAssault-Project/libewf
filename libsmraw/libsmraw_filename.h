@@ -1,7 +1,7 @@
 /*
  * Filename functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -37,8 +37,8 @@ int libsmraw_filename_create(
      size_t *filename_size,
      libcstring_system_character_t *basename,
      size_t basename_size,
-     int number_of_segments,
-     int segment_index,
+     int total_number_of_segments,
+     int current_file_io_pool_entry,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

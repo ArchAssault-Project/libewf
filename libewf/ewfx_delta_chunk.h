@@ -1,7 +1,7 @@
 /*
  * libewf EWF eXtention delta chunk
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -38,10 +38,10 @@ struct ewfx_delta_chunk_header
 	 */
 	uint8_t chunk[ 4 ];
 
-	/* The size of the chunk
+	/* The size of the chunk data
 	 * consists of 4 bytes (32 bits)
 	 */
-	uint8_t chunk_size[ 4 ];
+	uint8_t chunk_data_size[ 4 ];
 
 	/* Padding
 	 * some padding reserved for future use
@@ -50,9 +50,8 @@ struct ewfx_delta_chunk_header
 	 */
 	uint8_t padding[ 6 ];
 
-	/* The section checksum of all (previous) delta chunk section data
+	/* The section checksum of all (previous) data
 	 * consists of 4 bytes
-	 * starts with offset 76
 	 */
 	uint8_t checksum[ 4 ];
 

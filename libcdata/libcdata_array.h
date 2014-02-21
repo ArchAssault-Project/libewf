@@ -1,7 +1,7 @@
 /*
  * Array functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -27,7 +27,6 @@
 
 #include "libcdata_extern.h"
 #include "libcdata_libcerror.h"
-#include "libcdata_libcthreads.h"
 #include "libcdata_types.h"
 
 #if defined( __cplusplus )
@@ -49,12 +48,6 @@ struct libcdata_internal_array
 	/* The entries
 	 */
 	intptr_t **entries;
-
-#if defined( HAVE_MULTI_THREAD_SUPPORT ) && !defined( HAVE_LOCAL_LIBCDATA )
-	/* The read/write lock
-	 */
-	libcthreads_read_write_lock_t *read_write_lock;
-#endif
 };
 
 LIBCDATA_EXTERN \
@@ -79,14 +72,6 @@ int libcdata_array_empty(
             libcerror_error_t **error ),
      libcerror_error_t **error );
 
-int libcdata_internal_array_clear(
-     libcdata_internal_array_t *internal_array,
-     int (*entry_free_function)(
-            intptr_t **entry,
-            libcerror_error_t **error ),
-     libcerror_error_t **error );
-
-LIBCDATA_EXTERN \
 int libcdata_array_clear(
      libcdata_array_t *array,
      int (*entry_free_function)(
@@ -102,16 +87,8 @@ int libcdata_array_clone(
             intptr_t **entry,
             libcerror_error_t **error ),
      int (*entry_clone_function)(
-            intptr_t **destination_entry,
-            intptr_t *source_entry,
-            libcerror_error_t **error ),
-     libcerror_error_t **error );
-
-int libcdata_internal_array_resize(
-     libcdata_internal_array_t *internal_array,
-     int number_of_entries,
-     int (*entry_free_function)(
-            intptr_t **entry,
+            intptr_t **destination,
+            intptr_t *source,
             libcerror_error_t **error ),
      libcerror_error_t **error );
 
@@ -122,11 +99,6 @@ int libcdata_array_resize(
      int (*entry_free_function)(
             intptr_t **entry,
             libcerror_error_t **error ),
-     libcerror_error_t **error );
-
-LIBCDATA_EXTERN \
-int libcdata_array_reverse(
-     libcdata_array_t *array,
      libcerror_error_t **error );
 
 LIBCDATA_EXTERN \
@@ -157,12 +129,6 @@ LIBCDATA_EXTERN \
 int libcdata_array_set_entry_by_index(
      libcdata_array_t *array,
      int entry_index,
-     intptr_t *entry,
-     libcerror_error_t **error );
-
-LIBCDATA_EXTERN \
-int libcdata_array_prepend_entry(
-     libcdata_array_t *array,
      intptr_t *entry,
      libcerror_error_t **error );
 

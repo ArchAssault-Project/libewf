@@ -1,7 +1,7 @@
 /*
  * The internal type definitions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -43,7 +43,12 @@ typedef intptr_t libewf_file_entry_t;
 
 #endif
 
-#endif
+#endif /* defined( HAVE_LOCAL_LIBEWF ) */
+
+/* The largest primary (or scalar) available
+ * supported by a single load and store instruction
+ */
+typedef unsigned long int libewf_aligned_t;
 
 #endif
 

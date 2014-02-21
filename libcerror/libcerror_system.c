@@ -1,7 +1,7 @@
 /*
  * System functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -179,15 +179,12 @@ int libcerror_system_copy_string_from_error_number(
      size_t string_size,
      uint32_t error_number )
 {
-	DWORD flags       = 0;
 	DWORD print_count = 0;
 
 	if( string == NULL )
 	{
 		return( -1 );
 	}
-	flags = FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS;
-
 	if( string_size > (size_t) INT_MAX )
 	{
 		return( -1 );
@@ -195,7 +192,7 @@ int libcerror_system_copy_string_from_error_number(
 #if ( WINVER <= 0x0500 )
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 	print_count = libcerror_FormatMessageW(
-	               flags,
+	               FORMAT_MESSAGE_FROM_SYSTEM,
 	               NULL,
 	               (DWORD) error_number,
 	               MAKELANGID(
@@ -206,7 +203,7 @@ int libcerror_system_copy_string_from_error_number(
 	               NULL );
 #else
 	print_count = libcerror_FormatMessageA(
-	               flags,
+	               FORMAT_MESSAGE_FROM_SYSTEM,
 	               NULL,
 	               (DWORD) error_number,
 	               MAKELANGID(
@@ -219,7 +216,7 @@ int libcerror_system_copy_string_from_error_number(
 #else
 #if defined( LIBCSTRING_HAVE_WIDE_SYSTEM_CHARACTER )
 	print_count = FormatMessageW(
-	               flags,
+	               FORMAT_MESSAGE_FROM_SYSTEM,
 	               NULL,
 	               (DWORD) error_number,
 	               MAKELANGID(
@@ -230,7 +227,7 @@ int libcerror_system_copy_string_from_error_number(
 	               NULL );
 #else
 	print_count = FormatMessageA(
-	               flags,
+	               FORMAT_MESSAGE_FROM_SYSTEM,
 	               NULL,
 	               (DWORD) error_number,
 	               MAKELANGID(
@@ -334,7 +331,7 @@ int libcerror_system_copy_string_from_error_number(
 	{
 		return( -1 );
 	}
-	string[ string_size - 1 ] = (libcstring_system_character_t) 0;
+	string[ string_size - 1 ] = 0;
 
 	string_length = libcstring_system_string_length(
 	                 string );
@@ -424,7 +421,7 @@ int libcerror_system_copy_string_from_error_number(
 #endif
 
 /* Sets an error and adds a system specific error string if possible
- * Creates the error if necessary
+ * Initializes the error if necessary
  * The error domain and code are set only the first time and the error message is appended for back tracing
  */
 void VARARGS(
@@ -643,8 +640,7 @@ void VARARGS(
 
 	string_index = internal_error->sizes[ message_index ] - 1;
 
-	if( ( internal_error->messages[ message_index ] != NULL )
-	 && ( ( internal_error->messages[ message_index ] )[ string_index - 1 ] == (libcstring_system_character_t) '.' ) )
+	if( ( internal_error->messages[ message_index ] )[ string_index - 1 ] == (libcstring_system_character_t) '.' )
 	{
 		string_index -= 1;
 	}

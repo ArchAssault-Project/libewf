@@ -60,13 +60,12 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/bzip2.m4 \
 	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
 	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libbfio.m4 \
 	$(top_srcdir)/m4/libcaes.m4 $(top_srcdir)/m4/libcdata.m4 \
-	$(top_srcdir)/m4/libcdatetime.m4 $(top_srcdir)/m4/libcerror.m4 \
-	$(top_srcdir)/m4/libcfile.m4 $(top_srcdir)/m4/libclocale.m4 \
+	$(top_srcdir)/m4/libcerror.m4 $(top_srcdir)/m4/libcfile.m4 \
+	$(top_srcdir)/m4/libclocale.m4 $(top_srcdir)/m4/libcmulti.m4 \
 	$(top_srcdir)/m4/libcnotify.m4 $(top_srcdir)/m4/libcpath.m4 \
 	$(top_srcdir)/m4/libcrypto.m4 $(top_srcdir)/m4/libcsplit.m4 \
 	$(top_srcdir)/m4/libcstring.m4 $(top_srcdir)/m4/libcsystem.m4 \
-	$(top_srcdir)/m4/libcthreads.m4 $(top_srcdir)/m4/libfcache.m4 \
-	$(top_srcdir)/m4/libfdata.m4 $(top_srcdir)/m4/libfuse.m4 \
+	$(top_srcdir)/m4/libfcache.m4 $(top_srcdir)/m4/libfuse.m4 \
 	$(top_srcdir)/m4/libfvalue.m4 $(top_srcdir)/m4/libhmac.m4 \
 	$(top_srcdir)/m4/libmfdata.m4 $(top_srcdir)/m4/libodraw.m4 \
 	$(top_srcdir)/m4/libsmdev.m4 $(top_srcdir)/m4/libsmraw.m4 \
@@ -75,8 +74,7 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/bzip2.m4 \
 	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
 	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
 	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
-	$(top_srcdir)/m4/pthread.m4 $(top_srcdir)/m4/python.m4 \
-	$(top_srcdir)/m4/stdcxx11.m4 $(top_srcdir)/m4/types.m4 \
+	$(top_srcdir)/m4/python.m4 $(top_srcdir)/m4/types.m4 \
 	$(top_srcdir)/m4/wincrypt.m4 $(top_srcdir)/m4/zlib.m4 \
 	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -135,10 +133,6 @@ CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
 CPP = @CPP@
 CPPFLAGS = @CPPFLAGS@
-CXX = @CXX@
-CXXCPP = @CXXCPP@
-CXXDEPMODE = @CXXDEPMODE@
-CXXFLAGS = @CXXFLAGS@
 CYGPATH_W = @CYGPATH_W@
 DEFS = @DEFS@
 DEPDIR = @DEPDIR@
@@ -157,23 +151,20 @@ GMSGFMT = @GMSGFMT@
 GMSGFMT_015 = @GMSGFMT_015@
 GREP = @GREP@
 HAVE_BZIP2 = @HAVE_BZIP2@
-HAVE_CXX11 = @HAVE_CXX11@
 HAVE_INTTYPES_H = @HAVE_INTTYPES_H@
 HAVE_LIBBFIO = @HAVE_LIBBFIO@
 HAVE_LIBCAES = @HAVE_LIBCAES@
 HAVE_LIBCDATA = @HAVE_LIBCDATA@
-HAVE_LIBCDATETIME = @HAVE_LIBCDATETIME@
 HAVE_LIBCERROR = @HAVE_LIBCERROR@
 HAVE_LIBCFILE = @HAVE_LIBCFILE@
 HAVE_LIBCLOCALE = @HAVE_LIBCLOCALE@
+HAVE_LIBCMULTI = @HAVE_LIBCMULTI@
 HAVE_LIBCNOTIFY = @HAVE_LIBCNOTIFY@
 HAVE_LIBCPATH = @HAVE_LIBCPATH@
 HAVE_LIBCSPLIT = @HAVE_LIBCSPLIT@
 HAVE_LIBCSTRING = @HAVE_LIBCSTRING@
 HAVE_LIBCSYSTEM = @HAVE_LIBCSYSTEM@
-HAVE_LIBCTHREADS = @HAVE_LIBCTHREADS@
 HAVE_LIBFCACHE = @HAVE_LIBFCACHE@
-HAVE_LIBFDATA = @HAVE_LIBFDATA@
 HAVE_LIBFUSE = @HAVE_LIBFUSE@
 HAVE_LIBFVALUE = @HAVE_LIBFVALUE@
 HAVE_LIBHMAC = @HAVE_LIBHMAC@
@@ -186,18 +177,16 @@ HAVE_LIBUUID = @HAVE_LIBUUID@
 HAVE_LOCAL_LIBBFIO = @HAVE_LOCAL_LIBBFIO@
 HAVE_LOCAL_LIBCAES = @HAVE_LOCAL_LIBCAES@
 HAVE_LOCAL_LIBCDATA = @HAVE_LOCAL_LIBCDATA@
-HAVE_LOCAL_LIBCDATETIME = @HAVE_LOCAL_LIBCDATETIME@
 HAVE_LOCAL_LIBCERROR = @HAVE_LOCAL_LIBCERROR@
 HAVE_LOCAL_LIBCFILE = @HAVE_LOCAL_LIBCFILE@
 HAVE_LOCAL_LIBCLOCALE = @HAVE_LOCAL_LIBCLOCALE@
+HAVE_LOCAL_LIBCMULTI = @HAVE_LOCAL_LIBCMULTI@
 HAVE_LOCAL_LIBCNOTIFY = @HAVE_LOCAL_LIBCNOTIFY@
 HAVE_LOCAL_LIBCPATH = @HAVE_LOCAL_LIBCPATH@
 HAVE_LOCAL_LIBCSPLIT = @HAVE_LOCAL_LIBCSPLIT@
 HAVE_LOCAL_LIBCSTRING = @HAVE_LOCAL_LIBCSTRING@
 HAVE_LOCAL_LIBCSYSTEM = @HAVE_LOCAL_LIBCSYSTEM@
-HAVE_LOCAL_LIBCTHREADS = @HAVE_LOCAL_LIBCTHREADS@
 HAVE_LOCAL_LIBFCACHE = @HAVE_LOCAL_LIBFCACHE@
-HAVE_LOCAL_LIBFDATA = @HAVE_LOCAL_LIBFDATA@
 HAVE_LOCAL_LIBFVALUE = @HAVE_LOCAL_LIBFVALUE@
 HAVE_LOCAL_LIBHMAC = @HAVE_LOCAL_LIBHMAC@
 HAVE_LOCAL_LIBMFDATA = @HAVE_LOCAL_LIBMFDATA@
@@ -205,10 +194,8 @@ HAVE_LOCAL_LIBODRAW = @HAVE_LOCAL_LIBODRAW@
 HAVE_LOCAL_LIBSMDEV = @HAVE_LOCAL_LIBSMDEV@
 HAVE_LOCAL_LIBSMRAW = @HAVE_LOCAL_LIBSMRAW@
 HAVE_LOCAL_LIBUNA = @HAVE_LOCAL_LIBUNA@
-HAVE_MULTI_THREAD_SUPPORT = @HAVE_MULTI_THREAD_SUPPORT@
 HAVE_OFF64_T = @HAVE_OFF64_T@
 HAVE_OPENSSL_EVP_H = @HAVE_OPENSSL_EVP_H@
-HAVE_PTHREAD = @HAVE_PTHREAD@
 HAVE_SIZE32_T = @HAVE_SIZE32_T@
 HAVE_SIZE64_T = @HAVE_SIZE64_T@
 HAVE_SSIZE32_T = @HAVE_SSIZE32_T@
@@ -237,14 +224,14 @@ LIBCAES_CPPFLAGS = @LIBCAES_CPPFLAGS@
 LIBCAES_LIBADD = @LIBCAES_LIBADD@
 LIBCDATA_CPPFLAGS = @LIBCDATA_CPPFLAGS@
 LIBCDATA_LIBADD = @LIBCDATA_LIBADD@
-LIBCDATETIME_CPPFLAGS = @LIBCDATETIME_CPPFLAGS@
-LIBCDATETIME_LIBADD = @LIBCDATETIME_LIBADD@
 LIBCERROR_CPPFLAGS = @LIBCERROR_CPPFLAGS@
 LIBCERROR_LIBADD = @LIBCERROR_LIBADD@
 LIBCFILE_CPPFLAGS = @LIBCFILE_CPPFLAGS@
 LIBCFILE_LIBADD = @LIBCFILE_LIBADD@
 LIBCLOCALE_CPPFLAGS = @LIBCLOCALE_CPPFLAGS@
 LIBCLOCALE_LIBADD = @LIBCLOCALE_LIBADD@
+LIBCMULTI_CPPFLAGS = @LIBCMULTI_CPPFLAGS@
+LIBCMULTI_LIBADD = @LIBCMULTI_LIBADD@
 LIBCNOTIFY_CPPFLAGS = @LIBCNOTIFY_CPPFLAGS@
 LIBCNOTIFY_LIBADD = @LIBCNOTIFY_LIBADD@
 LIBCPATH_CPPFLAGS = @LIBCPATH_CPPFLAGS@
@@ -257,14 +244,10 @@ LIBCSTRING_CPPFLAGS = @LIBCSTRING_CPPFLAGS@
 LIBCSTRING_LIBADD = @LIBCSTRING_LIBADD@
 LIBCSYSTEM_CPPFLAGS = @LIBCSYSTEM_CPPFLAGS@
 LIBCSYSTEM_LIBADD = @LIBCSYSTEM_LIBADD@
-LIBCTHREADS_CPPFLAGS = @LIBCTHREADS_CPPFLAGS@
-LIBCTHREADS_LIBADD = @LIBCTHREADS_LIBADD@
 LIBDL_LIBADD = @LIBDL_LIBADD@
 LIBEWF_DLL_IMPORT = @LIBEWF_DLL_IMPORT@
 LIBFCACHE_CPPFLAGS = @LIBFCACHE_CPPFLAGS@
 LIBFCACHE_LIBADD = @LIBFCACHE_LIBADD@
-LIBFDATA_CPPFLAGS = @LIBFDATA_CPPFLAGS@
-LIBFDATA_LIBADD = @LIBFDATA_LIBADD@
 LIBFUSE_CPPFLAGS = @LIBFUSE_CPPFLAGS@
 LIBFUSE_LIBADD = @LIBFUSE_LIBADD@
 LIBFVALUE_CPPFLAGS = @LIBFVALUE_CPPFLAGS@
@@ -319,8 +302,6 @@ PKG_CONFIG = @PKG_CONFIG@
 PKG_CONFIG_LIBDIR = @PKG_CONFIG_LIBDIR@
 PKG_CONFIG_PATH = @PKG_CONFIG_PATH@
 POSUB = @POSUB@
-PTHREAD_CPPFLAGS = @PTHREAD_CPPFLAGS@
-PTHREAD_LIBADD = @PTHREAD_LIBADD@
 PWD = @PWD@
 PYTHON = @PYTHON@
 PYTHON_CONFIG = @PYTHON_CONFIG@
@@ -354,7 +335,6 @@ abs_top_builddir = @abs_top_builddir@
 abs_top_srcdir = @abs_top_srcdir@
 ac_ct_AR = @ac_ct_AR@
 ac_ct_CC = @ac_ct_CC@
-ac_ct_CXX = @ac_ct_CXX@
 ac_ct_DUMPBIN = @ac_ct_DUMPBIN@
 am__include = @am__include@
 am__leading_dot = @am__leading_dot@
@@ -373,9 +353,6 @@ ax_libcaes_spec_requires = @ax_libcaes_spec_requires@
 ax_libcdata_pc_libs_private = @ax_libcdata_pc_libs_private@
 ax_libcdata_spec_build_requires = @ax_libcdata_spec_build_requires@
 ax_libcdata_spec_requires = @ax_libcdata_spec_requires@
-ax_libcdatetime_pc_libs_private = @ax_libcdatetime_pc_libs_private@
-ax_libcdatetime_spec_build_requires = @ax_libcdatetime_spec_build_requires@
-ax_libcdatetime_spec_requires = @ax_libcdatetime_spec_requires@
 ax_libcerror_pc_libs_private = @ax_libcerror_pc_libs_private@
 ax_libcerror_spec_build_requires = @ax_libcerror_spec_build_requires@
 ax_libcerror_spec_requires = @ax_libcerror_spec_requires@
@@ -385,6 +362,9 @@ ax_libcfile_spec_requires = @ax_libcfile_spec_requires@
 ax_libclocale_pc_libs_private = @ax_libclocale_pc_libs_private@
 ax_libclocale_spec_build_requires = @ax_libclocale_spec_build_requires@
 ax_libclocale_spec_requires = @ax_libclocale_spec_requires@
+ax_libcmulti_pc_libs_private = @ax_libcmulti_pc_libs_private@
+ax_libcmulti_spec_build_requires = @ax_libcmulti_spec_build_requires@
+ax_libcmulti_spec_requires = @ax_libcmulti_spec_requires@
 ax_libcnotify_pc_libs_private = @ax_libcnotify_pc_libs_private@
 ax_libcnotify_spec_build_requires = @ax_libcnotify_spec_build_requires@
 ax_libcnotify_spec_requires = @ax_libcnotify_spec_requires@
@@ -403,15 +383,9 @@ ax_libcstring_spec_requires = @ax_libcstring_spec_requires@
 ax_libcsystem_pc_libs_private = @ax_libcsystem_pc_libs_private@
 ax_libcsystem_spec_build_requires = @ax_libcsystem_spec_build_requires@
 ax_libcsystem_spec_requires = @ax_libcsystem_spec_requires@
-ax_libcthreads_pc_libs_private = @ax_libcthreads_pc_libs_private@
-ax_libcthreads_spec_build_requires = @ax_libcthreads_spec_build_requires@
-ax_libcthreads_spec_requires = @ax_libcthreads_spec_requires@
 ax_libfcache_pc_libs_private = @ax_libfcache_pc_libs_private@
 ax_libfcache_spec_build_requires = @ax_libfcache_spec_build_requires@
 ax_libfcache_spec_requires = @ax_libfcache_spec_requires@
-ax_libfdata_pc_libs_private = @ax_libfdata_pc_libs_private@
-ax_libfdata_spec_build_requires = @ax_libfdata_spec_build_requires@
-ax_libfdata_spec_requires = @ax_libfdata_spec_requires@
 ax_libfuse_pc_libs_private = @ax_libfuse_pc_libs_private@
 ax_libfuse_spec_build_requires = @ax_libfuse_spec_build_requires@
 ax_libfuse_spec_requires = @ax_libfuse_spec_requires@
@@ -439,7 +413,6 @@ ax_libuna_spec_requires = @ax_libuna_spec_requires@
 ax_libuuid_pc_libs_private = @ax_libuuid_pc_libs_private@
 ax_libuuid_spec_build_requires = @ax_libuuid_spec_build_requires@
 ax_libuuid_spec_requires = @ax_libuuid_spec_requires@
-ax_pthread_pc_libs_private = @ax_pthread_pc_libs_private@
 ax_zlib_pc_libs_private = @ax_zlib_pc_libs_private@
 ax_zlib_spec_build_requires = @ax_zlib_spec_build_requires@
 ax_zlib_spec_requires = @ax_zlib_spec_requires@
@@ -475,14 +448,14 @@ libcaes_CFLAGS = @libcaes_CFLAGS@
 libcaes_LIBS = @libcaes_LIBS@
 libcdata_CFLAGS = @libcdata_CFLAGS@
 libcdata_LIBS = @libcdata_LIBS@
-libcdatetime_CFLAGS = @libcdatetime_CFLAGS@
-libcdatetime_LIBS = @libcdatetime_LIBS@
 libcerror_CFLAGS = @libcerror_CFLAGS@
 libcerror_LIBS = @libcerror_LIBS@
 libcfile_CFLAGS = @libcfile_CFLAGS@
 libcfile_LIBS = @libcfile_LIBS@
 libclocale_CFLAGS = @libclocale_CFLAGS@
 libclocale_LIBS = @libclocale_LIBS@
+libcmulti_CFLAGS = @libcmulti_CFLAGS@
+libcmulti_LIBS = @libcmulti_LIBS@
 libcnotify_CFLAGS = @libcnotify_CFLAGS@
 libcnotify_LIBS = @libcnotify_LIBS@
 libcpath_CFLAGS = @libcpath_CFLAGS@
@@ -493,16 +466,12 @@ libcstring_CFLAGS = @libcstring_CFLAGS@
 libcstring_LIBS = @libcstring_LIBS@
 libcsystem_CFLAGS = @libcsystem_CFLAGS@
 libcsystem_LIBS = @libcsystem_LIBS@
-libcthreads_CFLAGS = @libcthreads_CFLAGS@
-libcthreads_LIBS = @libcthreads_LIBS@
 libdir = @libdir@
 libewf_spec_build_requires = @libewf_spec_build_requires@
 libewf_spec_requires = @libewf_spec_requires@
 libexecdir = @libexecdir@
 libfcache_CFLAGS = @libfcache_CFLAGS@
 libfcache_LIBS = @libfcache_LIBS@
-libfdata_CFLAGS = @libfdata_CFLAGS@
-libfdata_LIBS = @libfdata_LIBS@
 libfvalue_CFLAGS = @libfvalue_CFLAGS@
 libfvalue_LIBS = @libfvalue_LIBS@
 libhmac_CFLAGS = @libhmac_CFLAGS@

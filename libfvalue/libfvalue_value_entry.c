@@ -1,7 +1,7 @@
 /*
  * Value entry functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -26,8 +26,7 @@
 #include "libfvalue_libcerror.h"
 #include "libfvalue_value_entry.h"
 
-/* Creates a value entry
- * Make sure the value value_entry is referencing, is set to NULL
+/* Initialize a value entry
  * Returns 1 if successful or -1 on error
  */
 int libfvalue_value_entry_initialize(

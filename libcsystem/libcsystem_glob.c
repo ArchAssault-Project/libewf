@@ -1,7 +1,7 @@
 /*
  * Globbing functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -78,8 +78,7 @@
 
 #if !defined( LIBCSYSTEM_HAVE_GLOB )
 
-/* Creates a glob
- * Make sure the value glob is referencing, is set to NULL
+/* Initializes a new glob
  * Returns 1 if successful or -1 on error
  */
 int libcsystem_glob_initialize(
@@ -151,7 +150,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a glob
+/* Frees memory of a glob
  * Returns 1 if successful or -1 on error
  */
 int libcsystem_glob_free(

@@ -2,7 +2,7 @@
 #
 # ewfexport testing script for logical evidence files
 #
-# Copyright (c) 2006-2012, Joachim Metz <joachim.metz@gmail.com>
+# Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
 #
 # Refer to AUTHORS for acknowledgements.
 #
@@ -116,22 +116,7 @@ fi
 
 for FILENAME in `${LS} ${INPUT}/*.L01 | ${TR} ' ' '\n'`;
 do
-	if [ "${FILENAME}" = "${INPUT}/encase6.19.3.L01" ];
-	then
-		# experimental version only
-		echo;
-
-	elif [ "${FILENAME}" = "${INPUT}/encase7.04.01.L01" ];
-	then
-		# experimental version only
-		echo;
-
-	elif [ "${FILENAME}" = "${INPUT}/Rader_Subset.L01" ];
-	then
-		# experimental version only
-		echo;
-
-	elif ! test_export_logical "${FILENAME}";
+	if ! test_export_logical "${FILENAME}";
 	then
 		exit ${EXIT_FAILURE};
 	fi
@@ -139,22 +124,7 @@ done
 
 for FILENAME in `${LS} ${INPUT}/*.L01 | ${TR} ' ' '\n'`;
 do
-	if [ "${FILENAME}" = "${INPUT}/encase6.19.3.L01" ];
-	then
-		# experimental version only
-		echo;
-
-	elif [ "${FILENAME}" = "${INPUT}/encase7.04.01.L01" ];
-	then
-		# experimental version only
-		echo;
-
-	elif [ "${FILENAME}" = "${INPUT}/Rader_Subset.L01" ];
-	then
-		# experimental version only
-		echo;
-
-	elif ! test_export_logical_unattended "${FORMAT}" "${FILENAME}";
+	if ! test_export_logical_unattended "${FORMAT}" "${FILENAME}";
 	then
 		exit ${EXIT_FAILURE};
 	fi

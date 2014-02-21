@@ -1,7 +1,7 @@
 /*
  * Split narrow string functions
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -28,8 +28,7 @@
 #include "libcsplit_narrow_split_string.h"
 #include "libcsplit_types.h"
 
-/* Creates a split string
- * Make sure the value split_string is referencing, is set to NULL
+/* Initializes the split string
  * Returns 1 if successful or -1 on error
  */
 int libcsplit_narrow_split_string_initialize(
@@ -229,7 +228,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a split string
+/* Frees the split string including elements
  * Returns 1 if successful or -1 on error
  */
 int libcsplit_narrow_split_string_free(

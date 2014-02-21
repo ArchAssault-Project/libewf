@@ -1,7 +1,7 @@
 /*
  * Cache value functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -30,7 +30,6 @@
 #include "libfcache_types.h"
 
 /* Creates a cache value
- * Make sure the value cache_value is referencing, is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int libfcache_cache_value_initialize(
@@ -106,7 +105,7 @@ on_error:
 	return( -1 );
 }
 
-/* Frees a cache value
+/* Frees the cache value
  * Returns 1 if successful or -1 on error
  */
 int libfcache_cache_value_free(

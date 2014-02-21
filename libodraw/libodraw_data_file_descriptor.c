@@ -1,7 +1,7 @@
 /*
  * Data file descriptor functions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -29,8 +29,8 @@
 #include "libodraw_libcstring.h"
 #include "libodraw_libuna.h"
 
-/* Creates a data file descriptor
- * Make sure the value data_file_descriptor is referencing, is set to NULL
+/* Initialize a data file descriptor
+ * Make sure the value is pointing to is set to NULL
  * Returns 1 if successful or -1 on error
  */
 int libodraw_data_file_descriptor_initialize(

@@ -1,7 +1,7 @@
 /*
  * Floating point value (IEEE 754) functions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -75,18 +75,6 @@ int libfvalue_floating_point_copy_to_integer(
      libfvalue_floating_point_t *floating_point,
      uint64_t *integer_value,
      size_t *integer_value_size,
-     libcerror_error_t **error );
-
-int libfvalue_floating_point_copy_from_floating_point(
-     libfvalue_floating_point_t *floating_point,
-     double floating_point_value,
-     size_t floating_point_value_size,
-     libcerror_error_t **error );
-
-int libfvalue_floating_point_copy_to_floating_point(
-     libfvalue_floating_point_t *floating_point,
-     double *floating_point_value,
-     size_t *floating_point_value_size,
      libcerror_error_t **error );
 
 int libfvalue_floating_point_get_string_size(

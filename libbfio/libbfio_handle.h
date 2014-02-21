@@ -1,7 +1,7 @@
 /*
  * The handle functions
  *
- * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -28,8 +28,15 @@
 #include "libbfio_extern.h"
 #include "libbfio_libcdata.h"
 #include "libbfio_libcerror.h"
-#include "libbfio_libcthreads.h"
 #include "libbfio_types.h"
+
+#if defined( _MSC_VER ) || defined( __BORLANDC__ ) || defined( __MINGW32_VERSION ) || defined( __MINGW64_VERSION_MAJOR )
+
+/* This inclusion is needed otherwise some linkers
+ * mess up exporting the legacy functions
+ */
+#include "libbfio_legacy.h"
+#endif
 
 #if defined( __cplusplus )
 extern "C" {
@@ -153,11 +160,6 @@ struct libbfio_internal_handle
 	       size64_t *size,
 	       libcerror_error_t **error );
 
-#if defined( HAVE_MULTI_THREAD_SUPPORT ) && !defined( HAVE_LOCAL_LIBBFIO )
-	/* The read/write lock
-	 */
-	libcthreads_read_write_lock_t *read_write_lock;
-#endif
 };
 
 LIBBFIO_EXTERN \

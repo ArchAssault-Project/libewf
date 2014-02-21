@@ -5,7 +5,6 @@ AM_CPPFLAGS = \
 	@LIBCSTRING_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
-	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCLOCALE_CPPFLAGS@ \
 	@LIBCNOTIFY_CPPFLAGS@ \
 	@LIBCSPLIT_CPPFLAGS@ \
@@ -14,9 +13,8 @@ AM_CPPFLAGS = \
 	@LIBCPATH_CPPFLAGS@ \
 	@LIBBFIO_CPPFLAGS@ \
 	@LIBFCACHE_CPPFLAGS@ \
-	@LIBFDATA_CPPFLAGS@ \
 	@LIBFVALUE_CPPFLAGS@ \
-	@PTHREAD_CPPFLAGS@
+	@LIBMFDATA_CPPFLAGS@
 
 noinst_LTLIBRARIES = libsmraw.la
 
@@ -28,14 +26,15 @@ libsmraw_la_SOURCES = \
 	libsmraw_filename.c libsmraw_filename.h \
 	libsmraw_handle.c libsmraw_handle.h \
 	libsmraw_information_file.c libsmraw_information_file.h \
-	libsmraw_io_handle.c libsmraw_io_handle.h \
+	libsmraw_legacy.c libsmraw_legacy.h \
 	libsmraw_libbfio.h \
 	libsmraw_libcerror.h \
 	libsmraw_libclocale.h \
 	libsmraw_libcnotify.h \
 	libsmraw_libcstring.h \
-	libsmraw_libfdata.h \
+	libsmraw_libfcache.h \
 	libsmraw_libfvalue.h \
+	libsmraw_libmfdata.h \
 	libsmraw_libuna.h \
 	libsmraw_metadata.c libsmraw_metadata.h \
 	libsmraw_notify.c libsmraw_notify.h \
@@ -46,7 +45,6 @@ libsmraw_la_SOURCES = \
 libsmraw_la_LIBADD = \
 	@LIBCSTRING_LIBADD@ \
 	@LIBCERROR_LIBADD@ \
-	@LIBCTHREADS_LIBADD@ \
 	@LIBCDATA_LIBADD@ \
 	@LIBCLOCALE_LIBADD@ \
 	@LIBCNOTIFY_LIBADD@ \
@@ -56,9 +54,8 @@ libsmraw_la_LIBADD = \
 	@LIBCPATH_LIBADD@ \
 	@LIBBFIO_LIBADD@ \
 	@LIBFCACHE_LIBADD@ \
-	@LIBFDATA_LIBADD@ \
 	@LIBFVALUE_LIBADD@ \
-	@PTHREAD_LIBADD@
+	@LIBMFDATA_LIBADD@
 endif
 
 MAINTAINERCLEANFILES = \

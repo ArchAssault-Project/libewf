@@ -1,7 +1,7 @@
 /*
  * Media values functions
  *
- * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -56,7 +56,7 @@ struct libewf_media_values
 
         /* The number of chunks
          */
-        uint32_t number_of_chunks;
+        uint64_t number_of_chunks;
 
         /* The number of sectors
          */
@@ -74,9 +74,10 @@ struct libewf_media_values
 	 */
 	uint8_t media_flags;
 
-        /* The GUID of the acquiry system
+        /* The segment file set identifier
+	 * Contains a GUID
          */
-        uint8_t guid[ 16 ];
+        uint8_t set_identifier[ 16 ];
 };
 
 int libewf_media_values_initialize(
@@ -90,6 +91,10 @@ int libewf_media_values_free(
 int libewf_media_values_clone(
      libewf_media_values_t **destination_media_values,
      libewf_media_values_t *source_media_values,
+     libcerror_error_t **error );
+
+int libewf_media_values_calculate_chunk_size(
+     libewf_media_values_t *media_values,
      libcerror_error_t **error );
 
 #if defined( __cplusplus )

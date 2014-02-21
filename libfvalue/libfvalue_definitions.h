@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -36,11 +36,11 @@
 #else
 #include <byte_stream.h>
 
-#define LIBFVALUE_VERSION					20130928
+#define LIBFVALUE_VERSION					20121214
 
 /* The libfvalue version string
  */
-#define LIBFVALUE_VERSION_STRING				"20130928"
+#define LIBFVALUE_VERSION_STRING				"20121214"
 
 /* The endian definitions
  */

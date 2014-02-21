@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2012, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -35,11 +35,11 @@
 
 #else
 
-#define LIBSMRAW_VERSION				20140119
+#define LIBSMRAW_VERSION				20120701
 
 /* The version string
  */
-#define LIBSMRAW_VERSION_STRING				"20140119"
+#define LIBSMRAW_VERSION_STRING				"20120701"
 
 /* The access flags definitions
  * bit 1	set to 1 for read access
@@ -61,6 +61,11 @@ enum LIBSMRAW_ACCESS_FLAGS
 #define LIBSMRAW_OPEN_WRITE				( LIBSMRAW_ACCESS_FLAG_WRITE )
 #define LIBSMRAW_OPEN_WRITE_TRUNCATE			( LIBSMRAW_ACCESS_FLAG_WRITE | LIBSMRAW_ACCESS_FLAG_TRUNCATE )
 #define LIBSMRAW_OPEN_READ_WRITE_TRUNCATE		( LIBSMRAW_ACCESS_FLAG_READ | LIBSMRAW_ACCESS_FLAG_WRITE | LIBSMRAW_ACCESS_FLAG_TRUNCATE )
+
+/* TODO deprecated remove after a while */
+#define LIBSMRAW_FLAG_READ				LIBSMRAW_ACCESS_FLAG_READ
+#define LIBSMRAW_FLAG_WRITE				LIBSMRAW_ACCESS_FLAG_WRITE
+#define LIBSMRAW_FLAG_TRUNCATE				LIBSMRAW_ACCESS_FLAG_TRUNCATE
 
 /* The default maximum segment size
  */
@@ -85,36 +90,6 @@ enum LIBSMRAW_MEDIA_FLAGS
 };
 
 #endif
-
-/* The segment file naming schema definitions
- */
-enum LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMAS
-{
-	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_UNKNOWN	= 0,
-
-	/* Numeric naming schema e.g.
-	 * .1, .2, ... .10 ...
-	 * .000, .001, ... .010 ...
-	 * PREFIX000, PREFIX001, ...
-	 */
-	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_NUMERIC	= (uint8_t) 'n',
-
-	/* Single naming schema e.g.
-	 * .dd
-	 * .raw
-	 */
-	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_SINGLE	= (uint8_t) '1',
-
-	/* Split naming schema e.g.
-	 * PREFIXaa, PREFIXab, ...
-	 */
-	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_SPLIT	= (uint8_t) 's',
-
-	/* XofN naming schema e.g.
-	 * PREFIX.1of5, PREFIX.2of5, ...
-	 */
-	LIBSMRAW_SEGMENT_FILE_NAMING_SCHEMA_X_OF_N	= (uint8_t) 'x'
-};
 
 #endif
 

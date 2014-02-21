@@ -1,7 +1,7 @@
 /*
  * The python header wrapper
  *
- * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -27,17 +27,11 @@
 /* Fix defines in pyconfig.h
  */
 #undef _POSIX_C_SOURCE
-#undef _XOPEN_SOURCE
 
 /* Fix defines in pyport.h
  */
 #undef HAVE_FSTAT
 #undef HAVE_STAT
-#undef HAVE_SSIZE_T
-#undef HAVE_INT32_T
-#undef HAVE_UINT32_T
-#undef HAVE_INT64_T
-#undef HAVE_UINT64_T
 
 #include <Python.h>
 
