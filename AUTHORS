@@ -31,6 +31,8 @@ Additional credits go to:
 - Simson Garfinkel for providing the MinGW compilation adjustments, Digital
   Forensics XML (DFXML) output for the ewftools and various input and support
   e.g. for autoconf/automake optimization.
+- Bernhard Zach <bernhard.zach@justbits.at>, for providing a C++ 11 multi-threaded
+  version of ewfacquirestream and proposing multiple write performance enhancements.
 - Several others for pointing out flaws within the product and its related
   documentation. Refer to the project website for more information:
   http://code.google.com/p/libewf/

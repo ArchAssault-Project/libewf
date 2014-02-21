@@ -2,6 +2,7 @@ MSVSCPP_FILES = \
 	dokan_dll/dokan_dll.vcproj \
 	ewfacquire/ewfacquire.vcproj \
 	ewfacquirestream/ewfacquirestream.vcproj \
+	ewfacquirestream-mt/ewfacquirestream-mt.vcproj \
 	ewfexport/ewfexport.vcproj \
 	ewfinfo/ewfinfo.vcproj \
 	ewfmount/ewfmount.vcproj \

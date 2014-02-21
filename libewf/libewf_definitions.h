@@ -33,11 +33,11 @@
 #include <libewf/definitions.h>
 
 #else
-#define LIBEWF_VERSION						20140201
+#define LIBEWF_VERSION						20140216
 
 /* The version string
  */
-#define LIBEWF_VERSION_STRING					"20140201"
+#define LIBEWF_VERSION_STRING					"20140216"
 
 /* The access flags definitions
  * bit 1	set to 1 for read access

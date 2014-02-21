@@ -42,6 +42,9 @@
 /* Define to 1 if you have the ctime_r function with a third size argument. */
 #undef HAVE_CTIME_R_SIZE
 
+/* define if the compiler supports basic C++11 syntax */
+#undef HAVE_CXX11
+
 /* Define to 1 if you have the <cygwin/fs.h> header file. */
 #undef HAVE_CYGWIN_FS_H
 

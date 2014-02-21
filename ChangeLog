@@ -4,6 +4,12 @@ TODO
   - chunk_table_list - needs mfdata uses grouping
   - file_list - not supported by fdata
 
+20140216
+* bug fix in recent process status changes
+
+20140211
+* integrating latest update for multi threaded ewfacquire changes
+
 20140201
 * changed behavior of empty-block check
 * worked on integrating multi threaded ewfacquire changes

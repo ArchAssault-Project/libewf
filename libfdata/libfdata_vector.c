@@ -62,10 +62,10 @@ int libfdata_vector_initialize(
             libfdata_vector_t *vector,
             libfcache_cache_t *cache,
             int element_index,
-            int element_data_file_index,
-            off64_t element_data_offset,
-            size64_t element_data_size,
-            uint32_t element_data_flags,
+            int element_file_index,
+            off64_t element_offset,
+            size64_t element_size,
+            uint32_t element_flags,
             uint8_t read_flags,
             libcerror_error_t **error ),
      int (*write_element_data)(
@@ -74,10 +74,10 @@ int libfdata_vector_initialize(
             libfdata_vector_t *vector,
             libfcache_cache_t *cache,
             int element_index,
-            int element_data_file_index,
-            off64_t element_data_offset,
-            size64_t element_data_size,
-            uint32_t element_data_flags,
+            int element_file_index,
+            off64_t element_offset,
+            size64_t element_size,
+            uint32_t element_flags,
             uint8_t write_flags,
             libcerror_error_t **error ),
      uint8_t flags,
@@ -1372,6 +1372,10 @@ int libfdata_vector_get_number_of_elements(
 	}
 	safe_number_of_elements = internal_vector->size / internal_vector->element_size;
 
+	if( ( internal_vector->size % internal_vector->element_size ) != 0 )
+	{
+		safe_number_of_elements += 1;
+	}
 	if( safe_number_of_elements > (size64_t) INT_MAX )
 	{
 		libcerror_error_set(
@@ -1546,7 +1550,7 @@ int libfdata_vector_get_element_index_at_offset(
      libfdata_vector_t *vector,
      off64_t offset,
      int *element_index,
-     size_t *element_data_offset,
+     off64_t *element_data_offset,
      libcerror_error_t **error )
 {
 	libfdata_internal_vector_t *internal_vector = NULL;
@@ -1754,8 +1758,6 @@ int libfdata_vector_get_element_index_at_offset(
 		if( ( offset >= mapped_range_start_offset )
 		 && ( offset < mapped_range_end_offset ) )
 		{
-			offset -= mapped_range_start_offset;
-
 			break;
 		}
 		/* Check if the offset is out of bounds
@@ -1838,8 +1840,6 @@ int libfdata_vector_get_element_index_at_offset(
 			if( ( offset >= mapped_range_start_offset )
 			 && ( offset < mapped_range_end_offset ) )
 			{
-				offset -= mapped_range_start_offset;
-
 				break;
 			}
 			/* Check if the offset is out of bounds
@@ -1856,17 +1856,6 @@ int libfdata_vector_get_element_index_at_offset(
 	if( ( segment_index >= 0 )
 	 && ( segment_index < number_of_segments ) )
 	{
-		if( offset < 0 )
-		{
-			libcerror_error_set(
-			 error,
-			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
-			 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-			 "%s: invalid offset value out of bounds.",
-			 function );
-
-			return( -1 );
-		}
 #if defined( HAVE_DEBUG_OUTPUT )
 		if( libcnotify_verbose != 0 )
 		{
@@ -1914,8 +1903,7 @@ int libfdata_vector_get_element_index_at_offset(
 			 segment_size );
 		}
 #endif
-		calculated_element_index  = (uint64_t) ( segment_data_offset + offset );
-		calculated_element_index /= internal_vector->element_size;
+		calculated_element_index = (uint64_t) offset / internal_vector->element_size;
 
 		if( calculated_element_index > (uint64_t) INT_MAX )
 		{
@@ -1928,10 +1916,10 @@ int libfdata_vector_get_element_index_at_offset(
 
 			return( -1 );
 		}
-		offset -= (off64_t) ( calculated_element_index * internal_vector->element_size );
-
+		/* The element data offset is relative from the start of the vector element not the underlying segment
+		 */
 		*element_index       = (int) calculated_element_index;
-		*element_data_offset = (size_t) offset;
+		*element_data_offset = offset % internal_vector->element_size;
 
 		result = 1;
 	}
@@ -1965,10 +1953,11 @@ int libfdata_vector_get_element_value_by_index(
 	libfdata_range_t *segment_data_range        = NULL;
 	static char *function                       = "libfdata_vector_get_element_value_by_index";
 	off64_t cache_value_offset                  = (off64_t) -1;
-	off64_t element_data_offset                 = 0;
+	off64_t element_offset                      = 0;
 	time_t cache_value_timestamp                = 0;
 	int cache_entry_index                       = -1;
 	int cache_value_file_index                  = -1;
+	int element_file_index                      = -1;
 	int number_of_cache_entries                 = 0;
 	int number_of_segments                      = 0;
 	int result                                  = 0;
@@ -2032,9 +2021,9 @@ int libfdata_vector_get_element_value_by_index(
 
 		return( -1 );
 	}
-	element_data_offset = (off64_t) ( element_index * internal_vector->element_size );
+	element_offset = (off64_t) ( element_index * internal_vector->element_size );
 
-	if( element_data_offset > (off64_t) internal_vector->size )
+	if( element_offset > (off64_t) internal_vector->size )
 	{
 		libcerror_error_set(
 		 error,
@@ -2103,13 +2092,14 @@ int libfdata_vector_get_element_value_by_index(
 			return( -1 );
 		}
 /* TODO what about compressed data ranges */
-		if( element_data_offset < (off64_t) segment_data_range->size )
+		if( element_offset < (off64_t) segment_data_range->size )
 		{
-			element_data_offset += segment_data_range->offset;
+			element_offset += segment_data_range->offset;
 
 			break;
 		}
-		element_data_offset -= segment_data_range->size;
+		element_file_index = segment_data_range->file_index;
+		element_offset    -= segment_data_range->size;
 	}
 	if( segment_index >= number_of_segments )
 	{
@@ -2188,7 +2178,8 @@ int libfdata_vector_get_element_value_by_index(
 				return( -1 );
 			}
 		}
-		if( ( element_data_offset == cache_value_offset )
+		if( ( element_file_index == cache_value_file_index )
+		 && ( element_offset == cache_value_offset )
 		 && ( internal_vector->timestamp == cache_value_timestamp ) )
 		{
 			result = 1;
@@ -2225,8 +2216,8 @@ int libfdata_vector_get_element_value_by_index(
 			libcnotify_printf(
 			 "%s: reading element data at offset: %" PRIi64 " (0x%08" PRIx64 ") of size: %" PRIu64 "\n",
 			 function,
-			 element_data_offset,
-			 element_data_offset,
+			 element_offset,
+			 element_offset,
 			 internal_vector->element_size );
 		}
 #endif
@@ -2238,7 +2229,7 @@ int libfdata_vector_get_element_value_by_index(
 		     cache,
 		     element_index,
 		     0,
-		     element_data_offset,
+		     element_offset,
 		     internal_vector->element_size,
 		     0,
 		     read_flags,
@@ -2248,9 +2239,9 @@ int libfdata_vector_get_element_value_by_index(
 			 error,
 			 LIBCERROR_ERROR_DOMAIN_IO,
 			 LIBCERROR_IO_ERROR_READ_FAILED,
-			 "%s: unable to read element data at offset: %" PRIi64 ".",
+			 "%s: unable to read element data at offset: 0x%08" PRIx64 ".",
 			 function,
-			 element_data_offset );
+			 element_offset );
 
 			return( -1 );
 		}
@@ -2293,7 +2284,8 @@ int libfdata_vector_get_element_value_by_index(
 				return( -1 );
 			}
 		}
-		if( ( element_data_offset != cache_value_offset )
+		if( ( element_file_index != cache_value_file_index )
+		 || ( element_offset != cache_value_offset )
 		 || ( internal_vector->timestamp != cache_value_timestamp ) )
 		{
 			libcerror_error_set(
@@ -2331,26 +2323,26 @@ int libfdata_vector_get_element_value_at_offset(
      intptr_t *file_io_handle,
      libfcache_cache_t *cache,
      off64_t offset,
+     off64_t *element_data_offset,
      intptr_t **element_value,
      uint8_t read_flags,
      libcerror_error_t **error )
 {
 	static char *function = "libfdata_vector_get_element_value_at_offset";
-	size_t element_offset = 0;
 	int element_index     = 0;
 
 	if( libfdata_vector_get_element_index_at_offset(
 	     vector,
 	     offset,
 	     &element_index,
-	     &element_offset,
+	     element_data_offset,
 	     error ) != 1 )
 	{
 		libcerror_error_set(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_GET_FAILED,
-		 "%s: unable to retrieve element index at offset: %" PRIi64 ".",
+		 "%s: unable to retrieve element index at offset: 0x%08" PRIx64 ".",
 		 function,
 		 offset );
 
@@ -2401,8 +2393,9 @@ int libfdata_vector_set_element_value_by_index(
 	libfdata_internal_vector_t *internal_vector = NULL;
 	libfdata_range_t *segment_data_range        = NULL;
 	static char *function                       = "libfdata_vector_set_element_value_by_index";
-	off64_t element_data_offset                 = 0;
+	off64_t element_offset                      = 0;
 	int cache_entry_index                       = -1;
+	int element_file_index                      = -1;
 	int number_of_cache_entries                 = 0;
 	int number_of_segments                      = 0;
 	int segment_index                           = 0;
@@ -2454,9 +2447,9 @@ int libfdata_vector_set_element_value_by_index(
 
 		return( -1 );
 	}
-	element_data_offset = (off64_t) ( element_index * internal_vector->element_size );
+	element_offset = (off64_t) ( element_index * internal_vector->element_size );
 
-	if( element_data_offset > (off64_t) internal_vector->size )
+	if( element_offset > (off64_t) internal_vector->size )
 	{
 		libcerror_error_set(
 		 error,
@@ -2525,13 +2518,14 @@ int libfdata_vector_set_element_value_by_index(
 			return( -1 );
 		}
 /* TODO what about compressed data ranges */
-		if( element_data_offset < (off64_t) segment_data_range->size )
+		if( element_offset < (off64_t) segment_data_range->size )
 		{
-			element_data_offset += segment_data_range->offset;
+			element_offset += segment_data_range->offset;
 
 			break;
 		}
-		element_data_offset -= segment_data_range->size;
+		element_file_index = segment_data_range->file_index;
+		element_offset    -= segment_data_range->size;
 	}
 	if( segment_index >= number_of_segments )
 	{
@@ -2576,8 +2570,8 @@ int libfdata_vector_set_element_value_by_index(
 	if( libfcache_cache_set_value_by_index(
 	     cache,
 	     cache_entry_index,
-	     0,
-	     element_data_offset,
+	     element_file_index,
+	     element_offset,
 	     internal_vector->timestamp,
 	     element_value,
 	     free_element_value,

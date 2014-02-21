@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [libewf],
- [20140201],
+ [20140216],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -26,6 +26,11 @@ AC_PROG_CC
 AC_PROG_GCC_TRADITIONAL
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
+
+dnl Check for C++ preprocessor and compiler for ewftools-mt
+AC_PROG_CXXCPP
+AC_PROG_CXX
+AX_CXX_COMPILE_STDCXX_11(noext, optional)
 
 dnl Check for libtool
 AC_PROG_LIBTOOL
@@ -224,6 +229,7 @@ AC_CONFIG_FILES([libsmdev/Makefile])
 AC_CONFIG_FILES([libsmraw/Makefile])
 AC_CONFIG_FILES([libcsystem/Makefile])
 AC_CONFIG_FILES([ewftools/Makefile])
+AC_CONFIG_FILES([ewftools-mt/Makefile])
 AC_CONFIG_FILES([ewf.net/Makefile])
 AC_CONFIG_FILES([pyewf/Makefile])
 AC_CONFIG_FILES([po/Makefile.in])
