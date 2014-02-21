@@ -1,7 +1,7 @@
 /*
  * Reads data from a file or device and writes it in EWF format
  *
- * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -202,7 +202,7 @@ void ewfacquire_signal_handler(
       libcsystem_signal_t signal LIBCSYSTEM_ATTRIBUTE_UNUSED )
 {
 	libcerror_error_t *error = NULL;
-	static char *function   = "ewfacquire_signal_handler";
+	static char *function    = "ewfacquire_signal_handler";
 
 	LIBCSYSTEM_UNREFERENCED_PARAMETER( signal )
 

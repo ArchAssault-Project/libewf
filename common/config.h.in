@@ -135,26 +135,14 @@
 /* Define to 1 if you have the `getcwd' function. */
 #undef HAVE_GETCWD
 
-/* Define to 1 if you have the `getegid' function. */
-#undef HAVE_GETEGID
-
 /* Define to 1 if you have the `getenv' function. */
 #undef HAVE_GETENV
-
-/* Define to 1 if you have the `geteuid' function. */
-#undef HAVE_GETEUID
 
 /* Define to 1 if you have the `getopt' function. */
 #undef HAVE_GETOPT
 
-/* Define to 1 if you have the `getrlimit' function. */
-#undef HAVE_GETRLIMIT
-
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #undef HAVE_GETTEXT
-
-/* Define to 1 if you have the `getuid' function. */
-#undef HAVE_GETUID
 
 /* Define to 1 if you have the <glob.h> header file. */
 #undef HAVE_GLOB_H
@@ -206,6 +194,12 @@
 
 /* Define to 1 if you have the <libcdata.h> header file. */
 #undef HAVE_LIBCDATA_H
+
+/* Define to 1 if you have the `cdatetime' library (-lcdatetime). */
+#undef HAVE_LIBCDATETIME
+
+/* Define to 1 if you have the <libcdatetime.h> header file. */
+#undef HAVE_LIBCDATETIME_H
 
 /* Define to 1 if you have the `cerror' library (-lcerror). */
 #undef HAVE_LIBCERROR
@@ -371,6 +365,9 @@
 
 /* Define to 1 if the local version of libcdata is used. */
 #undef HAVE_LOCAL_LIBCDATA
+
+/* Define to 1 if the local version of libcdatetime is used. */
+#undef HAVE_LOCAL_LIBCDATETIME
 
 /* Define to 1 if the local version of libcerror is used. */
 #undef HAVE_LOCAL_LIBCERROR
@@ -603,9 +600,6 @@
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #undef HAVE_SYS_IOCTL_H
 
-/* Define to 1 if you have the <sys/resource.h> header file. */
-#undef HAVE_SYS_RESOURCE_H
-
 /* Define to 1 if you have the <sys/signal.h> header file. */
 #undef HAVE_SYS_SIGNAL_H
 
@@ -618,9 +612,6 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #undef HAVE_SYS_TYPES_H
 
-/* Define to 1 if you have the <sys/utsname.h> header file. */
-#undef HAVE_SYS_UTSNAME_H
-
 /* Define to 1 if you have the `textdomain' function. */
 #undef HAVE_TEXTDOMAIN
 
@@ -629,9 +620,6 @@
 
 /* Define to 1 if you have the `towlower' function. */
 #undef HAVE_TOWLOWER
-
-/* Define to 1 if you have the `uname' function. */
-#undef HAVE_UNAME
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H

@@ -37,11 +37,11 @@
  * for local use of libodraw
  */
 #else
-#define LIBODRAW_VERSION				20131210
+#define LIBODRAW_VERSION				20140119
 
 /* The version string
  */
-#define LIBODRAW_VERSION_STRING				"20131210"
+#define LIBODRAW_VERSION_STRING				"20140119"
 
 /* The access flags definitions
  * bit 1        set to 1 for read access

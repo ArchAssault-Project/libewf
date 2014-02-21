@@ -1,5 +1,5 @@
 Name: libewf
-Version: 20131230
+Version: 20140201
 Release: 1
 Summary: Library to access the Expert Witness Compression Format (EWF)
 Group: System Environment/Libraries
@@ -36,8 +36,8 @@ Header files and libraries for developing applications for libewf.
 %package tools
 Summary: Several tools for reading and writing EWF files
 Group: Applications/System
-Requires: libewf = %{version}-%{release} fuse-libs    
-BuildRequires: byacc flex fuse-devel    
+Requires: libewf = %{version}-%{release}  fuse-libs    
+BuildRequires: byacc flex  fuse-devel    
 
 %description tools
 Several tools for reading and writing EWF files.
@@ -112,6 +112,6 @@ rm -rf ${RPM_BUILD_ROOT}
 %exclude %{_bindir}/ewfdebug
 
 %changelog
-* Mon Dec 30 2013 Joachim Metz <joachim.metz@gmail.com> 20131230-1
+* Sat Feb  1 2014 Joachim Metz <joachim.metz@gmail.com> 20140201-1
 - Auto-generated
 

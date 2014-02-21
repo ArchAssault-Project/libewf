@@ -11,6 +11,7 @@ MSVSCPP_FILES = \
 	libbfio/libbfio.vcproj \
 	libcaes/libcaes.vcproj \
 	libcdata/libcdata.vcproj \
+	libcdatetime/libcdatetime.vcproj \
 	libcerror/libcerror.vcproj \
 	libcfile/libcfile.vcproj \
 	libclocale/libclocale.vcproj \

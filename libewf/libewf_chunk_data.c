@@ -1,7 +1,7 @@
 /*
  * Chunk data functions
  *
- * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -223,9 +223,18 @@ int libewf_chunk_data_pack(
 	}
 	chunk_data->is_compressed = 0;
 
-	if( ( ewf_format != EWF_FORMAT_S01 )
-	 && ( compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) != 0 )
+	/* Skip the empty block check only if the compression is none and
+	 * the empty block compression flag is not set.
+	 */
+	if( ( compression_level != EWF_COMPRESSION_NONE )
+	 && ( ( compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) == 0 ) )
 	{
+#if defined( TEST_EMPTY_BLOCK_MEMCMP )
+		if( memory_compare(
+		     chunk_data->data,
+		     &( chunk_data->data[ 1 ] )
+		     chunk_data->data_size - 1 ) == 0 )
+#else
 		result = libewf_empty_block_test(
 			  chunk_data->data,
 			  chunk_data->data_size,
@@ -243,23 +252,21 @@ int libewf_chunk_data_pack(
 			return( -1 );
 		}
 		else if( result == 1 )
+#endif
 		{
-			if( compression_level == EWF_COMPRESSION_NONE )
-			{
-				compression_level = EWF_COMPRESSION_DEFAULT;
-			}
 			if( ( chunk_data->data )[ 0 ] == 0 )
 			{
 				is_empty_zero_block = 1;
 			}
-		}
-		else
-		{
-			compression_level = EWF_COMPRESSION_NONE;
+			else if( compression_level == EWF_COMPRESSION_NONE )
+			{
+				compression_level = EWF_COMPRESSION_DEFAULT;
+			}
 		}
 	}
 	if( ( ewf_format == EWF_FORMAT_S01 )
-	 || ( compression_level != EWF_COMPRESSION_NONE ) )
+	 || ( compression_level != EWF_COMPRESSION_NONE )
+	 || ( is_empty_zero_block != 0 ) )
 	{
 		chunk_data->compressed_data_size = 2 * chunk_data->data_size;
 

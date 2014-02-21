@@ -1,7 +1,7 @@
 /*
  * Empty block test functions
  *
- * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -32,7 +32,7 @@
 typedef unsigned long int libewf_aligned_t;
 
 /* Check for empty block
- * An emtpy block is a block that contains the same value for every byte
+ * An empty block is a block that contains the same value for every byte
  * Returns 1 if block is empty, 0 if not or -1 on error
  */
 int libewf_empty_block_test(

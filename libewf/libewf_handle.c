@@ -1,7 +1,7 @@
 /*
  * Handle functions
  *
- * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -5229,8 +5229,18 @@ ssize_t libewf_handle_prepare_write_chunk(
 	{
 		compression_level = internal_handle->io_handle->compression_level;
 
-		if( ( internal_handle->io_handle->compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) != 0 )
+		/* Skip the empty block check only if the compression is none and
+		 * the empty block compression flag is not set.
+		 */
+		if( ( compression_level != EWF_COMPRESSION_NONE )
+		 && ( ( internal_handle->io_handle->compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) == 0 ) )
 		{
+#if defined( TEST_EMPTY_BLOCK_MEMCMP )
+			if( memory_compare(
+			     chunk_buffer,
+			     &( ( (uint8_t *) chunk_buffer )[ 1 ] ),
+			     chunk_buffer_size - 1 ) == 0 )
+#else
 			result = libewf_empty_block_test(
 				  chunk_buffer,
 				  chunk_buffer_size,
@@ -5248,23 +5258,21 @@ ssize_t libewf_handle_prepare_write_chunk(
 				return( -1 );
 			}
 			else if( result == 1 )
+#endif
 			{
-				if( compression_level == EWF_COMPRESSION_NONE )
-				{
-					compression_level = EWF_COMPRESSION_DEFAULT;
-				}
 				if( ( (uint8_t *) chunk_buffer )[ 0 ] == 0 )
 				{
 					is_empty_zero_block = 1;
 				}
-			}
-			else
-			{
-				compression_level = EWF_COMPRESSION_NONE;
+				else if( compression_level == EWF_COMPRESSION_NONE )
+				{
+					compression_level = EWF_COMPRESSION_DEFAULT;
+				}
 			}
 		}
 		if( ( internal_handle->io_handle->ewf_format == EWF_FORMAT_S01 )
-		 || ( compression_level != EWF_COMPRESSION_NONE ) )
+		 || ( compression_level != EWF_COMPRESSION_NONE )
+		 || ( is_empty_zero_block != 0 ) )
 		{
 			if( compressed_chunk_buffer == NULL )
 			{

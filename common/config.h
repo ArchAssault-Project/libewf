@@ -136,26 +136,14 @@
 /* Define to 1 if you have the `getcwd' function. */
 #define HAVE_GETCWD 1
 
-/* Define to 1 if you have the `getegid' function. */
-#define HAVE_GETEGID 1
-
 /* Define to 1 if you have the `getenv' function. */
 #define HAVE_GETENV 1
-
-/* Define to 1 if you have the `geteuid' function. */
-#define HAVE_GETEUID 1
 
 /* Define to 1 if you have the `getopt' function. */
 #define HAVE_GETOPT 1
 
-/* Define to 1 if you have the `getrlimit' function. */
-#define HAVE_GETRLIMIT 1
-
 /* Define if the GNU gettext() function is already present or preinstalled. */
 #define HAVE_GETTEXT 1
-
-/* Define to 1 if you have the `getuid' function. */
-#define HAVE_GETUID 1
 
 /* Define to 1 if you have the <glob.h> header file. */
 #define HAVE_GLOB_H 1
@@ -207,6 +195,12 @@
 
 /* Define to 1 if you have the <libcdata.h> header file. */
 /* #undef HAVE_LIBCDATA_H */
+
+/* Define to 1 if you have the `cdatetime' library (-lcdatetime). */
+/* #undef HAVE_LIBCDATETIME */
+
+/* Define to 1 if you have the <libcdatetime.h> header file. */
+/* #undef HAVE_LIBCDATETIME_H */
 
 /* Define to 1 if you have the `cerror' library (-lcerror). */
 /* #undef HAVE_LIBCERROR */
@@ -372,6 +366,9 @@
 
 /* Define to 1 if the local version of libcdata is used. */
 #define HAVE_LOCAL_LIBCDATA 1
+
+/* Define to 1 if the local version of libcdatetime is used. */
+#define HAVE_LOCAL_LIBCDATETIME 1
 
 /* Define to 1 if the local version of libcerror is used. */
 #define HAVE_LOCAL_LIBCERROR 1
@@ -604,9 +601,6 @@
 /* Define to 1 if you have the <sys/ioctl.h> header file. */
 #define HAVE_SYS_IOCTL_H 1
 
-/* Define to 1 if you have the <sys/resource.h> header file. */
-#define HAVE_SYS_RESOURCE_H 1
-
 /* Define to 1 if you have the <sys/signal.h> header file. */
 #define HAVE_SYS_SIGNAL_H 1
 
@@ -619,9 +613,6 @@
 /* Define to 1 if you have the <sys/types.h> header file. */
 #define HAVE_SYS_TYPES_H 1
 
-/* Define to 1 if you have the <sys/utsname.h> header file. */
-#define HAVE_SYS_UTSNAME_H 1
-
 /* Define to 1 if you have the `textdomain' function. */
 #define HAVE_TEXTDOMAIN 1
 
@@ -630,9 +621,6 @@
 
 /* Define to 1 if you have the `towlower' function. */
 /* #undef HAVE_TOWLOWER */
-
-/* Define to 1 if you have the `uname' function. */
-#define HAVE_UNAME 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
@@ -747,7 +735,7 @@
 #define PACKAGE_NAME "libewf"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "libewf 20131230"
+#define PACKAGE_STRING "libewf 20140201"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "libewf"
@@ -756,7 +744,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "20131230"
+#define PACKAGE_VERSION "20140201"
 
 /* The size of `off_t', as computed by sizeof. */
 #define SIZEOF_OFF_T 8
@@ -780,7 +768,7 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "20131230"
+#define VERSION "20140201"
 
 /* Define to 1 if `lex' declares `yytext' as a `char *' by default, not a
    `char[]'. */

@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2008-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2008-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCERROR_VERSION				20131201
+#define LIBCERROR_VERSION				20140105
 
 /* The libcstring version string
  */
-#define LIBCERROR_VERSION_STRING			"20131201"
+#define LIBCERROR_VERSION_STRING			"20140105"
 
 /* The error domains
  */

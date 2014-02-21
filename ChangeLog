@@ -4,6 +4,16 @@ TODO
   - chunk_table_list - needs mfdata uses grouping
   - file_list - not supported by fdata
 
+20140201
+* changed behavior of empty-block check
+* worked on integrating multi threaded ewfacquire changes
+
+20140119
+* 2014 update
+* updated dependencies
+* added libcdatetime
+* removed borlandc files
+
 20131230
 * small updates
 

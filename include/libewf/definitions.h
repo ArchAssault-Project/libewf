@@ -1,7 +1,7 @@
 /*
  * Definitions for libewf
  *
- * Copyright (c) 2006-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2006-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -24,11 +24,11 @@
 
 #include <libewf/types.h>
 
-#define LIBEWF_VERSION						20131230
+#define LIBEWF_VERSION						20140201
 
 /* The version string
  */
-#define LIBEWF_VERSION_STRING					"20131230"
+#define LIBEWF_VERSION_STRING					"20140201"
 
 /* The access flags definitions
  * bit 1	set to 1 for read access
@@ -118,7 +118,7 @@ enum LIBEWF_COMPRESSION_LEVELS
 };
 
 /* The compression flags
- * bit 1	set to 1 for emtpy block compression
+ * bit 1	set to 1 for empty block compression
  *              detects empty blocks and stored them compressed, the compression
  *              is only done once
  * bit 2-8	not used

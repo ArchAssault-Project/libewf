@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2012-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2012-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCTHREADS_VERSION			20130723
+#define LIBCTHREADS_VERSION			20140105
 
 /* The libcthreads version string
  */
-#define LIBCTHREADS_VERSION_STRING		"20130723"
+#define LIBCTHREADS_VERSION_STRING		"20140105"
 
 #endif /* !defined( HAVE_LOCAL_LIBCTHREADS ) */
 

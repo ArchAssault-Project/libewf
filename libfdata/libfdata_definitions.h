@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2010-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2010-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -33,11 +33,11 @@
  * for local use of libfdata
  */
 #else
-#define LIBFDATA_VERSION						20130908
+#define LIBFDATA_VERSION						20140105
 
 /* The libfdata version string
  */
-#define LIBFDATA_VERSION_STRING						"20130908"
+#define LIBFDATA_VERSION_STRING						"20140105"
 
 /* The library flag definitions
  */
@@ -165,9 +165,9 @@ enum LIBFDATA_TREE_NODE_FLAGS
 	 */
 	LIBFDATA_TREE_NODE_FLAG_IS_LEAF					= 0x08,
 
-	/* The sub nodes range was set
+	/* The sub nodes data range was set
 	 */
-	LIBFDATA_TREE_NODE_FLAG_SUB_NODES_RANGE_SET			= 0x10,
+	LIBFDATA_TREE_NODE_FLAG_SUB_NODES_DATA_RANGE_SET		= 0x10,
 
 	/* The sub nodes have been read
 	 */

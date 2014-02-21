@@ -11,7 +11,7 @@ from distutils.command.sdist import sdist
 from distutils.core import setup, Extension
 
 
-# Custom handler for the setup.py sdist command.
+# Custom handler for the setup.py bdist_rpm command.
 class custom_bdist_rpm(bdist):
 	def run(self):
 		print "'setup.py bdist_rpm' command not supported use 'rpmbuild' instead."
@@ -26,10 +26,10 @@ class custom_sdist(sdist):
 
 
 LIBRARY_NAME = "libewf"
-LIBRARY_VERSION = "20131230"
+LIBRARY_VERSION = "20140201"
 MODULE_NAME = "py%s" % (LIBRARY_NAME[3:])
 # bdist_msi does not support the library version, neither a date as a version.
-MODULE_VERSION = "20131230.1"
+MODULE_VERSION = "20140201.1"
 PROJECT_URL = "http://code.google.com/p/%s/" % (LIBRARY_NAME)
 
 DIRECTORY_NAMES = [

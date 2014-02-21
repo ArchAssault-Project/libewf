@@ -36,8 +36,8 @@ Header files and libraries for developing applications for libewf.
 %package tools
 Summary: Several tools for reading and writing EWF files
 Group: Applications/System
-Requires: libewf = %{version}-%{release} @ax_libfuse_spec_requires@ @ax_libodraw_spec_requires@ @ax_libsmdev_spec_requires@ @ax_libsmraw_spec_requires@ @ax_libuuid_spec_requires@
-BuildRequires: byacc flex @ax_libfuse_spec_build_requires@ @ax_libodraw_spec_build_requires@ @ax_libsmdev_spec_build_requires@ @ax_libsmraw_spec_build_requires@ @ax_libuuid_spec_build_requires@
+Requires: libewf = %{version}-%{release} @ax_libcdatetime_spec_requires@ @ax_libfuse_spec_requires@ @ax_libodraw_spec_requires@ @ax_libsmdev_spec_requires@ @ax_libsmraw_spec_requires@ @ax_libuuid_spec_requires@
+BuildRequires: byacc flex @ax_libcdatetime_spec_build_requires@ @ax_libfuse_spec_build_requires@ @ax_libodraw_spec_build_requires@ @ax_libsmdev_spec_build_requires@ @ax_libsmraw_spec_build_requires@ @ax_libuuid_spec_build_requires@
 
 %description tools
 Several tools for reading and writing EWF files.

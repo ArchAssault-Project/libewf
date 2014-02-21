@@ -60,24 +60,25 @@ am__aclocal_m4_deps = $(top_srcdir)/m4/bzip2.m4 \
 	$(top_srcdir)/m4/lib-ld.m4 $(top_srcdir)/m4/lib-link.m4 \
 	$(top_srcdir)/m4/lib-prefix.m4 $(top_srcdir)/m4/libbfio.m4 \
 	$(top_srcdir)/m4/libcaes.m4 $(top_srcdir)/m4/libcdata.m4 \
-	$(top_srcdir)/m4/libcerror.m4 $(top_srcdir)/m4/libcfile.m4 \
-	$(top_srcdir)/m4/libclocale.m4 $(top_srcdir)/m4/libcnotify.m4 \
-	$(top_srcdir)/m4/libcpath.m4 $(top_srcdir)/m4/libcrypto.m4 \
-	$(top_srcdir)/m4/libcsplit.m4 $(top_srcdir)/m4/libcstring.m4 \
-	$(top_srcdir)/m4/libcsystem.m4 $(top_srcdir)/m4/libcthreads.m4 \
-	$(top_srcdir)/m4/libfcache.m4 $(top_srcdir)/m4/libfdata.m4 \
-	$(top_srcdir)/m4/libfuse.m4 $(top_srcdir)/m4/libfvalue.m4 \
-	$(top_srcdir)/m4/libhmac.m4 $(top_srcdir)/m4/libmfdata.m4 \
-	$(top_srcdir)/m4/libodraw.m4 $(top_srcdir)/m4/libsmdev.m4 \
-	$(top_srcdir)/m4/libsmraw.m4 $(top_srcdir)/m4/libtool.m4 \
-	$(top_srcdir)/m4/libuna.m4 $(top_srcdir)/m4/libuuid.m4 \
-	$(top_srcdir)/m4/ltoptions.m4 $(top_srcdir)/m4/ltsugar.m4 \
-	$(top_srcdir)/m4/ltversion.m4 $(top_srcdir)/m4/lt~obsolete.m4 \
-	$(top_srcdir)/m4/nls.m4 $(top_srcdir)/m4/po.m4 \
-	$(top_srcdir)/m4/progtest.m4 $(top_srcdir)/m4/pthread.m4 \
-	$(top_srcdir)/m4/python.m4 $(top_srcdir)/m4/types.m4 \
-	$(top_srcdir)/m4/wincrypt.m4 $(top_srcdir)/m4/zlib.m4 \
-	$(top_srcdir)/acinclude.m4 $(top_srcdir)/configure.ac
+	$(top_srcdir)/m4/libcdatetime.m4 $(top_srcdir)/m4/libcerror.m4 \
+	$(top_srcdir)/m4/libcfile.m4 $(top_srcdir)/m4/libclocale.m4 \
+	$(top_srcdir)/m4/libcnotify.m4 $(top_srcdir)/m4/libcpath.m4 \
+	$(top_srcdir)/m4/libcrypto.m4 $(top_srcdir)/m4/libcsplit.m4 \
+	$(top_srcdir)/m4/libcstring.m4 $(top_srcdir)/m4/libcsystem.m4 \
+	$(top_srcdir)/m4/libcthreads.m4 $(top_srcdir)/m4/libfcache.m4 \
+	$(top_srcdir)/m4/libfdata.m4 $(top_srcdir)/m4/libfuse.m4 \
+	$(top_srcdir)/m4/libfvalue.m4 $(top_srcdir)/m4/libhmac.m4 \
+	$(top_srcdir)/m4/libmfdata.m4 $(top_srcdir)/m4/libodraw.m4 \
+	$(top_srcdir)/m4/libsmdev.m4 $(top_srcdir)/m4/libsmraw.m4 \
+	$(top_srcdir)/m4/libtool.m4 $(top_srcdir)/m4/libuna.m4 \
+	$(top_srcdir)/m4/libuuid.m4 $(top_srcdir)/m4/ltoptions.m4 \
+	$(top_srcdir)/m4/ltsugar.m4 $(top_srcdir)/m4/ltversion.m4 \
+	$(top_srcdir)/m4/lt~obsolete.m4 $(top_srcdir)/m4/nls.m4 \
+	$(top_srcdir)/m4/po.m4 $(top_srcdir)/m4/progtest.m4 \
+	$(top_srcdir)/m4/pthread.m4 $(top_srcdir)/m4/python.m4 \
+	$(top_srcdir)/m4/types.m4 $(top_srcdir)/m4/wincrypt.m4 \
+	$(top_srcdir)/m4/zlib.m4 $(top_srcdir)/acinclude.m4 \
+	$(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
@@ -168,6 +169,7 @@ HAVE_INTTYPES_H = @HAVE_INTTYPES_H@
 HAVE_LIBBFIO = @HAVE_LIBBFIO@
 HAVE_LIBCAES = @HAVE_LIBCAES@
 HAVE_LIBCDATA = @HAVE_LIBCDATA@
+HAVE_LIBCDATETIME = @HAVE_LIBCDATETIME@
 HAVE_LIBCERROR = @HAVE_LIBCERROR@
 HAVE_LIBCFILE = @HAVE_LIBCFILE@
 HAVE_LIBCLOCALE = @HAVE_LIBCLOCALE@
@@ -191,6 +193,7 @@ HAVE_LIBUUID = @HAVE_LIBUUID@
 HAVE_LOCAL_LIBBFIO = @HAVE_LOCAL_LIBBFIO@
 HAVE_LOCAL_LIBCAES = @HAVE_LOCAL_LIBCAES@
 HAVE_LOCAL_LIBCDATA = @HAVE_LOCAL_LIBCDATA@
+HAVE_LOCAL_LIBCDATETIME = @HAVE_LOCAL_LIBCDATETIME@
 HAVE_LOCAL_LIBCERROR = @HAVE_LOCAL_LIBCERROR@
 HAVE_LOCAL_LIBCFILE = @HAVE_LOCAL_LIBCFILE@
 HAVE_LOCAL_LIBCLOCALE = @HAVE_LOCAL_LIBCLOCALE@
@@ -241,6 +244,8 @@ LIBCAES_CPPFLAGS = @LIBCAES_CPPFLAGS@
 LIBCAES_LIBADD = @LIBCAES_LIBADD@
 LIBCDATA_CPPFLAGS = @LIBCDATA_CPPFLAGS@
 LIBCDATA_LIBADD = @LIBCDATA_LIBADD@
+LIBCDATETIME_CPPFLAGS = @LIBCDATETIME_CPPFLAGS@
+LIBCDATETIME_LIBADD = @LIBCDATETIME_LIBADD@
 LIBCERROR_CPPFLAGS = @LIBCERROR_CPPFLAGS@
 LIBCERROR_LIBADD = @LIBCERROR_LIBADD@
 LIBCFILE_CPPFLAGS = @LIBCFILE_CPPFLAGS@
@@ -374,6 +379,9 @@ ax_libcaes_spec_requires = @ax_libcaes_spec_requires@
 ax_libcdata_pc_libs_private = @ax_libcdata_pc_libs_private@
 ax_libcdata_spec_build_requires = @ax_libcdata_spec_build_requires@
 ax_libcdata_spec_requires = @ax_libcdata_spec_requires@
+ax_libcdatetime_pc_libs_private = @ax_libcdatetime_pc_libs_private@
+ax_libcdatetime_spec_build_requires = @ax_libcdatetime_spec_build_requires@
+ax_libcdatetime_spec_requires = @ax_libcdatetime_spec_requires@
 ax_libcerror_pc_libs_private = @ax_libcerror_pc_libs_private@
 ax_libcerror_spec_build_requires = @ax_libcerror_spec_build_requires@
 ax_libcerror_spec_requires = @ax_libcerror_spec_requires@
@@ -473,6 +481,8 @@ libcaes_CFLAGS = @libcaes_CFLAGS@
 libcaes_LIBS = @libcaes_LIBS@
 libcdata_CFLAGS = @libcdata_CFLAGS@
 libcdata_LIBS = @libcdata_LIBS@
+libcdatetime_CFLAGS = @libcdatetime_CFLAGS@
+libcdatetime_LIBS = @libcdatetime_LIBS@
 libcerror_CFLAGS = @libcerror_CFLAGS@
 libcerror_LIBS = @libcerror_LIBS@
 libcfile_CFLAGS = @libcfile_CFLAGS@

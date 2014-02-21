@@ -1,7 +1,7 @@
 /*
  * The internal definitions
  *
- * Copyright (c) 2009-2013, Joachim Metz <joachim.metz@gmail.com>
+ * Copyright (c) 2009-2014, Joachim Metz <joachim.metz@gmail.com>
  *
  * Refer to AUTHORS for acknowledgements.
  *
@@ -33,11 +33,11 @@
  * for local use of libbfio
  */
 #else
-#define LIBBFIO_VERSION					20130908
+#define LIBBFIO_VERSION					20140105
 
 /* The libbfio version string
  */
-#define LIBBFIO_VERSION_STRING				"20130908"
+#define LIBBFIO_VERSION_STRING				"20140105"
 
 /* The library flags definitions
  */
