@@ -227,7 +227,7 @@ int libewf_chunk_data_pack(
 	 * the empty block compression flag is not set.
 	 */
 	if( ( compression_level != EWF_COMPRESSION_NONE )
-	 && ( ( compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) == 0 ) )
+	 || ( ( compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) != 0 ) )
 	{
 #if defined( TEST_EMPTY_BLOCK_MEMCMP )
 		if( memory_compare(

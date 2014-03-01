@@ -357,6 +357,8 @@ int libewf_read_io_handle_read_chunk_data(
 		{
 			chunk_size = (size_t) ( media_values->media_size - chunk_offset );
 		}
+		chunk_data = NULL;
+
 		if( libewf_chunk_data_initialize(
 		     chunk_data,
 		     chunk_size,

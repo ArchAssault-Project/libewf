@@ -5233,7 +5233,7 @@ ssize_t libewf_handle_prepare_write_chunk(
 		 * the empty block compression flag is not set.
 		 */
 		if( ( compression_level != EWF_COMPRESSION_NONE )
-		 && ( ( internal_handle->io_handle->compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) == 0 ) )
+		 || ( ( internal_handle->io_handle->compression_flags & LIBEWF_FLAG_COMPRESS_EMPTY_BLOCK ) != 0 ) )
 		{
 #if defined( TEST_EMPTY_BLOCK_MEMCMP )
 			if( memory_compare(

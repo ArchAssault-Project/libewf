@@ -1255,6 +1255,7 @@ int libewf_write_io_handle_set_compressed_zero_byte_empty_block(
 	static char *function                     = "libewf_write_io_handle_set_compressed_zero_byte_empty_block";
 	void *reallocation                        = NULL;
 	int result                                = 0;
+	int compression_level                     = 0;
 
 	if( write_io_handle == NULL )
 	{
@@ -1351,12 +1352,18 @@ int libewf_write_io_handle_set_compressed_zero_byte_empty_block(
 
 		goto on_error;
 	}
+	compression_level = io_handle->compression_level;
+
+	if( compression_level == EWF_COMPRESSION_NONE )
+	{
+		compression_level = EWF_COMPRESSION_DEFAULT;
+	}
 	result = libewf_compress(
 		  compressed_zero_byte_empty_block,
 		  &( write_io_handle->compressed_zero_byte_empty_block_size ),
 		  zero_byte_empty_block,
 		  (size_t) media_values->chunk_size,
-		  io_handle->compression_level,
+		  compression_level,
 		  error );
 
 	/* Check if the compressed buffer was too small

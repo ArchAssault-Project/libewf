@@ -4,6 +4,13 @@ TODO
   - chunk_table_list - needs mfdata uses grouping
   - file_list - not supported by fdata
 
+20140227
+* bug fixes in empty block compression
+
+20140226
+* bug fix in libewf_read_io_handle_read_chunk_data error tolerance
+  code path
+
 20140216
 * bug fix in recent process status changes
 
