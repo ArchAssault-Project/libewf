@@ -99,7 +99,7 @@ int libodraw_handle_get_bytes_per_sector(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -150,7 +150,7 @@ int libodraw_handle_set_bytes_per_sector(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );

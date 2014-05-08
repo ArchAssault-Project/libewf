@@ -71,7 +71,7 @@ int libodraw_data_file_initialize(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );

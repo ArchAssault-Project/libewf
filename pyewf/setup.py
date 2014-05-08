@@ -26,10 +26,10 @@ class custom_sdist(sdist):
 
 
 LIBRARY_NAME = "libewf"
-LIBRARY_VERSION = "20140227"
+LIBRARY_VERSION = "20140427"
 MODULE_NAME = "py%s" % (LIBRARY_NAME[3:])
 # bdist_msi does not support the library version, neither a date as a version.
-MODULE_VERSION = "20140227.1"
+MODULE_VERSION = "20140427.1"
 PROJECT_URL = "http://code.google.com/p/%s/" % (LIBRARY_NAME)
 
 DIRECTORY_NAMES = [
@@ -68,6 +68,12 @@ LIBRARIES = []
 LIBRARY_DIRS = []
 LIBRARY_DATA_FILES = []
 
+PYTHON_LIBRARY_DIRECTORY = sysconfig.get_python_lib(True)
+_, _, PYTHON_LIBRARY_DIRECTORY = PYTHON_LIBRARY_DIRECTORY.rpartition(sysconfig.PREFIX)
+
+if PYTHON_LIBRARY_DIRECTORY.startswith(os.sep):
+	PYTHON_LIBRARY_DIRECTORY = PYTHON_LIBRARY_DIRECTORY[1:]
+
 if platform.system() == "Windows":
 	DEFINE_MACROS = [
 		("HAVE_LOCAL_LIBCSTRING", ""),
@@ -88,11 +94,18 @@ if platform.system() == "Windows":
 
 	LIBRARY_DIRS.append(library_directory)
 
-	library_dll_file = os.path.join(library_directory, "%s.dll" % (LIBRARY_NAME))
-	zlib_dll_file = os.path.join(library_directory, "zlib.dll")
+	LIBRARY_DLL_FILES = [
+		"%s.dll" % (LIBRARY_NAME),
+		"zlib.dll",
+	]
+	for library_dll_filename in LIBRARY_DLL_FILES:
+		library_dll_file = os.path.join(library_directory, library_dll_filename)
 
-	# Add the library DLL and zlib.dll files to the distribution.
-	LIBRARY_DATA_FILES.append((sysconfig.get_python_lib(True), [library_dll_file, zlib_dll_file]))
+		if not os.path.exists(library_dll_file):
+			print "No such file: %s" % (library_dll_file)
+			sys.exit(1)
+
+		LIBRARY_DATA_FILES.append(library_dll_file)
 
 else:
 	DEFINE_MACROS = [
@@ -109,7 +122,7 @@ license_file = "LICENSE.%s" % (LIBRARY_NAME)
 
 shutil.copyfile(copying_file, license_file)
 
-LIBRARY_DATA_FILES.append((sysconfig.get_python_lib(True), [license_file]))
+LIBRARY_DATA_FILES.append(license_file)
 
 # TODO: what about description and platform in egg file
 
@@ -134,6 +147,6 @@ setup(
 			library_dirs = LIBRARY_DIRS,
 		),
 	],
-	data_files = LIBRARY_DATA_FILES,
+	data_files = [(PYTHON_LIBRARY_DIRECTORY, LIBRARY_DATA_FILES)],
 )
 

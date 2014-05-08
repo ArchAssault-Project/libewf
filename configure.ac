@@ -2,7 +2,7 @@ AC_PREREQ( 2.59 )
 
 AC_INIT(
  [libewf],
- [20140227],
+ [20140427],
  [joachim.metz@gmail.com])
 
 AC_CONFIG_SRCDIR(
@@ -162,13 +162,24 @@ AX_LIBEWF_CHECK_HOST_OPERATING_SYSTEM
 
 dnl Check if DLL support is needed in ewftools
 AS_IF(
- [test "x$enable_shared" = xyes && test "x$ac_cv_enable_static_executables" = xno],
+ [test "x$enable_shared" = xyes],
  [AS_CASE(
   [$host],
   [*cygwin* | *mingw*],
-  [AC_SUBST(
-   [LIBEWF_DLL_IMPORT],
-   ["-DLIBEWF_DLL_IMPORT"])
+  [AC_DEFINE(
+   [HAVE_DLLMAIN],
+   [1],
+   [Define to 1 to enable the DllMain function.])
+  AC_SUBST(
+   [HAVE_DLLMAIN],
+   [1])
+
+  AS_IF(
+   [test "x$ac_cv_enable_static_executables" = xno],
+   [AC_SUBST(
+    [LIBEWF_DLL_IMPORT],
+    ["-DLIBEWF_DLL_IMPORT"])
+   ])
   ])
  ])
 

@@ -2699,7 +2699,7 @@ int libewf_handle_open_read_segment_files(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -3523,7 +3523,7 @@ int libewf_handle_open_read_delta_segment_files(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -3965,10 +3965,23 @@ int libewf_handle_close(
 
 			result = -1;
 		}
+		internal_handle->file_io_pool_created_in_library = 0;
 	}
-	internal_handle->file_io_pool                    = NULL;
-	internal_handle->file_io_pool_created_in_library = 0;
+	internal_handle->file_io_pool = NULL;
 
+	if( libewf_io_handle_clear(
+	     internal_handle->io_handle,
+	     error ) != 1 )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+		 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+		 "%s: unable to clear IO handle.",
+		 function );
+
+		result = -1;
+	}
 	if( internal_handle->read_io_handle != NULL )
 	{
 		if( libewf_read_io_handle_free(
@@ -4486,7 +4499,7 @@ ssize_t libewf_handle_read_chunk(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -4795,7 +4808,7 @@ ssize_t libewf_handle_read_buffer(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -5075,7 +5088,7 @@ ssize_t libewf_handle_prepare_write_chunk(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -5476,7 +5489,7 @@ ssize_t libewf_handle_write_chunk(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -5762,7 +5775,7 @@ ssize_t libewf_handle_write_buffer(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -6455,7 +6468,7 @@ ssize_t libewf_handle_write_finalize(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -8522,7 +8535,7 @@ int libewf_handle_get_file_io_handle(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );

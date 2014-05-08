@@ -1619,7 +1619,7 @@ int libsmraw_handle_read_information_file(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );

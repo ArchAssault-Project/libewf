@@ -116,6 +116,7 @@ int libewf_io_handle_free(
      libcerror_error_t **error )
 {
 	static char *function = "libewf_io_handle_free";
+	int result            = 1;
 
 	if( io_handle == NULL )
 	{
@@ -130,11 +131,66 @@ int libewf_io_handle_free(
 	}
 	if( *io_handle != NULL )
 	{
+		if( libewf_io_handle_clear(
+		     *io_handle,
+		     error ) != 1 )
+		{
+			libcerror_error_set(
+			 error,
+			 LIBCERROR_ERROR_DOMAIN_RUNTIME,
+			 LIBCERROR_RUNTIME_ERROR_FINALIZE_FAILED,
+			 "%s: unable to clear IO handle.",
+			 function );
+
+			result = -1;
+		}
 		memory_free(
 		 *io_handle );
 
 		*io_handle = NULL;
 	}
+	return( result );
+}
+
+/* Clears the IO handle
+ * Returns 1 if successful or -1 on error
+ */
+int libewf_io_handle_clear(
+     libewf_io_handle_t *io_handle,
+     libcerror_error_t **error )
+{
+	static char *function = "libewf_io_handle_clear";
+
+	if( io_handle == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
+		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
+		 "%s: invalid IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	if( memory_set(
+	     io_handle,
+	     0,
+	     sizeof( libewf_io_handle_t ) ) == NULL )
+	{
+		libcerror_error_set(
+		 error,
+		 LIBCERROR_ERROR_DOMAIN_MEMORY,
+		 LIBCERROR_MEMORY_ERROR_SET_FAILED,
+		 "%s: unable to clear IO handle.",
+		 function );
+
+		return( -1 );
+	}
+	io_handle->format            = LIBEWF_FORMAT_ENCASE5;
+	io_handle->ewf_format        = EWF_FORMAT_E01;
+	io_handle->compression_level = EWF_COMPRESSION_NONE;
+	io_handle->header_codepage   = LIBEWF_CODEPAGE_ASCII;
+
 	return( 1 );
 }
 

@@ -414,7 +414,7 @@ int libodraw_handle_signal_abort(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -797,7 +797,7 @@ int libodraw_handle_open_file_io_handle(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_ALREADY_SET,
-		 "%s: invalid internal handle - file IO handle already set.",
+		 "%s: invalid handle - file IO handle already set.",
 		 function );
 
 		return( -1 );
@@ -1213,7 +1213,7 @@ int libodraw_handle_open_data_file(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -1333,7 +1333,7 @@ int libodraw_handle_open_data_file_wide(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -1454,7 +1454,7 @@ int libodraw_handle_open_data_file_io_handle(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -1795,7 +1795,7 @@ int libodraw_handle_open_read(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -1806,7 +1806,7 @@ int libodraw_handle_open_read(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -2064,7 +2064,7 @@ ssize_t libodraw_handle_read_buffer(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -2075,7 +2075,7 @@ ssize_t libodraw_handle_read_buffer(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -2086,7 +2086,7 @@ ssize_t libodraw_handle_read_buffer(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_OUT_OF_BOUNDS,
-		 "%s: invalid internal handle - invalid IO handle - current offset value out of bounds.",
+		 "%s: invalid handle - invalid IO handle - current offset value out of bounds.",
 		 function );
 
 		return( -1 );
@@ -2480,7 +2480,7 @@ ssize_t libodraw_handle_read_buffer_from_run_out(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -2491,7 +2491,7 @@ ssize_t libodraw_handle_read_buffer_from_run_out(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -2502,7 +2502,7 @@ ssize_t libodraw_handle_read_buffer_from_run_out(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -2841,7 +2841,7 @@ ssize_t libodraw_handle_read_buffer_from_lead_out(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -2852,7 +2852,7 @@ ssize_t libodraw_handle_read_buffer_from_lead_out(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -2863,7 +2863,7 @@ ssize_t libodraw_handle_read_buffer_from_lead_out(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -3200,7 +3200,7 @@ ssize_t libodraw_handle_read_buffer_from_unspecified_sector(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -3211,7 +3211,7 @@ ssize_t libodraw_handle_read_buffer_from_unspecified_sector(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -3222,7 +3222,7 @@ ssize_t libodraw_handle_read_buffer_from_unspecified_sector(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -3492,7 +3492,7 @@ ssize_t libodraw_handle_read_buffer_from_track(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -3503,7 +3503,7 @@ ssize_t libodraw_handle_read_buffer_from_track(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -3514,7 +3514,7 @@ ssize_t libodraw_handle_read_buffer_from_track(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -3912,7 +3912,7 @@ off64_t libodraw_handle_seek_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -4081,7 +4081,7 @@ int libodraw_handle_get_run_out_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -4092,7 +4092,7 @@ int libodraw_handle_get_run_out_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -4103,7 +4103,7 @@ int libodraw_handle_get_run_out_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -4240,7 +4240,7 @@ int libodraw_handle_get_lead_out_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -4251,7 +4251,7 @@ int libodraw_handle_get_lead_out_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -4262,7 +4262,7 @@ int libodraw_handle_get_lead_out_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -4399,7 +4399,7 @@ int libodraw_handle_get_track_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -4410,7 +4410,7 @@ int libodraw_handle_get_track_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -4421,7 +4421,7 @@ int libodraw_handle_get_track_at_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -4566,7 +4566,7 @@ int libodraw_handle_get_offset(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -4607,7 +4607,7 @@ int libodraw_handle_get_basename_size(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -4706,7 +4706,7 @@ int libodraw_handle_get_basename(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -4887,7 +4887,7 @@ int libodraw_handle_set_basename(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -5088,7 +5088,7 @@ int libodraw_handle_get_basename_size_wide(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -5186,7 +5186,7 @@ int libodraw_handle_get_basename_wide(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -5365,7 +5365,7 @@ int libodraw_handle_set_basename_wide(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -5611,7 +5611,7 @@ int libodraw_handle_set_media_values(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );
@@ -5622,7 +5622,7 @@ int libodraw_handle_set_media_values(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -5633,7 +5633,7 @@ int libodraw_handle_set_media_values(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - invalid IO handle - missing bytes per sector.",
+		 "%s: invalid handle - invalid IO handle - missing bytes per sector.",
 		 function );
 
 		return( -1 );
@@ -5901,7 +5901,7 @@ int libodraw_handle_get_ascii_codepage(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );
@@ -5952,7 +5952,7 @@ int libodraw_handle_set_ascii_codepage(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_RUNTIME,
 		 LIBCERROR_RUNTIME_ERROR_VALUE_MISSING,
-		 "%s: invalid internal handle - missing IO handle.",
+		 "%s: invalid handle - missing IO handle.",
 		 function );
 
 		return( -1 );

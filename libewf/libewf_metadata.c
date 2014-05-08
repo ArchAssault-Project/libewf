@@ -4476,7 +4476,7 @@ int libewf_handle_parse_header_values(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal handle.",
+		 "%s: invalid handle.",
 		 function );
 
 		return( -1 );

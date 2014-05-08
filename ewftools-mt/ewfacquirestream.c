@@ -397,7 +397,7 @@ ssize_t ewfacquirestream_read_chunk(
 				}
 				else
 				{
-					/* Read some data, correct chunk offset for next read 
+					/* Read some data, correct chunk offset for next read
 					 */
 					chunk_offset      += read_count;
 					bytes_to_read     -= read_count;
@@ -729,7 +729,7 @@ int ewfacquirestream_read_input(
 		                 storage_media_buffer,
 		                 threading_data,
 		                 error );
-		                 
+		
 		if( process_count < 0 )
 		{
 			libcerror_error_set(

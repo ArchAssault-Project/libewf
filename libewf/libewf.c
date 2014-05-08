@@ -31,7 +31,7 @@
  */
 #if !defined( HAVE_LOCAL_LIBEWF )
 
-#if defined( WINAPI )
+#if defined( WINAPI ) && defined( HAVE_DLLMAIN )
 
 #if defined( _MANAGED )
 #pragma managed( push, off )

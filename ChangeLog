@@ -4,6 +4,17 @@ TODO
   - chunk_table_list - needs mfdata uses grouping
   - file_list - not supported by fdata
 
+20140427
+* fixes to build static library with mingw and cygwin
+
+20140406
+* bug fixes in m4 files
+
+20140228
+* removed #error restriction in dependency include header files
+* make pyewf_handle_open more strict to catch non-string objects
+  without the check the code will segfault on non-string objects
+
 20140227
 * bug fixes in empty block compression
 

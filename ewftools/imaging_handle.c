@@ -1874,7 +1874,7 @@ int imaging_handle_prompt_for_string(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal string.",
+		 "%s: invalid string.",
 		 function );
 
 		return( -1 );
@@ -1885,7 +1885,7 @@ int imaging_handle_prompt_for_string(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal string size.",
+		 "%s: invalid string size.",
 		 function );
 
 		return( -1 );
@@ -2966,7 +2966,7 @@ int imaging_handle_set_string(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal string.",
+		 "%s: invalid string.",
 		 function );
 
 		return( -1 );
@@ -2977,7 +2977,7 @@ int imaging_handle_set_string(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal string size.",
+		 "%s: invalid string size.",
 		 function );
 
 		return( -1 );

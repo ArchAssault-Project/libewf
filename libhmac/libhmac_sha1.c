@@ -294,7 +294,7 @@ ssize_t libhmac_sha1_transform(
 		 error,
 		 LIBCERROR_ERROR_DOMAIN_ARGUMENTS,
 		 LIBCERROR_ARGUMENT_ERROR_INVALID_VALUE,
-		 "%s: invalid internal context.",
+		 "%s: invalid context.",
 		 function );
 
 		return( -1 );
