@@ -24,11 +24,11 @@
 
 #include <libewf/types.h>
 
-#define LIBEWF_VERSION						20140427
+#define LIBEWF_VERSION						20140608
 
 /* The version string
  */
-#define LIBEWF_VERSION_STRING					"20140427"
+#define LIBEWF_VERSION_STRING					"20140608"
 
 /* The access flags definitions
  * bit 1	set to 1 for read access

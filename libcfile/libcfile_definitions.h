@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCFILE_VERSION				20140105
+#define LIBCFILE_VERSION				20140527
 
 /* The libcstring version string
  */
-#define LIBCFILE_VERSION_STRING				"20140105"
+#define LIBCFILE_VERSION_STRING				"20140527"
 
 /* The file access flags
  * bit 1	set to 1 for read access

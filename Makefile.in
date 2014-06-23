@@ -58,16 +58,9 @@ DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(top_srcdir)/dpkg/copyright.in \
 	$(top_srcdir)/include/libewf/definitions.h.in \
 	$(top_srcdir)/include/libewf/features.h.in \
-	$(top_srcdir)/include/libewf/types.h.in \
-	$(top_srcdir)/macosx/libewf.pmdoc/01bin.xml.in \
-	$(top_srcdir)/macosx/libewf.pmdoc/02include.xml.in \
-	$(top_srcdir)/macosx/libewf.pmdoc/03lib.xml.in \
-	$(top_srcdir)/macosx/libewf.pmdoc/04share.xml.in \
-	$(top_srcdir)/macosx/libewf.pmdoc/05python.xml.in \
-	$(top_srcdir)/macosx/libewf.pmdoc/index.xml.in ABOUT-NLS \
-	AUTHORS COPYING ChangeLog INSTALL NEWS config.guess \
-	config.rpath config.sub depcomp install-sh ltmain.sh missing \
-	ylwrap
+	$(top_srcdir)/include/libewf/types.h.in ABOUT-NLS AUTHORS \
+	COPYING ChangeLog INSTALL NEWS config.guess config.rpath \
+	config.sub depcomp install-sh ltmain.sh missing ylwrap
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/m4/bzip2.m4 \
 	$(top_srcdir)/m4/common.m4 $(top_srcdir)/m4/gettext.m4 \
@@ -102,11 +95,7 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/common/config.h
 CONFIG_CLEAN_FILES = include/libewf/definitions.h \
 	include/libewf/features.h include/libewf/types.h \
-	dpkg/changelog dpkg/copyright macosx/libewf.pmdoc/01bin.xml \
-	macosx/libewf.pmdoc/02include.xml \
-	macosx/libewf.pmdoc/03lib.xml macosx/libewf.pmdoc/04share.xml \
-	macosx/libewf.pmdoc/05python.xml macosx/libewf.pmdoc/index.xml \
-	libewf.pc libewf.spec
+	dpkg/changelog dpkg/copyright libewf.pc libewf.spec
 CONFIG_CLEAN_VPATH_FILES =
 SOURCES =
 DIST_SOURCES =
@@ -661,7 +650,6 @@ SUBDIRS = \
 	manuals \
 	tests \
 	examples \
-	macosx \
 	msvscpp
 
 DPKG_FILES = \
@@ -747,18 +735,6 @@ include/libewf/types.h: $(top_builddir)/config.status $(top_srcdir)/include/libe
 dpkg/changelog: $(top_builddir)/config.status $(top_srcdir)/dpkg/changelog.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 dpkg/copyright: $(top_builddir)/config.status $(top_srcdir)/dpkg/copyright.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-macosx/libewf.pmdoc/01bin.xml: $(top_builddir)/config.status $(top_srcdir)/macosx/libewf.pmdoc/01bin.xml.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-macosx/libewf.pmdoc/02include.xml: $(top_builddir)/config.status $(top_srcdir)/macosx/libewf.pmdoc/02include.xml.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-macosx/libewf.pmdoc/03lib.xml: $(top_builddir)/config.status $(top_srcdir)/macosx/libewf.pmdoc/03lib.xml.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-macosx/libewf.pmdoc/04share.xml: $(top_builddir)/config.status $(top_srcdir)/macosx/libewf.pmdoc/04share.xml.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-macosx/libewf.pmdoc/05python.xml: $(top_builddir)/config.status $(top_srcdir)/macosx/libewf.pmdoc/05python.xml.in
-	cd $(top_builddir) && $(SHELL) ./config.status $@
-macosx/libewf.pmdoc/index.xml: $(top_builddir)/config.status $(top_srcdir)/macosx/libewf.pmdoc/index.xml.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@
 libewf.pc: $(top_builddir)/config.status $(srcdir)/libewf.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $@

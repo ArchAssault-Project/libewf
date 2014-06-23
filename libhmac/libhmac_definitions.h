@@ -34,11 +34,11 @@
  * for local use of libhmac
  */
 #else
-#define LIBHMAC_VERSION			20140112
+#define LIBHMAC_VERSION			20140505
 
 /* The libhmac version string
  */
-#define LIBHMAC_VERSION_STRING		"20140112"
+#define LIBHMAC_VERSION_STRING		"20140505"
 
 /* The digest hash sizes
  */

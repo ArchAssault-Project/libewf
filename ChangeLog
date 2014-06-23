@@ -4,6 +4,15 @@ TODO
   - chunk_table_list - needs mfdata uses grouping
   - file_list - not supported by fdata
 
+20140608
+* bug fix for utf16 header functions
+
+20140602
+* bug fix in ewfmount regarding logical files date and time values
+
+20140525
+* updated python.m4
+
 20140427
 * fixes to build static library with mingw and cygwin
 

@@ -26,10 +26,10 @@ class custom_sdist(sdist):
 
 
 LIBRARY_NAME = "libewf"
-LIBRARY_VERSION = "20140427"
+LIBRARY_VERSION = "20140608"
 MODULE_NAME = "py%s" % (LIBRARY_NAME[3:])
 # bdist_msi does not support the library version, neither a date as a version.
-MODULE_VERSION = "20140427.1"
+MODULE_VERSION = "20140608.1"
 PROJECT_URL = "http://code.google.com/p/%s/" % (LIBRARY_NAME)
 
 DIRECTORY_NAMES = [

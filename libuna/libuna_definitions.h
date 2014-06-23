@@ -35,11 +35,11 @@
 #else
 #include <byte_stream.h>
 
-#define LIBUNA_VERSION						20140105
+#define LIBUNA_VERSION						20140505
 
 /* The libuna version string
  */
-#define LIBUNA_VERSION_STRING					"20140105"
+#define LIBUNA_VERSION_STRING					"20140505"
 
 /* The endian definitions
  */

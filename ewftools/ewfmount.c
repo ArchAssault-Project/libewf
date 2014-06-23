@@ -1245,26 +1245,25 @@ int ewfmount_fuse_getattr(
 				}
 #endif
 				stat_info->st_size = (off_t) media_size;
-
+#if defined( HAVE_TIME )
+				if( time( &timestamp ) == (time_t) -1 )
+				{
+					timestamp = 0;
+				}
+				stat_info->st_atime = timestamp;
+				stat_info->st_mtime = timestamp;
+				stat_info->st_ctime = timestamp;
+#else
+				stat_info->st_atime = 0;
+				stat_info->st_mtime = 0;
+				stat_info->st_ctime = 0;
+#endif
 				result = 0;
 			}
 		}
 	}
 	if( result == 0 )
 	{
-#if defined( HAVE_TIME )
-		if( time( &timestamp ) == (time_t) -1 )
-		{
-			timestamp = 0;
-		}
-		stat_info->st_atime = timestamp;
-		stat_info->st_mtime = timestamp;
-		stat_info->st_ctime = timestamp;
-#else
-		stat_info->st_atime = 0;
-		stat_info->st_mtime = 0;
-		stat_info->st_ctime = 0;
-#endif
 #if defined( HAVE_GETEUID )
 		stat_info->st_uid = geteuid();
 #else

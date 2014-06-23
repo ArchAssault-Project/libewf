@@ -33,11 +33,11 @@
  * for local use of libfdata
  */
 #else
-#define LIBFDATA_VERSION						20140206
+#define LIBFDATA_VERSION						20140601
 
 /* The libfdata version string
  */
-#define LIBFDATA_VERSION_STRING						"20140206"
+#define LIBFDATA_VERSION_STRING						"20140601"
 
 /* The library flag definitions
  */

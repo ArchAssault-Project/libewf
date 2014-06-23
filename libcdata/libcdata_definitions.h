@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCDATA_VERSION				20140105
+#define LIBCDATA_VERSION				20140505
 
 /* The libcstring version string
  */
-#define LIBCDATA_VERSION_STRING				"20140105"
+#define LIBCDATA_VERSION_STRING				"20140505"
 
 /* The comparison function definitions
  */

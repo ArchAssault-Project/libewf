@@ -89,13 +89,15 @@ LTLIBRARIES = $(noinst_LTLIBRARIES)
 libfcache_la_LIBADD =
 am__libfcache_la_SOURCES_DIST = libfcache_cache.c libfcache_cache.h \
 	libfcache_cache_value.c libfcache_cache_value.h \
-	libfcache_date_time.h libfcache_definitions.h \
-	libfcache_error.c libfcache_error.h libfcache_extern.h \
-	libfcache_libcdata.h libfcache_libcerror.h libfcache_support.c \
-	libfcache_support.h libfcache_types.h libfcache_unused.h
+	libfcache_date_time.c libfcache_date_time.h \
+	libfcache_definitions.h libfcache_error.c libfcache_error.h \
+	libfcache_extern.h libfcache_libcdata.h libfcache_libcerror.h \
+	libfcache_support.c libfcache_support.h libfcache_types.h \
+	libfcache_unused.h
 @HAVE_LOCAL_LIBFCACHE_TRUE@am_libfcache_la_OBJECTS =  \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_cache.lo \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_cache_value.lo \
+@HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_date_time.lo \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_error.lo \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_support.lo
 libfcache_la_OBJECTS = $(am_libfcache_la_OBJECTS)
@@ -550,8 +552,8 @@ zlib_LIBS = @zlib_LIBS@
 @HAVE_LOCAL_LIBFCACHE_TRUE@	-I$(top_srcdir)/include \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	-I$(top_srcdir)/common \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	@LIBCSTRING_CPPFLAGS@ \
-@HAVE_LOCAL_LIBFCACHE_TRUE@	@LIBCTHREADS_CPPFLAGS@ \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	@LIBCERROR_CPPFLAGS@ \
+@HAVE_LOCAL_LIBFCACHE_TRUE@	@LIBCTHREADS_CPPFLAGS@ \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	@LIBCDATA_CPPFLAGS@ \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	@PTHREAD_CPPFLAGS@
 
@@ -559,7 +561,7 @@ zlib_LIBS = @zlib_LIBS@
 @HAVE_LOCAL_LIBFCACHE_TRUE@libfcache_la_SOURCES = \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_cache.c libfcache_cache.h \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_cache_value.c libfcache_cache_value.h \
-@HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_date_time.h \
+@HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_date_time.c libfcache_date_time.h \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_definitions.h \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_error.c libfcache_error.h \
 @HAVE_LOCAL_LIBFCACHE_TRUE@	libfcache_extern.h \
@@ -628,6 +630,7 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfcache_cache.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfcache_cache_value.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfcache_date_time.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfcache_error.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libfcache_support.Plo@am__quote@
 

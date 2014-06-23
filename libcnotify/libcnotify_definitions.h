@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCNOTIFY_VERSION				20140105
+#define LIBCNOTIFY_VERSION				20140505
 
 /* The libcstring version string
  */
-#define LIBCNOTIFY_VERSION_STRING			"20140105"
+#define LIBCNOTIFY_VERSION_STRING			"20140505"
 
 /* The print data flags
  */

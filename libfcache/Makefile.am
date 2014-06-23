@@ -3,8 +3,8 @@ AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/common \
 	@LIBCSTRING_CPPFLAGS@ \
-	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCERROR_CPPFLAGS@ \
+	@LIBCTHREADS_CPPFLAGS@ \
 	@LIBCDATA_CPPFLAGS@ \
 	@PTHREAD_CPPFLAGS@
 
@@ -13,7 +13,7 @@ noinst_LTLIBRARIES = libfcache.la
 libfcache_la_SOURCES = \
 	libfcache_cache.c libfcache_cache.h \
 	libfcache_cache_value.c libfcache_cache_value.h \
-	libfcache_date_time.h \
+	libfcache_date_time.c libfcache_date_time.h \
 	libfcache_definitions.h \
 	libfcache_error.c libfcache_error.h \
 	libfcache_extern.h \

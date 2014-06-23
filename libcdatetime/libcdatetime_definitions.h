@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCDATETIME_VERSION					20140201
+#define LIBCDATETIME_VERSION					20140505
 
 /* The libcstring version string
  */
-#define LIBCDATETIME_VERSION_STRING				"20140201"
+#define LIBCDATETIME_VERSION_STRING				"20140505"
 
 /* The string format definition flags
  */

@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCERROR_VERSION				20140105
+#define LIBCERROR_VERSION				20140505
 
 /* The libcstring version string
  */
-#define LIBCERROR_VERSION_STRING			"20140105"
+#define LIBCERROR_VERSION_STRING			"20140505"
 
 /* The error domains
  */

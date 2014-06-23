@@ -1,5 +1,5 @@
 Name: libewf
-Version: 20140427
+Version: 20140608
 Release: 1
 Summary: Library to access the Expert Witness Compression Format (EWF)
 Group: System Environment/Libraries
@@ -112,6 +112,6 @@ rm -rf ${RPM_BUILD_ROOT}
 %exclude %{_bindir}/ewfdebug
 
 %changelog
-* Sun Apr 27 2014 Joachim Metz <joachim.metz@gmail.com> 20140427-1
+* Sun Jun  8 2014 Joachim Metz <joachim.metz@gmail.com> 20140608-1
 - Auto-generated
 

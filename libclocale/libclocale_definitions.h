@@ -34,11 +34,11 @@
  */
 #else
 
-#define LIBCLOCALE_VERSION					20140105
+#define LIBCLOCALE_VERSION					20140505
 
 /* The libclocale version string
  */
-#define LIBCLOCALE_VERSION_STRING				"20140105"
+#define LIBCLOCALE_VERSION_STRING				"20140505"
 
 /* The codepage feature flag definitions
  */

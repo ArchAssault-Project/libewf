@@ -35,11 +35,11 @@
  */
 #else
 
-#define LIBCSPLIT_VERSION			20140105
+#define LIBCSPLIT_VERSION			20140505
 
 /* The libcsplit version string
  */
-#define LIBCSPLIT_VERSION_STRING		"20140105"
+#define LIBCSPLIT_VERSION_STRING		"20140505"
 
 #endif /* !defined( HAVE_LOCAL_LIBCSPLIT ) */
 

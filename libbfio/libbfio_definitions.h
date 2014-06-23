@@ -33,11 +33,11 @@
  * for local use of libbfio
  */
 #else
-#define LIBBFIO_VERSION					20140105
+#define LIBBFIO_VERSION					20140506
 
 /* The libbfio version string
  */
-#define LIBBFIO_VERSION_STRING				"20140105"
+#define LIBBFIO_VERSION_STRING				"20140506"
 
 /* The library flags definitions
  */
